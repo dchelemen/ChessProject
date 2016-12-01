@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using ChessTable.View;
 
 namespace ChessTable
 {
@@ -13,5 +14,12 @@ namespace ChessTable
     /// </summary>
     public partial class App : Application
     {
+        private MainWindow mainView;
+
+        App()
+        {
+            mainView = new MainWindow();
+            mainView.Show();
+        }
     }
 }
