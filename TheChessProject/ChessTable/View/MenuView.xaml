@@ -8,18 +8,56 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition ></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <GroupBox Grid.Column="0" Header="Player 1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Choose an Algorithm:"/>
+                    <ComboBox Margin="2" Grid.Row="0" Grid.Column="1" ContextMenu="{Binding}"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="Choose a Heuristic:"/>
+                    <ComboBox Margin="2" Grid.Row="1" Grid.Column="1" ContextMenu="{Binding}"/>
+                </Grid>
             </GroupBox>
             <GroupBox Grid.Column="1" Header="Player 2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Choose an Algorithm:"/>
+                    <ComboBox Margin="2" Grid.Row="0" Grid.Column="1" ContextMenu="{Binding}"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="Choose a Heuristic:"/>
+                    <ComboBox Margin="2" Grid.Row="1" Grid.Column="1" ContextMenu="{Binding}"/>
+                </Grid>
             </GroupBox>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Button Margin="5" Grid.Column="1" Content="Custom Board"/>
+            <Button Margin="5" Grid.Column="2" Content="Start"/>
         </Grid>
     </Grid>
 </Window>
