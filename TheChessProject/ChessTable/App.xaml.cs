@@ -14,11 +14,12 @@ namespace ChessTable
     /// </summary>
     public partial class App : Application
     {
-        private MainWindow mainView;
+        private MenuView mainView;
+        private ChessBoardView chessBoard;
 
         App()
         {
-            mainView = new MainWindow();
+            mainView = new MenuView();
             mainView.Show();
         }
     }
