@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -101,6 +102,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Black_Bishop.png" />
+    <Resource Include="Images\Black_King.png" />
+    <Resource Include="Images\Black_Knight.png" />
+    <Resource Include="Images\Black_Pawn.png" />
+    <Resource Include="Images\Black_Queen.png" />
+    <Resource Include="Images\Black_Rook.png" />
+    <Resource Include="Images\White_Bishop.png" />
+    <Resource Include="Images\White_King.png" />
+    <Resource Include="Images\White_Knight.png" />
+    <Resource Include="Images\White_Pawn.png" />
+    <Resource Include="Images\White_Queen.png" />
+    <Resource Include="Images\White_Rook.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
