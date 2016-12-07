@@ -54,10 +54,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <Button Margin="5" Grid.Column="1" Content="Custom Board"/>
-            <Button Margin="5" Grid.Column="2" Content="Start"/>
+            <Button Margin="5" Grid.Column="1" Content="Start" Command="{Binding onMenuStartBtnClicked}"/>
         </Grid>
     </Grid>
 </Window>

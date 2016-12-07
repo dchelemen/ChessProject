@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using ChessTable.View;
+using ChessTable.ViewModels;
 
 namespace ChessTable
 {
@@ -15,11 +16,13 @@ namespace ChessTable
     public partial class App : Application
     {
         private MenuView mainView;
-        private ChessBoardView chessBoard;
+        private MenuViewModel menuViewModel;
 
         App()
         {
             mainView = new MenuView();
+            menuViewModel = new MenuViewModel();
+            mainView.DataContext = menuViewModel;
             mainView.Show();
         }
     }
