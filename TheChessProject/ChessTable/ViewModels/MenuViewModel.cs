@@ -10,7 +10,7 @@ namespace ChessTable.ViewModels
 {
     public class MenuViewModel
     {
-        public void onMenuStartBtnClicked(object sender, RoutedEventArgs e)
+        public void onMenuStartBtnClicked( object sender, RoutedEventArgs e )
         {
 
         }

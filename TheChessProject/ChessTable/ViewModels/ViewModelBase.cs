@@ -20,11 +20,11 @@ namespace ChessTable.ViewModel
         /// Tulajdonság változása ellenőrzéssel.
         /// </summary>
         /// <param name="propertyName">Tulajdonság neve.</param>
-        protected virtual void OnPropertyChanged([CallerMemberName] String propertyName = null)
+        protected virtual void OnPropertyChanged( [ CallerMemberName ] String propertyName = null )
         {
-            if (PropertyChanged != null)
+            if ( PropertyChanged != null )
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
             }
         }
     }
