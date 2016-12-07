@@ -55,7 +55,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <Button Margin="5" Grid.Column="1" Content="Start" Command="{Binding onMenuStartBtnClicked}"/>
+            <Button Margin="5" Grid.Column="1" Content="Start" Command="{Binding onMenuStartBtnClickedCommand}"/>
         </Grid>
     </Grid>
 </Window>

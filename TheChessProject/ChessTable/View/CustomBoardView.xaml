@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessTable.View"
         mc:Ignorable="d"
-        Title="CustomBoardView" Height="300" Width="350">
+        Title="CustomBoardView" Height="500" Width="600">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="45"/>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="45"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
@@ -22,17 +23,14 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <ComboBox Margin="2">
-                <ComboBoxItem Content="White" IsSelected="True"/>
-                <ComboBoxItem Content="Black"/>
-            </ComboBox>
+            <Label Grid.Row="0" Content="Black:"/>
             <Border Grid.Row="1" Height="28" Width="28">
                 <Border.Background>
                     <SolidColorBrush Color="Black"/>
                 </Border.Background>
                 <Rectangle Height="28" Width="28" Stroke="Silver">
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource="ChessTable/Images/Black_King.png"/>
+                        <ImageBrush ImageSource="/Images/Black_King.png"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Border>
@@ -42,7 +40,7 @@
                 </Border.Background>
                 <Rectangle Height="28" Width="28" Stroke="Silver">
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource="ChessTable/Images/Black_Queen.png"/>
+                        <ImageBrush ImageSource="/Images/Black_Queen.png"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Border>
@@ -52,7 +50,7 @@
                 </Border.Background>
                 <Rectangle Height="28" Width="28" Stroke="Silver">
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource="ChessTable/Images/Black_Rook.png"/>
+                        <ImageBrush ImageSource="/Images/Black_Rook.png"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Border>
@@ -62,7 +60,7 @@
                 </Border.Background>
                 <Rectangle Height="28" Width="28" Stroke="Silver">
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource="ChessTable/Images/Black_Bishop.png"/>
+                        <ImageBrush ImageSource="/Images/Black_Bishop.png"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Border>
@@ -72,7 +70,7 @@
                 </Border.Background>
                 <Rectangle Height="28" Width="28" Stroke="Silver">
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource="ChessTable/Images/Black_Knight.png"/>
+                        <ImageBrush ImageSource="/Images/Black_Knight.png"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Border>
@@ -82,7 +80,7 @@
                 </Border.Background>
                 <Rectangle Height="28" Width="28" Stroke="Silver">
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource="ChessTable/Images/Black_Pawn.png"/>
+                        <ImageBrush ImageSource="/Images/Black_Pawn.png"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Border>
@@ -99,5 +97,78 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="White:"/>
+            <Border Grid.Row="1" Height="30" Width="30">
+                <Border.Background>
+                    <SolidColorBrush Color="Black"/>
+                </Border.Background>
+                <Rectangle Height="30" Width="30 " Stroke="Silver">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/White_King.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Border>
+            <Border Grid.Row="2" Height="28" Width="28">
+                <Border.Background>
+                    <SolidColorBrush Color="Black"/>
+                </Border.Background>
+                <Rectangle Height="28" Width="28" Stroke="Silver">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/White_Queen.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Border>
+            <Border Grid.Row="3" Height="28" Width="28">
+                <Border.Background>
+                    <SolidColorBrush Color="Black"/>
+                </Border.Background>
+                <Rectangle Height="28" Width="28" Stroke="Silver">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/White_Rook.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Border>
+            <Border Grid.Row="4" Height="28" Width="28">
+                <Border.Background>
+                    <SolidColorBrush Color="Black"/>
+                </Border.Background>
+                <Rectangle Height="28" Width="28" Stroke="Silver">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/White_Bishop.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Border>
+            <Border Grid.Row="5" Height="28" Width="28">
+                <Border.Background>
+                    <SolidColorBrush Color="Black"/>
+                </Border.Background>
+                <Rectangle Height="28" Width="28" Stroke="Silver">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/White_Knight.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Border>
+            <Border Grid.Row="6" Height="28" Width="28">
+                <Border.Background>
+                    <SolidColorBrush Color="Black"/>
+                </Border.Background>
+                <Rectangle Height="28" Width="28" Stroke="Silver">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/White_Pawn.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
