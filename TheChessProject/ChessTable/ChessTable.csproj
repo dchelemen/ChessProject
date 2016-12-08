@@ -72,6 +72,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EventArgs\FieldClickedEventArg.cs" />
     <Compile Include="ViewModels\BoardItem.cs" />
     <Compile Include="ViewModels\Common.cs" />
     <Compile Include="ViewModels\CustomBoardViewModel.cs" />
@@ -116,7 +117,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Black_Bishop.png" />
     <Resource Include="Images\Black_King.png" />

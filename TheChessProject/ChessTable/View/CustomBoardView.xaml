@@ -4,124 +4,67 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessTable.View"
+        xmlns:viewmodel="clr-namespace:ChessTable.ViewModels"
         mc:Ignorable="d"
-        Title="CustomBoardView" Height="{Binding WindowHeight, Mode=TwoWay}" Width="{Binding WindowWidth, Mode=TwoWay}" MinWidth="640" MinHeight="480" Background="Gray">
+        WindowState="{Binding windowState}"
+        Title="CustomBoardView"
+        Height="{Binding windowHeight, Mode=TwoWay}" Width="{Binding windowWidth, Mode=TwoWay}" MinWidth="640" MinHeight="480" Background="Gray">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Button Grid.Row="0" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/Black_King.png"/>
-                </Canvas>
-            </Button>
-            <Button Grid.Row="1" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/Black_Queen.png"/>
-                </Canvas>
-            </Button>
-            <Button Grid.Row="2" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/Black_Rook.png"/>
-                </Canvas>
-            </Button>
-            <Button Grid.Row="3" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/Black_Bishop.png"/>
-                </Canvas>
-            </Button>
-            <Button Grid.Row="4" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/Black_Knight.png"/>
-                </Canvas>
-            </Button>
-            <Button Grid.Row="5" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/Black_Pawn.png"/>
-                </Canvas>
-            </Button>
-        </Grid>
-        <ItemsControl Grid.Column="1" ItemsSource="{Binding ChessBoard}">
+        <ItemsControl Grid.Column="0" ItemsSource="{Binding mBlackFigureCollection}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Rows="8" Columns="8" Width="{Binding BoardSize, Mode=TwoWay}" Height="{Binding BoardSize, Mode=TwoWay}" VerticalAlignment="Top"/>
+                    <UniformGrid Rows="8" Columns="1" Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding panelSize, Mode=TwoWay}" VerticalAlignment="Top"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
-                        <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="{Binding FieldColor}" Stroke="White"/>
-                            <Image Width="Auto" Height="Auto" Source="{Binding FieldFigure}"/>
+                    <Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
+                        <Canvas Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="White"/>
+                            <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding fieldFigure}"/>
                         </Canvas>
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Button Grid.Row="0" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/White_King.png"/>
-                </Canvas>
-            </Button>
-            <Button Grid.Row="1" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/White_Queen.png"/>
-                </Canvas>
-            </Button>
-            <Button Grid.Row="2" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/White_Rook.png"/>
-                </Canvas>
-            </Button>
-            <Button Grid.Row="3" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/White_Bishop.png"/>
-                </Canvas>
-            </Button>
-            <Button Grid.Row="4" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/White_Knight.png"/>
-                </Canvas>
-            </Button>
-            <Button Grid.Row="5" Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Command="{Binding onBlackPawnClickedCommand}">
-                <Canvas Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Rectangle Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Fill="Black" Stroke="White"/>
-                    <Image Width="{Binding FieldSize, Mode=TwoWay}" Height="{Binding FieldSize, Mode=TwoWay}" Source="/Images/White_Pawn.png"/>
-                </Canvas>
-            </Button>
-        </Grid>
+        <ItemsControl Grid.Column="1" ItemsSource="{Binding mChessBoardCollection}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="8" Columns="8" Width="{Binding boardSize, Mode=TwoWay}" Height="{Binding boardSize, Mode=TwoWay}" VerticalAlignment="Top"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
+                        <Canvas Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="White"/>
+                            <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding fieldFigure}"/>
+                        </Canvas>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <ItemsControl Grid.Column="2" ItemsSource="{Binding mWhiteFigureCollection}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="8" Columns="1" Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding panelSize, Mode=TwoWay}" VerticalAlignment="Top"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
+                        <Canvas Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="White"/>
+                            <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding fieldFigure}"/>
+                        </Canvas>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>
