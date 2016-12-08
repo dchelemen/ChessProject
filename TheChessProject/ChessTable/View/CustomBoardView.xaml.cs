@@ -21,14 +21,7 @@ namespace ChessTable.View
     {
         public CustomBoardView()
         {
-            try
-            {
-                InitializeComponent();
-            }
-            catch ( Exception ex )
-            {
-                MessageBox.Show( ex.Message );
-            }
+            InitializeComponent();
         }
     }
 }

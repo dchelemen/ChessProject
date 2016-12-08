@@ -12,6 +12,7 @@ namespace ChessTable.ViewModels
     {
         private ChessBoardView chessBoardView;
         private CustomBoardView customBoardView;
+        private CustomBoardViewModel mCustomBoardViewModel;
         public DelegateCommand onMenuStartBtnClickedCommand { get; private set; }
         public MenuViewModel()
         {
@@ -19,15 +20,10 @@ namespace ChessTable.ViewModels
         }
         public void onMenuStartBtnClicked()
         {
-            try
-            {
-                customBoardView = new CustomBoardView();
-                customBoardView.Show();
-            }
-            catch ( Exception ex )
-            {
-                MessageBox.Show( ex.Message );
-            }
+            customBoardView = new CustomBoardView();
+            mCustomBoardViewModel = new CustomBoardViewModel();
+            customBoardView.DataContext = mCustomBoardViewModel;
+            customBoardView.Show();
         }
     }
 }
