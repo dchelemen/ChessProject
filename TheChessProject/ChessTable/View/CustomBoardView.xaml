@@ -12,7 +12,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <ItemsControl Grid.Column="0" ItemsSource="{Binding mBlackFigureCollection}">
@@ -25,7 +25,7 @@
                 <DataTemplate>
                     <Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
                         <Canvas Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="White"/>
+                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="{Binding borderColor}" StrokeThickness="3"/>
                             <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding fieldFigure}"/>
                         </Canvas>
                     </Button>
@@ -42,7 +42,7 @@
                 <DataTemplate>
                     <Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
                         <Canvas Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="White"/>
+                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="{Binding borderColor}" StrokeThickness="3"/>
                             <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding fieldFigure}"/>
                         </Canvas>
                     </Button>
@@ -59,7 +59,7 @@
                 <DataTemplate>
                     <Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
                         <Canvas Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="White"/>
+                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="{Binding borderColor}" StrokeThickness="3"/>
                             <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding fieldFigure}"/>
                         </Canvas>
                     </Button>

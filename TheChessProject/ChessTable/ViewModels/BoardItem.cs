@@ -21,8 +21,7 @@ namespace ChessTable.ViewModels
             {
                 x = X,
                 y = Y,
-                index = Index,
-                type = mFigureType
+                index = Index
             } );
         }
 

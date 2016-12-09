@@ -26,6 +26,8 @@ namespace ChessTable.ViewModels
             mChessBoardCollection   = new ObservableCollection< BoardItem >();
             mBlackFigureCollection  = new ObservableCollection< BoardItem >();
             mWhiteFigureCollection  = new ObservableCollection< BoardItem >();
+            mLastClicked = -1;
+            mLastClickedPanel = new Tuple< int, int >( -1, -1 );
 
             setupCustomBoard();
         }
@@ -135,14 +137,54 @@ namespace ChessTable.ViewModels
             {
                 return;
             }
-
+            if ( mLastClicked != -1 )
+            {
+                mChessBoardCollection[ mLastClicked ].borderColor = ( mChessBoardCollection[ mLastClicked ].X + mChessBoardCollection[ mLastClicked ].Y ) % 2 == 0 ? "White" : "Black";
+                mLastClicked = -1;
+            }
             mChessBoardCollection[ aArguments.index ].fieldFigure = typesToString( selectedType );
+            mChessBoardCollection[ aArguments.index ].borderColor = "Red";
+            mLastClicked = aArguments.index;
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
         private void onPanelClicked( Object aSender, EventArgs.FieldClickedEventArg aArguments )
         {
+            if ( mLastClickedPanel.Item1 == aArguments.index && mLastClickedPanel.Item2 == aArguments.y )
+            {
+                selectedType = FigureType.NO_FIGURE;
+                if ( mLastClickedPanel.Item2 == 0 ) //this is the Black
+                {
+                    mBlackFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "White";
+                }
+                else
+                {
+                    mWhiteFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "White";
+                }
+                mLastClickedPanel = new Tuple<int, int>( -1, -1 );
+                return;
+            }
+            if ( mLastClickedPanel.Item1 != -1 )
+            {
+                if ( mLastClickedPanel.Item2 == 0 ) //this is the Black
+                {
+                    mBlackFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "White";
+                }
+                else
+                {
+                    mWhiteFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "White";
+                }
+            }
+            mLastClickedPanel = new Tuple<int, int>( aArguments.index, aArguments.y );
+            if ( mLastClickedPanel.Item2 == 0 ) //this is the Black
+            {
+                mBlackFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "Red";
+            }
+            else
+            {
+                mWhiteFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "Red";
+            }
             selectedType = getFigureType( aArguments.index, aArguments.y );
         }
 
@@ -334,10 +376,14 @@ namespace ChessTable.ViewModels
         public FigureType selectedType { get; set; }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
-        
+
+        private Int32 mLastClicked;
+        private Tuple<Int32, Int32> mLastClickedPanel;
+
         private String mWindowState;
         private Int32 mWindowWidth;
         private Int32 mWindowHeight;
+
         private Int32 mFieldSize;
         private Int32 mBoardSize;
         private Int32 mPanelSize;
