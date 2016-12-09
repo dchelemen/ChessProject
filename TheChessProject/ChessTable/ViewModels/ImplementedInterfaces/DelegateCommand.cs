@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace ChessTable.ViewModels
+namespace ChessTable.ViewModels.ImplementedInterfaces
 {
     public class DelegateCommand : ICommand
     {

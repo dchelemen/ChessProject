@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ChessTable.View;
 using System.Windows;
 using System.Collections.ObjectModel;
+using ChessTable.ViewModels.ImplementedInterfaces;
 
 namespace ChessTable.ViewModels
 {

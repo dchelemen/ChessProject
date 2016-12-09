@@ -72,13 +72,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EventArgs\FieldClickedEventArg.cs" />
+    <Compile Include="Common\FieldClickedEventArg.cs" />
     <Compile Include="ViewModels\BoardItem.cs" />
-    <Compile Include="ViewModels\Common.cs" />
+    <Compile Include="Common\FigureType.cs" />
     <Compile Include="ViewModels\CustomBoardViewModel.cs" />
-    <Compile Include="ViewModels\DelegateCommand.cs" />
+    <Compile Include="ViewModels\ImplementedInterfaces\DelegateCommand.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\ImplementedInterfaces\ViewModelBase.cs" />
     <Compile Include="View\ChessBoardView.xaml.cs">
       <DependentUpon>ChessBoardView.xaml</DependentUpon>
     </Compile>

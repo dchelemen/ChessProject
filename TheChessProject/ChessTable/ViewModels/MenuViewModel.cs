@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ChessTable.View;
+using ChessTable.ViewModels.ImplementedInterfaces;
 using System.Windows;
 
 namespace ChessTable.ViewModels

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace ChessTable.ViewModels
+namespace ChessTable.ViewModels.ImplementedInterfaces
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {

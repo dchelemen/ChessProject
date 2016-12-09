@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using ChessTable.EventArgs;
+using ChessTable.ViewModels.ImplementedInterfaces;
 
 namespace ChessTable.ViewModels
 {
