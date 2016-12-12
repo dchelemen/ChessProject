@@ -9,6 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
@@ -22,6 +23,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -31,11 +33,14 @@
                     <ComboBox Margin="2" Grid.Row="0" Grid.Column="1" ContextMenu="{Binding}"/>
                     <Label Grid.Row="1" Grid.Column="0" Content="Choose a Heuristic:"/>
                     <ComboBox Margin="2" Grid.Row="1" Grid.Column="1" ContextMenu="{Binding}"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Choose a Color:"/>
+                    <ComboBox Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding mColors}" SelectedValue="{Binding selectedColor}"/>
                 </Grid>
             </GroupBox>
             <GroupBox Grid.Column="1" Header="Player 2">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -50,7 +55,16 @@
                 </Grid>
             </GroupBox>
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Choose Game type:"/>
+            <ComboBox Grid.Column="1" ItemsSource="{Binding mGameTypes}" SelectedValue="{Binding selectedGameType}"/>
+        </Grid>
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="100"/>

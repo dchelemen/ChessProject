@@ -72,9 +72,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Common\Colors.cs" />
     <Compile Include="Common\FieldClickedEventArg.cs" />
+    <Compile Include="Model\ModelItem.cs" />
+    <Compile Include="Model\ChessBoardModel.cs" />
     <Compile Include="ViewModels\BoardItem.cs" />
     <Compile Include="Common\FigureType.cs" />
+    <Compile Include="ViewModels\ChessBoardViewModel.cs" />
     <Compile Include="ViewModels\CustomBoardViewModel.cs" />
     <Compile Include="ViewModels\ImplementedInterfaces\DelegateCommand.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
@@ -117,9 +121,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\Black_Bishop.png" />
     <Resource Include="Images\Black_King.png" />

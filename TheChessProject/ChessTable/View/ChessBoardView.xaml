@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessTable.View"
         mc:Ignorable="d"
-        Title="ChessBoard" Height="300" Width="300">
+        WindowState="{Binding windowState}"
+        Title="ChessBoard" 
+        Height="{Binding windowHeight, Mode=TwoWay}" Width="{Binding windowWidth, Mode=TwoWay}" MinWidth="640" MinHeight="480" Background="Gray">
     <Grid>
-        
+        <ItemsControl ItemsSource="{Binding mChessBoardCollection}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="8" Columns="8" Width="{Binding boardSize, Mode=TwoWay}" Height="{Binding boardSize, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
+                        <Canvas Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="{Binding borderColor}" StrokeThickness="3"/>
+                            <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding fieldFigure}"/>
+                        </Canvas>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>
