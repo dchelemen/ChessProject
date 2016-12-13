@@ -72,13 +72,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Common\Colors.cs" />
     <Compile Include="Common\FieldClickedEventArg.cs" />
+    <Compile Include="Common\PutFigureOnTheTableEventArg.cs" />
     <Compile Include="Model\ModelItem.cs" />
     <Compile Include="Model\ChessBoardModel.cs" />
     <Compile Include="ViewModels\BoardItem.cs" />
-    <Compile Include="Common\FigureType.cs" />
+    <Compile Include="Common\Enums.cs" />
     <Compile Include="ViewModels\ChessBoardViewModel.cs" />
+    <Compile Include="ViewModels\Converters\AlgorithmConverter.cs" />
+    <Compile Include="ViewModels\Converters\ColorConverter.cs" />
+    <Compile Include="ViewModels\Converters\FigureConverter.cs" />
+    <Compile Include="ViewModels\Converters\PlayerToStartConverter.cs" />
     <Compile Include="ViewModels\CustomBoardViewModel.cs" />
     <Compile Include="ViewModels\ImplementedInterfaces\DelegateCommand.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />

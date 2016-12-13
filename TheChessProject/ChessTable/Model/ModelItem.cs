@@ -12,6 +12,7 @@ namespace ChessTable.Model
         public Int32 x { get; set; }
         public Int32 y { get; set; }
         public Int32 index { get; set; }
-        public FigureType type { get; set; }
+        public Tuple<Colors, FigureType> type { get; set; }
+        public Player player { get; set; }
     }
 }

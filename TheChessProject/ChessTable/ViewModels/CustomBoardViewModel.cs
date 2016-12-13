@@ -18,44 +18,24 @@ namespace ChessTable.ViewModels
         /// <summary>
         /// Constructor for CustomBoardViewModel
         /// </summary>
-        public CustomBoardViewModel()
+        public CustomBoardViewModel( String aPlayer1Color )
         {
+            mPlayer1Color = aPlayer1Color == "White" ? Colors.WHITE : Colors.BLACK;
             windowState     = "Normal";
             windowWidth     = 640;
             windowHeight    = 480;
             fieldSize       = 48;
             boardSize       = 384;
-            selectedType    = FigureType.NO_FIGURE;
+
+            selectedPanelItem = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
+            mLastClickedField = -1;
+
             mChessBoardCollection   = new ObservableCollection< BoardItem >();
             mBlackFigureCollection  = new ObservableCollection< BoardItem >();
             mWhiteFigureCollection  = new ObservableCollection< BoardItem >();
-            mLastClicked = -1;
-            mLastClickedPanel = new Tuple< int, int >( -1, -1 );
+            mChessBoardModel        = new ChessBoardModel( mPlayer1Color );
 
             setupCustomBoard();
-        }
-
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-
-        public string typesToString( FigureType aType )
-        {
-            switch ( aType )
-            {
-                case FigureType.BLACK_KING:     return "/Images/Black_King.png";
-                case FigureType.BLACK_QUEEN:    return "/Images/Black_Queen.png";
-                case FigureType.BLACK_ROOK:     return "/Images/Black_Rook.png";
-                case FigureType.BLACK_BISHOP:   return "/Images/Black_Bishop.png";
-                case FigureType.BLACK_KNIGHT:   return "/Images/Black_Knight.png";
-                case FigureType.BLACK_PAWN:     return "/Images/Black_Pawn.png";
-                case FigureType.WHITE_KING:     return "/Images/White_King.png";
-                case FigureType.WHITE_QUEEN:    return "/Images/White_Queen.png";
-                case FigureType.WHITE_ROOK:     return "/Images/White_Rook.png";
-                case FigureType.WHITE_BISHOP:   return "/Images/White_Bishop.png";
-                case FigureType.WHITE_KNIGHT:   return "/Images/White_Knight.png";
-                case FigureType.WHITE_PAWN:     return "/Images/White_Pawn.png";
-                case FigureType.NO_FIGURE:      return null;
-            }
-            return null;
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -68,22 +48,21 @@ namespace ChessTable.ViewModels
             mBlackFigureCollection.Clear();
             mWhiteFigureCollection.Clear();
 
-            String color;
+            Colors color;
             Int32 index = 0;
             for ( Int16 row = 0; row < 8; row++ )
             {
                 for ( Int16 column = 0; column < 8; column++ )
                 {
-                    color = ( row + column ) % 2 == 0 ? "White" : "Black";
+                    color = ( row + column ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
                     mChessBoardCollection.Add( new BoardItem()
                     {
                         X = row,
                         Y = column,
                         Index = index,
                         fieldColor = color,
-                        fieldFigure = "",
                         fieldSize = 48,
-                        figureType = FigureType.NO_FIGURE,
+                        figureType = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE ),
                         borderColor = color
                     } );
                     mChessBoardCollection[ index ].fieldClicked += new EventHandler< FieldClickedEventArg >( onFieldClicked );
@@ -98,9 +77,10 @@ namespace ChessTable.ViewModels
                     X = row,
                     Y = 0, //its for Black
                     Index = row,
-                    fieldColor = "Black",
+                    fieldColor = Colors.BLACK,
                     fieldSize = 48,
-                    borderColor = "White"
+                    borderColor = Colors.WHITE,
+                    Color = Colors.BLACK
                 } );
 
                 mWhiteFigureCollection.Add( new BoardItem
@@ -108,119 +88,108 @@ namespace ChessTable.ViewModels
                     X = row,
                     Y = 1, //its for White
                     Index = row,
-                    fieldColor = "Black",
+                    fieldColor = Colors.BLACK,
                     fieldSize = 48,
-                    borderColor = "White"
+                    borderColor = Colors.WHITE,
+                    Color = Colors.WHITE
                 } );
 
                 mBlackFigureCollection[ row ].fieldClicked += new EventHandler< FieldClickedEventArg >( onPanelClicked );
                 mWhiteFigureCollection[ row ].fieldClicked += new EventHandler< FieldClickedEventArg >( onPanelClicked );
             }
 
-            mBlackFigureCollection[ 0 ].fieldFigure = typesToString( FigureType.BLACK_KING      );
-            mBlackFigureCollection[ 1 ].fieldFigure = typesToString( FigureType.BLACK_QUEEN     );
-            mBlackFigureCollection[ 2 ].fieldFigure = typesToString( FigureType.BLACK_ROOK      );
-            mBlackFigureCollection[ 3 ].fieldFigure = typesToString( FigureType.BLACK_BISHOP    );
-            mBlackFigureCollection[ 4 ].fieldFigure = typesToString( FigureType.BLACK_KNIGHT    );
-            mBlackFigureCollection[ 5 ].fieldFigure = typesToString( FigureType.BLACK_PAWN      );
+            mBlackFigureCollection[ 0 ].figureType = new Tuple<Colors, FigureType>( Colors.BLACK ,FigureType.KING   );
+            mBlackFigureCollection[ 1 ].figureType = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.QUEEN  );
+            mBlackFigureCollection[ 2 ].figureType = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.ROOK   );
+            mBlackFigureCollection[ 3 ].figureType = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.BISHOP );
+            mBlackFigureCollection[ 4 ].figureType = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.KNIGHT );
+            mBlackFigureCollection[ 5 ].figureType = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.PAWN   );
 
-            mWhiteFigureCollection[ 0 ].fieldFigure = typesToString( FigureType.WHITE_KING      );
-            mWhiteFigureCollection[ 1 ].fieldFigure = typesToString( FigureType.WHITE_QUEEN     );
-            mWhiteFigureCollection[ 2 ].fieldFigure = typesToString( FigureType.WHITE_ROOK      );
-            mWhiteFigureCollection[ 3 ].fieldFigure = typesToString( FigureType.WHITE_BISHOP    );
-            mWhiteFigureCollection[ 4 ].fieldFigure = typesToString( FigureType.WHITE_KNIGHT    );
-            mWhiteFigureCollection[ 5 ].fieldFigure = typesToString( FigureType.WHITE_PAWN      );
+            mWhiteFigureCollection[ 0 ].figureType = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.KING   );
+            mWhiteFigureCollection[ 1 ].figureType = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.QUEEN  );
+            mWhiteFigureCollection[ 2 ].figureType = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.ROOK   );
+            mWhiteFigureCollection[ 3 ].figureType = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.BISHOP );
+            mWhiteFigureCollection[ 4 ].figureType = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.KNIGHT );
+            mWhiteFigureCollection[ 5 ].figureType = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.PAWN   );
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
         private void onFieldClicked(Object aSender, FieldClickedEventArg aArguments )
         {
-            if ( selectedType == FigureType.NO_FIGURE )
+            if ( selectedPanelItem.Item2 == FigureType.NO_FIGURE )
             {
                 return;
             }
-            if ( mLastClicked != -1 )
+            if ( mLastClickedField != -1 )
             {
-                mChessBoardCollection[ mLastClicked ].borderColor = ( mChessBoardCollection[ mLastClicked ].X + mChessBoardCollection[ mLastClicked ].Y ) % 2 == 0 ? "White" : "Black";
-                mLastClicked = -1;
+                mChessBoardCollection[ mLastClickedField ].borderColor = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
+                mLastClickedField = -1;
             }
-            mChessBoardCollection[ aArguments.index ].fieldFigure = typesToString( selectedType );
-            mChessBoardCollection[ aArguments.index ].borderColor = "Red";
-            mLastClicked = aArguments.index;
+            mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
+            mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+
+            foreach ( ModelItem item in mChessBoardModel.blackFigures )
+            {
+                if ( item.index == aArguments.index )
+                {
+                    mChessBoardModel.blackFigures.Remove( item );
+                    break;
+                }
+            }
+            foreach( ModelItem item in mChessBoardModel.whiteFigures )
+            {
+                if ( item.index == aArguments.index )
+                {
+                    mChessBoardModel.whiteFigures.Remove( item );
+                    break;
+                }
+            }
+
+            if ( selectedPanelItem.Item1 == Colors.BLACK )
+            {
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    player = mPlayer1Color == Colors.BLACK ? Player.PLAYER_ONE : Player.PLAYER_TWO,
+                    type = selectedPanelItem,
+                    x = aArguments.x,
+                    y = aArguments.y,
+                    index = aArguments.index
+                } );
+            }
+            else
+            {
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    player = mPlayer1Color == Colors.WHITE ? Player.PLAYER_ONE : Player.PLAYER_TWO,
+                    type = selectedPanelItem,
+                    x = aArguments.x,
+                    y = aArguments.y,
+                    index = aArguments.index
+                } );
+            }
+
+            mLastClickedField = aArguments.index;
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
         private void onPanelClicked( Object aSender, FieldClickedEventArg aArguments )
         {
-            if ( mLastClickedPanel.Item1 == aArguments.index && mLastClickedPanel.Item2 == aArguments.y )
+            if ( selectedPanelItem == aArguments.type )
             {
-                selectedType = FigureType.NO_FIGURE;
-                if ( mLastClickedPanel.Item2 == 0 ) //this is the Black
-                {
-                    mBlackFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "White";
-                }
-                else
-                {
-                    mWhiteFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "White";
-                }
-                mLastClickedPanel = new Tuple<int, int>( -1, -1 );
+                mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureType == selectedPanelItem ).FirstOrDefault().borderColor = Colors.WHITE;
+                selectedPanelItem = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
                 return;
             }
-            if ( mLastClickedPanel.Item1 != -1 )
+            if ( selectedPanelItem.Item2 != FigureType.NO_FIGURE )
             {
-                if ( mLastClickedPanel.Item2 == 0 ) //this is the Black
-                {
-                    mBlackFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "White";
-                }
-                else
-                {
-                    mWhiteFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "White";
-                }
-            }
-            mLastClickedPanel = new Tuple<int, int>( aArguments.index, aArguments.y );
-            if ( mLastClickedPanel.Item2 == 0 ) //this is the Black
-            {
-                mBlackFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "Red";
-            }
-            else
-            {
-                mWhiteFigureCollection[ mLastClickedPanel.Item1 ].borderColor = "Red";
-            }
-            selectedType = getFigureType( aArguments.index, aArguments.y );
-        }
-
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-
-        private FigureType getFigureType( Int32 aRow, Int32 aColor )
-        {
-            if (aColor == 0) //thats the Black
-            {
-                switch ( aRow )
-                {
-                    case 0: return FigureType.BLACK_KING;
-                    case 1: return FigureType.BLACK_QUEEN;
-                    case 2: return FigureType.BLACK_ROOK;
-                    case 3: return FigureType.BLACK_BISHOP;
-                    case 4: return FigureType.BLACK_KNIGHT;
-                    case 5: return FigureType.BLACK_PAWN;
-                }
-            }
-            else
-            {
-                switch ( aRow )
-                {
-                    case 0: return FigureType.WHITE_KING;
-                    case 1: return FigureType.WHITE_QUEEN;
-                    case 2: return FigureType.WHITE_ROOK;
-                    case 3: return FigureType.WHITE_BISHOP;
-                    case 4: return FigureType.WHITE_KNIGHT;
-                    case 5: return FigureType.WHITE_PAWN;
-                }
+                mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureType == selectedPanelItem ).FirstOrDefault().borderColor = Colors.WHITE;
             }
 
-            return FigureType.NO_FIGURE;
+            selectedPanelItem = aArguments.type;
+
+            mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureType == selectedPanelItem ).FirstOrDefault().borderColor = Colors.RED;
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -372,16 +341,29 @@ namespace ChessTable.ViewModels
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
+        public ChessBoardModel chessBoardModel
+        {
+            get
+            {
+                return mChessBoardModel;
+            }
+        }
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------
+
         public ObservableCollection<BoardItem> mChessBoardCollection { get; set; }
         public ObservableCollection<BoardItem> mWhiteFigureCollection { get; set; }
         public ObservableCollection<BoardItem> mBlackFigureCollection { get; set; }
 
-        public FigureType selectedType { get; set; }
+        private Tuple<Colors,FigureType> selectedPanelItem { get; set; }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
-        private Int32 mLastClicked;
-        private Tuple<Int32, Int32> mLastClickedPanel;
+        private Int32 mLastClickedField;
+
+        private ChessBoardModel mChessBoardModel;
+
+        private Colors mPlayer1Color;
 
         private String mWindowState;
         private Int32 mWindowWidth;

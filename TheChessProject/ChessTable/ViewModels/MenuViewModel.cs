@@ -8,6 +8,7 @@ using ChessTable.ViewModels.ImplementedInterfaces;
 using System.Windows;
 using System.Collections.ObjectModel;
 using ChessTable.Model;
+using ChessTable.Common;
 
 namespace ChessTable.ViewModels
 {
@@ -16,20 +17,23 @@ namespace ChessTable.ViewModels
         public DelegateCommand onMenuStartBtnClickedCommand { get; private set; }
         public MenuViewModel()
         {
-            mGameTypes = new ObservableCollection< string >();
-            mColors = new ObservableCollection<string>();
+            mGameTypes          = new ObservableCollection< String >();
+            mColors             = new ObservableCollection< String >();
+            mPlayers            = new ObservableCollection< String >();
+            mPlayerAlgorithms   = new ObservableCollection< String >();
+
             onMenuStartBtnClickedCommand = new DelegateCommand( x => onMenuStartBtnClicked() );
             setupComboBoxes();
         }
         public void onMenuStartBtnClicked()
         {
-            mChessBoardModel = new ChessBoardModel();
             if ( mSelectedGameType == "Custom Game" )
             {
                 CustomBoardView customBoardView = new CustomBoardView();
-                CustomBoardViewModel customBoardViewModel = new CustomBoardViewModel();
+                CustomBoardViewModel customBoardViewModel = new CustomBoardViewModel( selectedColor );
                 customBoardView.DataContext = customBoardViewModel;
                 customBoardView.ShowDialog();
+                mChessBoardModel = customBoardViewModel.chessBoardModel;
             }
             else if ( mSelectedGameType == "Standard Game" )
             {
@@ -41,7 +45,7 @@ namespace ChessTable.ViewModels
             }
 
             mChessBoardView = new ChessBoardView();
-            mChessBoardViewModel = new ChessBoardViewModel();
+            mChessBoardViewModel = new ChessBoardViewModel( mChessBoardModel );
             mChessBoardView.DataContext = mChessBoardViewModel;
             mChessBoardView.ShowDialog();
         }
@@ -60,6 +64,20 @@ namespace ChessTable.ViewModels
             mColors.Add( "Black" );
 
             selectedColor = mColors.FirstOrDefault();
+
+            mPlayers.Clear();
+            mPlayers.Add( "Player one" );
+            mPlayers.Add( "Player two" );
+
+            selectedPlayer = Player.PLAYER_ONE;
+
+            mPlayerAlgorithms.Clear();
+            mPlayerAlgorithms.Add( "Human" );
+            mPlayerAlgorithms.Add( "Random" );
+            mPlayerAlgorithms.Add( "Alpha-Beta" );
+
+            playerOneAlgorithm = Algorithm.HUMAN;
+            playerTwoAlgorithm = Algorithm.HUMAN;
         }
 
         public String selectedGameType
@@ -94,10 +112,63 @@ namespace ChessTable.ViewModels
             }
         }
 
+        public Player selectedPlayer
+        {
+            get
+            {
+                return mSelectedPlayer;
+            }
+            set
+            {
+                if ( value != mSelectedPlayer )
+                {
+                    mSelectedPlayer = value;
+                    OnPropertyChanged( "selectedPlayer" );
+                }
+            }
+        }
+
+        public Algorithm playerOneAlgorithm
+        {
+            get
+            {
+                return mPlayerOneAlgorithm;
+            }
+            set
+            {
+                if ( value != mPlayerOneAlgorithm )
+                {
+                    mPlayerOneAlgorithm = value;
+                    OnPropertyChanged( "selectedPlayerOneAlgorithm" );
+                }
+            }
+        }
+
+        public Algorithm playerTwoAlgorithm
+        {
+            get
+            {
+                return mPlayerTwoAlgorithm;
+            }
+            set
+            {
+                if ( value != mPlayerTwoAlgorithm )
+                {
+                    mPlayerTwoAlgorithm = value;
+                    OnPropertyChanged( "selectedPlayerTwoAlgorithm" );
+                }
+            }
+        }
+
         public ObservableCollection<String> mGameTypes { get; set; }
         private String mSelectedGameType;
         public ObservableCollection<String> mColors { get; set; }
         private String mSelectedColor;
+        public ObservableCollection<String> mPlayers { get; set; }
+        private Player mSelectedPlayer;
+        public ObservableCollection<String> mPlayerAlgorithms { get; set; }
+        private Algorithm mPlayerOneAlgorithm;
+        private Algorithm mPlayerTwoAlgorithm;
 
         private ChessBoardView mChessBoardView;
         private ChessBoardViewModel mChessBoardViewModel;

@@ -22,12 +22,13 @@ namespace ChessTable.ViewModels
             {
                 x = X,
                 y = Y,
-                index = Index
+                index = Index,
+                type = figureType
             } );
         }
 
 
-        public String fieldColor
+        public Colors fieldColor
         {
             get
             {
@@ -42,7 +43,8 @@ namespace ChessTable.ViewModels
                 }
             }
         }
-        public String borderColor
+
+        public Colors borderColor
         {
             get
             {
@@ -57,22 +59,8 @@ namespace ChessTable.ViewModels
                 }
             }
         }
-        public String fieldFigure
-        {
-            get
-            {
-                return mFieldFigure;
-            }
-            set
-            {
-                if ( mFieldFigure != value )
-                {
-                    mFieldFigure = value;
-                    OnPropertyChanged( "fieldFigure" );
-                }
-            }
-        }
-        public FigureType figureType
+
+        public Tuple<Colors, FigureType> figureType
         {
             get
             {
@@ -87,6 +75,7 @@ namespace ChessTable.ViewModels
                 }
             }
         }
+
         public Int32 fieldSize
         {
             get
@@ -110,12 +99,14 @@ namespace ChessTable.ViewModels
 
         public Int32 Index { get; set; }
 
+        public Colors Color { get; set; }
+
         public event EventHandler< FieldClickedEventArg > fieldClicked;
 
-        private String mFieldColor;
-        private String mBorderColor;
-        private String mFieldFigure;
-        private FigureType mFigureType;
+        private Colors mFieldColor;
+        private Colors mBorderColor;
+
+        private Tuple<Colors, FigureType> mFigureType;
         private Int32 mFieldSize;
     }
 }

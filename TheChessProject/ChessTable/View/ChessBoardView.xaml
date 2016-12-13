@@ -4,10 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessTable.View"
+        xmlns:converters="clr-namespace:ChessTable.ViewModels.Converters"
         mc:Ignorable="d"
         WindowState="{Binding windowState}"
         Title="ChessBoard" 
         Height="{Binding windowHeight, Mode=TwoWay}" Width="{Binding windowWidth, Mode=TwoWay}" MinWidth="640" MinHeight="480" Background="Gray">
+    <Window.Resources>
+        <converters:FigureConverter x:Key="FigureConverter"/>
+        <converters:ColorConverter x:Key="ColorConverter"/>
+    </Window.Resources>
     <Grid>
         <ItemsControl ItemsSource="{Binding mChessBoardCollection}">
             <ItemsControl.ItemsPanel>
@@ -19,8 +24,8 @@
                 <DataTemplate>
                     <Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
                         <Canvas Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor}" Stroke="{Binding borderColor}" StrokeThickness="3"/>
-                            <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding fieldFigure}"/>
+                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor, Converter={StaticResource ColorConverter}}" Stroke="{Binding borderColor, Converter={StaticResource ColorConverter}}" StrokeThickness="3"/>
+                            <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding figureType, Converter={StaticResource FigureConverter }}"/>
                         </Canvas>
                     </Button>
                 </DataTemplate>
