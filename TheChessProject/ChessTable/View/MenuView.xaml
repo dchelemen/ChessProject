@@ -74,8 +74,8 @@
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Content="Choose Game type:"/>
             <ComboBox Margin="2" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding mGameTypes}" SelectedValue="{Binding selectedGameType, Converter={StaticResource GameTypeConverter}}"/>
-            <Label Grid.Column="0" Grid.Row="1" Content="Choose Player to start:"/>
-            <ComboBox Margin="2" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding mPlayers}" SelectedValue="{Binding selectedPlayer, Converter={StaticResource PlayerToStartConverter}}"/>
+            <Label Grid.Column="0" Grid.Row="1" Content="Choose Color to start:"/>
+            <ComboBox Margin="2" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding mPlayers}" SelectedValue="{Binding selectedStartingColor, Converter={StaticResource ColorConverter}}"/>
         </Grid>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>

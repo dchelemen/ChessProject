@@ -215,7 +215,7 @@ namespace ChessTable.ViewModels
         private String mWindowState;
         private Int32 mWindowWidth;
         private Int32 mWindowHeight;
-
+         
         private Int32 mFieldSize;
         private Int32 mBoardSize;
 

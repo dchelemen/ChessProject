@@ -16,7 +16,7 @@ namespace ChessTable
         {
             mainView = new MenuView();
             menuViewModel = new MenuViewModel();
-            mainView.DataContext = menuViewModel;
+            mainView.DataContext = menuViewModel; 
             mainView.Show();
         }
     }

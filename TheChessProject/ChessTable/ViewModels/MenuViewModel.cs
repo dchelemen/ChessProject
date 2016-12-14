@@ -8,8 +8,7 @@ using ChessTable.Common;
 namespace ChessTable.ViewModels
 {
     public class MenuViewModel : ViewModelBase
-    {
-        public DelegateCommand onMenuStartBtnClickedCommand { get; private set; }
+    { 
         public MenuViewModel()
         {
             mGameTypes          = new ObservableCollection< String >();
@@ -25,7 +24,7 @@ namespace ChessTable.ViewModels
             if ( mSelectedGameType == GameType.CUSTOM_GAME )
             {
                 CustomBoardView customBoardView = new CustomBoardView();
-                CustomBoardViewModel customBoardViewModel = new CustomBoardViewModel( selectedColor );
+                CustomBoardViewModel customBoardViewModel = new CustomBoardViewModel( selectedColor, selectedStartingColor, playerOneAlgorithm, playerTwoAlgorithm );
                 customBoardView.DataContext = customBoardViewModel;
                 customBoardView.ShowDialog();
                 mChessBoardModel = customBoardViewModel.chessBoardModel;
@@ -61,10 +60,10 @@ namespace ChessTable.ViewModels
             selectedColor = Colors.WHITE;
 
             mPlayers.Clear();
-            mPlayers.Add( "Player one" );
-            mPlayers.Add( "Player two" );
+            mPlayers.Add( "White" );
+            mPlayers.Add( "Black" );
 
-            selectedPlayer = Player.PLAYER_ONE;
+            selectedStartingColor = Colors.WHITE;
 
             mPlayerAlgorithms.Clear();
             mPlayerAlgorithms.Add( "Human" );
@@ -107,17 +106,17 @@ namespace ChessTable.ViewModels
             }
         }
 
-        public Player selectedPlayer
+        public Colors selectedStartingColor
         {
             get
             {
-                return mSelectedPlayer;
+                return mSelectedStartingColor;
             }
             set
             {
-                if ( value != mSelectedPlayer )
+                if ( value != mSelectedStartingColor )
                 {
-                    mSelectedPlayer = value;
+                    mSelectedStartingColor = value;
                     OnPropertyChanged( "selectedPlayer" );
                 }
             }
@@ -155,12 +154,14 @@ namespace ChessTable.ViewModels
             }
         }
 
+        public DelegateCommand onMenuStartBtnClickedCommand { get; private set; }
+
         public ObservableCollection<String> mGameTypes { get; set; }
         private GameType mSelectedGameType;
         public ObservableCollection<String> mColors { get; set; }
         private Colors mSelectedColor;
         public ObservableCollection<String> mPlayers { get; set; }
-        private Player mSelectedPlayer;
+        private Colors mSelectedStartingColor;
         public ObservableCollection<String> mPlayerAlgorithms { get; set; }
         private Algorithm mPlayerOneAlgorithm;
         private Algorithm mPlayerTwoAlgorithm;

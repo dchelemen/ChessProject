@@ -14,9 +14,8 @@ namespace ChessTable.ViewModels
         /// <summary>
         /// Constructor for CustomBoardViewModel
         /// </summary>
-        public CustomBoardViewModel( Colors aPlayer1Color )
+        public CustomBoardViewModel( Colors aPlayer1Color, Colors aStartingColor, Algorithm aPlayer1Algorithm, Algorithm aPlayer2Algorithm )
         {
-            mPlayer1Color = aPlayer1Color;
             windowState     = "Normal";
             windowWidth     = 640;
             windowHeight    = 480;
@@ -26,12 +25,43 @@ namespace ChessTable.ViewModels
             selectedPanelItem = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
             mLastClickedField = -1;
 
+            deleteSelectedClicked = new DelegateCommand( X => onDeleteSelectedClicked() );
+
             mChessBoardCollection   = new ObservableCollection< BoardItem >();
             mBlackFigureCollection  = new ObservableCollection< BoardItem >();
             mWhiteFigureCollection  = new ObservableCollection< BoardItem >();
-            mChessBoardModel        = new ChessBoardModel( mPlayer1Color );
+            mChessBoardModel        = new ChessBoardModel( aPlayer1Color, aStartingColor, aPlayer1Algorithm, aPlayer2Algorithm );
 
             setupCustomBoard();
+        }
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------
+
+        private void onDeleteSelectedClicked()
+        {
+            if ( mLastClickedField == -1 )
+            {
+                return;
+            }
+
+            BoardItem selectedItem = mChessBoardCollection[ mLastClickedField ];
+
+            if ( selectedItem.figureType.Item1 == Colors.WHITE )
+            {
+                ModelItem oldItem = mChessBoardModel.whiteFigures.Where( X => X.index == selectedItem.Index ).FirstOrDefault();
+                mChessBoardModel.whiteFigures.Remove( oldItem );
+            }
+            else
+            {
+                ModelItem oldItem = mChessBoardModel.blackFigures.Where( X => X.index == selectedItem.Index ).FirstOrDefault();
+                mChessBoardModel.blackFigures.Remove( oldItem );
+            }
+
+            mChessBoardCollection[ mLastClickedField ].figureType = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
+
+            Colors color = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
+            mChessBoardCollection[ mLastClickedField ].borderColor = color;
+            mLastClickedField = -1;
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -113,59 +143,171 @@ namespace ChessTable.ViewModels
 
         private void onFieldClicked(Object aSender, FieldClickedEventArg aArguments )
         {
-            if ( selectedPanelItem.Item2 == FigureType.NO_FIGURE )
+            if ( mLastClickedField == aArguments.index ) // Same Field?
             {
+                if ( selectedPanelItem.Item2 == FigureType.NO_FIGURE )
+                {
+                    Colors color = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
+                    mChessBoardCollection[ mLastClickedField ].borderColor = color;
+                    mLastClickedField = -1;
+
+                    return;
+                }
+                if ( aArguments.type == selectedPanelItem ) //Same Figure?
+                {
+                    mChessBoardCollection[ mLastClickedField ].borderColor = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
+                    mLastClickedField = -1;
+                }
+                else // We put another Figure instead of it
+                {
+                    if ( mChessBoardCollection[ mLastClickedField ].figureType.Item1 == selectedPanelItem.Item1 ) // is it from the same Color?
+                    {
+                        if ( selectedPanelItem.Item1 == Colors.WHITE ) // Is that White?
+                        {
+                            mChessBoardModel.whiteFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().type = selectedPanelItem;
+                            mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
+                        }
+                        else // Is That Black?
+                        {
+                            mChessBoardModel.blackFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().type = selectedPanelItem;
+                            mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
+                        }
+                    }
+                    else
+                    {
+                        if ( selectedPanelItem.Item1 == Colors.WHITE ) // Is that White?
+                        {
+                            ModelItem oldItem = mChessBoardModel.blackFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault();
+                            mChessBoardModel.blackFigures.Remove( oldItem );
+
+                            mChessBoardModel.whiteFigures.Add( new ModelItem
+                            {
+                                type    = selectedPanelItem,
+                                x       = aArguments.x,
+                                y       = aArguments.y,
+                                index   = aArguments.index
+                            } );
+                            mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
+                        }
+                        else // is that Black?
+                        {
+                            ModelItem oldItem = mChessBoardModel.whiteFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault();
+                            mChessBoardModel.whiteFigures.Remove( oldItem );
+
+                            mChessBoardModel.blackFigures.Add( new ModelItem
+                            {
+                                type = selectedPanelItem,
+                                x = aArguments.x,
+                                y = aArguments.y,
+                                index = aArguments.index
+                            } );
+                            mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
+                        }
+                    }
+                }
                 return;
             }
-            if ( mLastClickedField != -1 )
-            {
-                mChessBoardCollection[ mLastClickedField ].borderColor = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
-                mLastClickedField = -1;
-            }
-            mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
-            mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
 
-            foreach ( ModelItem item in mChessBoardModel.blackFigures )
+            if ( selectedPanelItem.Item2 == FigureType.NO_FIGURE )
             {
-                if ( item.index == aArguments.index )
+                if ( aArguments.type.Item2 != FigureType.NO_FIGURE )
                 {
-                    mChessBoardModel.blackFigures.Remove( item );
-                    break;
+                    if ( mLastClickedField != -1 )
+                    {
+                        Colors color = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
+                        mChessBoardCollection[ mLastClickedField ].borderColor = color;
+                    }
+
+                    mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+                    mLastClickedField = aArguments.index;                    
                 }
-            }
-            foreach( ModelItem item in mChessBoardModel.whiteFigures )
-            {
-                if ( item.index == aArguments.index )
-                {
-                    mChessBoardModel.whiteFigures.Remove( item );
-                    break;
-                }
+                return;
             }
 
-            if ( selectedPanelItem.Item1 == Colors.BLACK )
+            if ( mLastClickedField != -1 ) // last selected item becomes non selected
             {
-                mChessBoardModel.blackFigures.Add( new ModelItem
+                Colors color = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
+                mChessBoardCollection[ mLastClickedField ].borderColor = color;
+            }
+            mLastClickedField = aArguments.index;
+
+            if ( selectedPanelItem == aArguments.type )
+            {
+                mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+                mLastClickedField = aArguments.index;
+                return;
+            }
+
+            if ( aArguments.type.Item2 == FigureType.NO_FIGURE )
+            {
+                if ( selectedPanelItem.Item1 == Colors.WHITE )
                 {
-                    player = mPlayer1Color == Colors.BLACK ? Player.PLAYER_ONE : Player.PLAYER_TWO,
-                    type = selectedPanelItem,
-                    x = aArguments.x,
-                    y = aArguments.y,
-                    index = aArguments.index
-                } );
+                    mChessBoardModel.whiteFigures.Add( new ModelItem
+                    {
+                        type    = selectedPanelItem,
+                        x       = aArguments.x,
+                        y       = aArguments.y,
+                        index   = aArguments.index
+                    } );
+                }
+                else
+                {
+                    mChessBoardModel.blackFigures.Add( new ModelItem
+                    {
+                        type    = selectedPanelItem,
+                        x       = aArguments.x,
+                        y       = aArguments.y,
+                        index   = aArguments.index
+                    } );
+                }
+                mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+                mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
+                return;
+            }
+
+            if ( selectedPanelItem.Item1 != aArguments.type.Item1 )
+            {
+                if ( aArguments.type.Item1 == Colors.WHITE )
+                {
+                    ModelItem oldItem = mChessBoardModel.whiteFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault();
+                    mChessBoardModel.whiteFigures.Remove( oldItem );
+
+                    mChessBoardModel.blackFigures.Add( new ModelItem
+                    {
+                        type = selectedPanelItem,
+                        x = aArguments.x,
+                        y = aArguments.y,
+                        index = aArguments.index
+                    } );
+                }
+                else
+                {
+                    ModelItem oldItem = mChessBoardModel.blackFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault();
+                    mChessBoardModel.blackFigures.Remove( oldItem );
+
+                    mChessBoardModel.whiteFigures.Add( new ModelItem
+                    {
+                        type = selectedPanelItem,
+                        x = aArguments.x,
+                        y = aArguments.y,
+                        index = aArguments.index
+                    } );
+                }
+                mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+                mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
+                return;
+            }
+
+            if ( aArguments.type.Item1 == Colors.WHITE )
+            {
+                mChessBoardModel.whiteFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().type = selectedPanelItem;
             }
             else
             {
-                mChessBoardModel.whiteFigures.Add( new ModelItem
-                {
-                    player = mPlayer1Color == Colors.WHITE ? Player.PLAYER_ONE : Player.PLAYER_TWO,
-                    type = selectedPanelItem,
-                    x = aArguments.x,
-                    y = aArguments.y,
-                    index = aArguments.index
-                } );
+                mChessBoardModel.blackFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().type = selectedPanelItem;
             }
-
-            mLastClickedField = aArguments.index;
+            mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+            mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -351,6 +493,9 @@ namespace ChessTable.ViewModels
         public ObservableCollection<BoardItem> mWhiteFigureCollection { get; set; }
         public ObservableCollection<BoardItem> mBlackFigureCollection { get; set; }
 
+        public DelegateCommand startBtnClicked { get; set; }
+        public DelegateCommand deleteSelectedClicked { get; set; }
+
         private Tuple<Colors,FigureType> selectedPanelItem { get; set; }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -358,8 +503,6 @@ namespace ChessTable.ViewModels
         private Int32 mLastClickedField;
 
         private ChessBoardModel mChessBoardModel;
-
-        private Colors mPlayer1Color;
 
         private String mWindowState;
         private Int32 mWindowWidth;
