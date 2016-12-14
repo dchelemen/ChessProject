@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessTable.View;
 using ChessTable.ViewModels.ImplementedInterfaces;
-using System.Windows;
 using System.Collections.ObjectModel;
 using ChessTable.Model;
 using ChessTable.Common;
@@ -27,7 +22,7 @@ namespace ChessTable.ViewModels
         }
         public void onMenuStartBtnClicked()
         {
-            if ( mSelectedGameType == "Custom Game" )
+            if ( mSelectedGameType == GameType.CUSTOM_GAME )
             {
                 CustomBoardView customBoardView = new CustomBoardView();
                 CustomBoardViewModel customBoardViewModel = new CustomBoardViewModel( selectedColor );
@@ -35,11 +30,11 @@ namespace ChessTable.ViewModels
                 customBoardView.ShowDialog();
                 mChessBoardModel = customBoardViewModel.chessBoardModel;
             }
-            else if ( mSelectedGameType == "Standard Game" )
+            else if ( mSelectedGameType == GameType.END_GAME )
             {
 
             }
-            else
+            else if ( mSelectedGameType == GameType.STANDARD_GAME )
             {
 
             }
@@ -57,13 +52,13 @@ namespace ChessTable.ViewModels
             mGameTypes.Add( "End Game"      );
             mGameTypes.Add( "Custom Game"   );
 
-            selectedGameType = mGameTypes.FirstOrDefault();
+            selectedGameType = GameType.STANDARD_GAME;
 
             mColors.Clear();
             mColors.Add( "White" );
             mColors.Add( "Black" );
 
-            selectedColor = mColors.FirstOrDefault();
+            selectedColor = Colors.WHITE;
 
             mPlayers.Clear();
             mPlayers.Add( "Player one" );
@@ -80,7 +75,7 @@ namespace ChessTable.ViewModels
             playerTwoAlgorithm = Algorithm.HUMAN;
         }
 
-        public String selectedGameType
+        public GameType selectedGameType
         {
             get
             {
@@ -96,7 +91,7 @@ namespace ChessTable.ViewModels
             }
         }
 
-        public String selectedColor
+        public Colors selectedColor
         {
             get
             {
@@ -161,9 +156,9 @@ namespace ChessTable.ViewModels
         }
 
         public ObservableCollection<String> mGameTypes { get; set; }
-        private String mSelectedGameType;
+        private GameType mSelectedGameType;
         public ObservableCollection<String> mColors { get; set; }
-        private String mSelectedColor;
+        private Colors mSelectedColor;
         public ObservableCollection<String> mPlayers { get; set; }
         private Player mSelectedPlayer;
         public ObservableCollection<String> mPlayerAlgorithms { get; set; }

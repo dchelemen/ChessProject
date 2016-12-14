@@ -82,6 +82,7 @@
     <Compile Include="ViewModels\Converters\AlgorithmConverter.cs" />
     <Compile Include="ViewModels\Converters\ColorConverter.cs" />
     <Compile Include="ViewModels\Converters\FigureConverter.cs" />
+    <Compile Include="ViewModels\Converters\GameTypeConverter.cs" />
     <Compile Include="ViewModels\Converters\PlayerToStartConverter.cs" />
     <Compile Include="ViewModels\CustomBoardViewModel.cs" />
     <Compile Include="ViewModels\ImplementedInterfaces\DelegateCommand.cs" />

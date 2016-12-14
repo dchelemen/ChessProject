@@ -10,6 +10,8 @@
     <Window.Resources>
         <converters:PlayerToStartConverter x:Key="PlayerToStartConverter"/>
         <converters:AlgorithmConverter x:Key="AlgorithmConverter"/>
+        <converters:ColorConverter x:Key="ColorConverter"/>
+        <converters:GameTypeConverter x:Key="GameTypeConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -39,7 +41,7 @@
                     <Label Grid.Row="1" Grid.Column="0" Content="Choose a Heuristic:"/>
                     <ComboBox Margin="2" Grid.Row="1" Grid.Column="1" ContextMenu="{Binding}" Grid.ColumnSpan="2"/>
                     <Label Grid.Row="2" Grid.Column="0" Content="Choose a Color:"/>
-                    <ComboBox Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding mColors}" SelectedValue="{Binding selectedColor}" Grid.ColumnSpan="2"/>
+                    <ComboBox Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding mColors}" SelectedValue="{Binding selectedColor, Converter={StaticResource ColorConverter}}" Grid.ColumnSpan="2"/>
                 </Grid>
             </GroupBox>
             <GroupBox Grid.Column="1" Header="Player 2">
@@ -71,7 +73,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Content="Choose Game type:"/>
-            <ComboBox Margin="2" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding mGameTypes}" SelectedValue="{Binding selectedGameType}"/>
+            <ComboBox Margin="2" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding mGameTypes}" SelectedValue="{Binding selectedGameType, Converter={StaticResource GameTypeConverter}}"/>
             <Label Grid.Column="0" Grid.Row="1" Content="Choose Player to start:"/>
             <ComboBox Margin="2" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding mPlayers}" SelectedValue="{Binding selectedPlayer, Converter={StaticResource PlayerToStartConverter}}"/>
         </Grid>

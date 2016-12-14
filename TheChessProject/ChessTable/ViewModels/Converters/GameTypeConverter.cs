@@ -5,23 +5,22 @@ using System.Windows.Data;
 
 namespace ChessTable.ViewModels.Converters
 {
-    class ColorConverter : IValueConverter
+    class GameTypeConverter : IValueConverter
     {
         public Object Convert( Object value, Type targetType, Object parameter, System.Globalization.CultureInfo culture )
         {
-            if ( value == null || !( value is Colors ) )
+            if ( value == null || !( value is GameType ) )
             {
                 return Binding.DoNothing;
             }
 
-            Colors color = ( Colors )value;
+            GameType gameType = ( GameType )value;
 
-            switch ( color )
+            switch ( gameType )
             {
-                case Colors.BLACK:  return "Black";
-                case Colors.WHITE:  return "White";
-                case Colors.RED:    return "Red";
-                case Colors.GREEN:  return "Green";
+                case GameType.STANDARD_GAME:    return "Standard Game";
+                case GameType.END_GAME:         return "End Game";
+                case GameType.CUSTOM_GAME:      return "Custom Game";
             }
             return Binding.DoNothing;
         }
@@ -37,24 +36,20 @@ namespace ChessTable.ViewModels.Converters
             {
                 String color = value as String;
 
-                if ( color == "Black" )
+                if ( color == "Standard Game" )
                 {
-                    return Colors.BLACK;
+                    return GameType.STANDARD_GAME;
                 }
-                else if ( color == "White" )
+                else if ( color == "End Game" )
                 {
-                    return Colors.WHITE;
+                    return GameType.END_GAME;
                 }
-                else if ( color == "Red" )
+                else if ( color == "Custom Game" )
                 {
-                    return Colors.RED;
-                }
-                else if ( color == "Green" )
-                {
-                    return Colors.GREEN;
+                    return GameType.CUSTOM_GAME;
                 }
 
-                return Colors.NO_COLOR;
+                return DependencyProperty.UnsetValue;
             }
             catch
             {

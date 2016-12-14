@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessTable.Common
+﻿namespace ChessTable.Common
 {
     public enum FigureType
     {
@@ -38,5 +32,12 @@ namespace ChessTable.Common
         HUMAN,
         RANDOM,
         ALPHA_BETA
+    }
+
+    public enum GameType
+    {
+        STANDARD_GAME,
+        END_GAME,
+        CUSTOM_GAME
     }
 }

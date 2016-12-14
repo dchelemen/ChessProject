@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChessTable.View;
 using System.Windows;
 using System.Collections.ObjectModel;
 using ChessTable.ViewModels.ImplementedInterfaces;
@@ -18,9 +14,9 @@ namespace ChessTable.ViewModels
         /// <summary>
         /// Constructor for CustomBoardViewModel
         /// </summary>
-        public CustomBoardViewModel( String aPlayer1Color )
+        public CustomBoardViewModel( Colors aPlayer1Color )
         {
-            mPlayer1Color = aPlayer1Color == "White" ? Colors.WHITE : Colors.BLACK;
+            mPlayer1Color = aPlayer1Color;
             windowState     = "Normal";
             windowWidth     = 640;
             windowHeight    = 480;
