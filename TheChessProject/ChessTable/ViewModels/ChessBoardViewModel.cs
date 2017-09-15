@@ -16,17 +16,18 @@ namespace ChessTable.ViewModels
         public ChessBoardViewModel( ChessBoardModel aChessBoardModel )
         {
             mChessBoardModel = aChessBoardModel;
-            mChessBoardModel.fieldClicked += new EventHandler<PutFigureOnTheTableEventArg>( onPutFigureOnTheTableEventArg );
+            mChessBoardModel.fieldClicked   += new EventHandler<PutFigureOnTheTableEventArg>( onPutFigureOnTheTableEventArg );
+            mChessBoardModel.paintBorder    += new EventHandler<PaintBorderEventArg>( onPaintBorder );
 
-            windowState = "Normal";
-            windowWidth = 640;
-            windowHeight = 480;
-            fieldSize = 48;
-            boardSize = 384;
-            mChessBoardCollection = new ObservableCollection<BoardItem>();
+            windowState             = "Normal";
+            windowWidth             = 640;
+            windowHeight            = 480;
+            fieldSize               = 48;
+            boardSize               = 384;
+            mChessBoardCollection   = new ObservableCollection<BoardItem>();
 
-            selectedPanelItem = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
-            mLastClickedField = -1;
+            selectedPanelItem       = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
+            mLastClickedField       = -1;
 
             setupCustomBoard();
             mChessBoardModel.startModel();
@@ -49,12 +50,12 @@ namespace ChessTable.ViewModels
                     color = ( row + column ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
                     mChessBoardCollection.Add( new BoardItem()
                     {
-                        X = row,
-                        Y = column,
-                        Index = index,
-                        fieldColor = color,
-                        fieldSize = 48,
-                        figureType = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE ),
+                        X           = row,
+                        Y           = column,
+                        Index       = index,
+                        fieldColor  = color,
+                        fieldSize   = 48,
+                        figureType  = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE ),
                         borderColor = color
                     } );
                     mChessBoardCollection[ index ].fieldClicked += new EventHandler<FieldClickedEventArg>( onFieldClicked );
@@ -67,18 +68,13 @@ namespace ChessTable.ViewModels
 
         private void onFieldClicked( Object aSender, FieldClickedEventArg aArguments )
         {
-            if ( selectedPanelItem.Item2 == FigureType.NO_FIGURE )
+            mChessBoardModel.moveFigure( new ModelItem
             {
-                return;
-            }
-            if ( mLastClickedField != -1 )
-            {
-                mChessBoardCollection[ mLastClickedField ].borderColor = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
-                mLastClickedField = -1;
-            }
-            mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
-            mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
-            mLastClickedField = aArguments.index;
+                index   = aArguments.index,
+                type    = aArguments.type,
+                x       = aArguments.x,
+                y       = aArguments.y
+            } );
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -86,6 +82,13 @@ namespace ChessTable.ViewModels
         private void onPutFigureOnTheTableEventArg( Object aSender, PutFigureOnTheTableEventArg aArguments )
         {
             mChessBoardCollection[ aArguments.index ].figureType = aArguments.type;
+        }
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------
+
+        private void onPaintBorder( Object aSender, PaintBorderEventArg aItemToPaint )
+        {
+            mChessBoardCollection[ aItemToPaint.index ].borderColor = aItemToPaint.color;
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------

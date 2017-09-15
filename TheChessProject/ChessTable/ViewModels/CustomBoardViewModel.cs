@@ -22,9 +22,13 @@ namespace ChessTable.ViewModels
             fieldSize       = 48;
             boardSize       = 384;
 
+            isStartBtnClicked = false;
+
             selectedPanelItem = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
             mLastClickedField = -1;
 
+            startBtnClicked = new DelegateCommand( X => onStartBtnClicked() );
+            cancelBtnClicked = new DelegateCommand( X => onCancelBtnClicked() );
             deleteSelectedClicked = new DelegateCommand( X => onDeleteSelectedClicked() );
 
             mChessBoardCollection   = new ObservableCollection< BoardItem >();
@@ -33,6 +37,21 @@ namespace ChessTable.ViewModels
             mChessBoardModel        = new ChessBoardModel( aPlayer1Color, aStartingColor, aPlayer1Algorithm, aPlayer2Algorithm );
 
             setupCustomBoard();
+        }
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------
+
+        private void onStartBtnClicked()
+        {
+            isStartBtnClicked = true;
+            closeCustomBoardView( this, null );
+        }
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------
+
+        private void onCancelBtnClicked()
+        {
+            closeCustomBoardView( this, null );
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -174,7 +193,7 @@ namespace ChessTable.ViewModels
                         }
                     }
                     else
-                    {
+                    { 
                         if ( selectedPanelItem.Item1 == Colors.WHITE ) // Is that White?
                         {
                             ModelItem oldItem = mChessBoardModel.blackFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault();
@@ -489,16 +508,20 @@ namespace ChessTable.ViewModels
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
+        public Boolean isStartBtnClicked { get; set; }
         public ObservableCollection<BoardItem> mChessBoardCollection { get; set; }
         public ObservableCollection<BoardItem> mWhiteFigureCollection { get; set; }
         public ObservableCollection<BoardItem> mBlackFigureCollection { get; set; }
 
         public DelegateCommand startBtnClicked { get; set; }
+        public DelegateCommand cancelBtnClicked { get; set; }
         public DelegateCommand deleteSelectedClicked { get; set; }
 
         private Tuple<Colors,FigureType> selectedPanelItem { get; set; }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
+
+        public event EventHandler closeCustomBoardView;
 
         private Int32 mLastClickedField;
 

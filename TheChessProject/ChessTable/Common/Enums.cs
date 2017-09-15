@@ -11,6 +11,13 @@
         NO_FIGURE
     }
 
+    public enum TableHighLight
+    {
+        TABLEHIGHLIGHT_NONE,
+        TABLEHIGHLIGHT_BLUE,
+        TABLEHIGHLIGHT_RED
+    }
+
     public enum Colors
     {
         WHITE,

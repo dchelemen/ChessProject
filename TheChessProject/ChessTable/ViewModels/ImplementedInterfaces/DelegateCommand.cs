@@ -34,7 +34,7 @@ namespace ChessTable.ViewModels.ImplementedInterfaces
 
         public void Execute( Object parameter )
         {
-            if ( !CanExecute( parameter ) )
+            if ( ! CanExecute( parameter ) )
             {
                 throw new InvalidOperationException( "Command execution is disabled." );
             }

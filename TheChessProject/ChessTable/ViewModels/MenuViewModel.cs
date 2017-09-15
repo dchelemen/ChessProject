@@ -21,27 +21,322 @@ namespace ChessTable.ViewModels
         }
         public void onMenuStartBtnClicked()
         {
+            Boolean isGameReady = false;
             if ( mSelectedGameType == GameType.CUSTOM_GAME )
             {
-                CustomBoardView customBoardView = new CustomBoardView();
+                mCustomBoardView = new CustomBoardView();
                 CustomBoardViewModel customBoardViewModel = new CustomBoardViewModel( selectedColor, selectedStartingColor, playerOneAlgorithm, playerTwoAlgorithm );
-                customBoardView.DataContext = customBoardViewModel;
-                customBoardView.ShowDialog();
+                customBoardViewModel.closeCustomBoardView += new EventHandler( onCloseCustomBoardView );
+                mCustomBoardView.DataContext = customBoardViewModel;
+                mCustomBoardView.ShowDialog();
                 mChessBoardModel = customBoardViewModel.chessBoardModel;
+                isGameReady = customBoardViewModel.isStartBtnClicked;
             }
             else if ( mSelectedGameType == GameType.END_GAME )
             {
-
+                isGameReady = true;
             }
             else if ( mSelectedGameType == GameType.STANDARD_GAME )
             {
+                isGameReady = standardGameSetup();
+            }
 
+            if ( !isGameReady )
+            {
+                return;
             }
 
             mChessBoardView = new ChessBoardView();
             mChessBoardViewModel = new ChessBoardViewModel( mChessBoardModel );
             mChessBoardView.DataContext = mChessBoardViewModel;
             mChessBoardView.ShowDialog();
+        }
+
+        private Boolean standardGameSetup()
+        {
+            mChessBoardModel = new ChessBoardModel( selectedColor, selectedStartingColor, playerOneAlgorithm, playerTwoAlgorithm );
+
+            if ( selectedColor == Colors.WHITE )
+            {
+                for ( Int32 column = 0; column < 8; column++ )
+                {
+                    mChessBoardModel.whiteFigures.Add( new ModelItem
+                    {
+                        index   = ( 6 * 8 ) + column,
+                        x       = 6,
+                        y       = column,
+                        type    = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.PAWN )
+                    } );
+
+                    mChessBoardModel.blackFigures.Add( new ModelItem
+                    {
+                        index = ( 1 * 8 ) + column,
+                        x = 1,
+                        y = column,
+                        type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.PAWN )
+                    } );
+                }
+
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 0,
+                    x = 7,
+                    y = 0,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.ROOK )
+                } );
+
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 7,
+                    x = 7,
+                    y = 7,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.ROOK )
+                } );
+
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 1,
+                    x = 7,
+                    y = 1,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.KNIGHT )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 6,
+                    x = 7,
+                    y = 6,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.KNIGHT )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 2,
+                    x = 7,
+                    y = 2,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.BISHOP )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 5,
+                    x = 7,
+                    y = 5,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.BISHOP )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 3,
+                    x = 7,
+                    y = 3,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.QUEEN )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 4,
+                    x = 7,
+                    y = 4,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.KING )
+                } );
+
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 0,
+                    x = 0,
+                    y = 0,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.ROOK )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 7,
+                    x = 0,
+                    y = 7,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.ROOK )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 1,
+                    x = 0,
+                    y = 1,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.KNIGHT )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 6,
+                    x = 0,
+                    y = 6,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.KNIGHT )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 2,
+                    x = 0,
+                    y = 2,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.BISHOP )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 5,
+                    x = 0,
+                    y = 5,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.BISHOP )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 3,
+                    x = 0,
+                    y = 3,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.QUEEN )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 4,
+                    x = 0,
+                    y = 4,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.KING )
+                } );
+            }
+            else
+            {
+                for ( Int32 column = 0; column < 8; column++ )
+                {
+                    mChessBoardModel.blackFigures.Add( new ModelItem
+                    {
+                        index = ( 6 * 8 ) + column,
+                        x = 6,
+                        y = column,
+                        type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.PAWN )
+                    } );
+
+                    mChessBoardModel.whiteFigures.Add( new ModelItem
+                    {
+                        index = ( 1 * 8 ) + column,
+                        x = 1,
+                        y = column,
+                        type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.PAWN )
+                    } );
+                }
+
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 0,
+                    x = 7,
+                    y = 0,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.ROOK )
+                } );
+
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 7,
+                    x = 7,
+                    y = 7,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.ROOK )
+                } );
+
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 1,
+                    x = 7,
+                    y = 1,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.KNIGHT )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 6,
+                    x = 7,
+                    y = 6,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.KNIGHT )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 2,
+                    x = 7,
+                    y = 2,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.BISHOP )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 5,
+                    x = 7,
+                    y = 5,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.BISHOP )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 3,
+                    x = 7,
+                    y = 3,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.KING )
+                } );
+                mChessBoardModel.blackFigures.Add( new ModelItem
+                {
+                    index = ( 7 * 8 ) + 4,
+                    x = 7,
+                    y = 4,
+                    type = new Tuple<Colors, FigureType>( Colors.BLACK, FigureType.QUEEN )
+                } );
+
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 0,
+                    x = 0,
+                    y = 0,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.ROOK )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 7,
+                    x = 0,
+                    y = 7,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.ROOK )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 1,
+                    x = 0,
+                    y = 1,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.KNIGHT )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 6,
+                    x = 0,
+                    y = 6,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.KNIGHT )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 2,
+                    x = 0,
+                    y = 2,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.BISHOP )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 5,
+                    x = 0,
+                    y = 5,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.BISHOP )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 3,
+                    x = 0,
+                    y = 3,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.KING )
+                } );
+                mChessBoardModel.whiteFigures.Add( new ModelItem
+                {
+                    index = ( 0 * 8 ) + 4,
+                    x = 0,
+                    y = 4,
+                    type = new Tuple<Colors, FigureType>( Colors.WHITE, FigureType.QUEEN )
+                } );
+            }
+
+            return true;
+        }
+
+        private void onCloseCustomBoardView( Object sender, EventArgs aEventArgs )
+        {
+            mCustomBoardView.Close();
         }
 
         private void setupComboBoxes()
@@ -165,6 +460,8 @@ namespace ChessTable.ViewModels
         public ObservableCollection<String> mPlayerAlgorithms { get; set; }
         private Algorithm mPlayerOneAlgorithm;
         private Algorithm mPlayerTwoAlgorithm;
+
+        private CustomBoardView mCustomBoardView;
 
         private ChessBoardView mChessBoardView;
         private ChessBoardViewModel mChessBoardViewModel;
