@@ -42,7 +42,7 @@ namespace ChessTable.ViewModels.Converters
 
             if ( figureType.Item1 == Colors.NO_COLOR || figureType.Item2 == FigureType.NO_FIGURE )
             {
-                return "";
+                return DependencyProperty.UnsetValue;
             }
 
             return Binding.DoNothing;

@@ -17,7 +17,7 @@ namespace ChessTable.ViewModels
         {
             mChessBoardModel = aChessBoardModel;
             mChessBoardModel.fieldClicked   += new EventHandler<PutFigureOnTheTableEventArg>( onPutFigureOnTheTableEventArg );
-            mChessBoardModel.paintBorder    += new EventHandler<PaintBorderEventArg>( onPaintBorder );
+            mChessBoardModel.setHighlight   += new EventHandler< SetHighlightEventArg >( onSetHighlight );
 
             windowState             = "Normal";
             windowWidth             = 640;
@@ -27,7 +27,6 @@ namespace ChessTable.ViewModels
             mChessBoardCollection   = new ObservableCollection<BoardItem>();
 
             selectedPanelItem       = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
-            mLastClickedField       = -1;
 
             setupCustomBoard();
             mChessBoardModel.startModel();
@@ -50,13 +49,13 @@ namespace ChessTable.ViewModels
                     color = ( row + column ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
                     mChessBoardCollection.Add( new BoardItem()
                     {
-                        X           = row,
-                        Y           = column,
-                        Index       = index,
-                        fieldColor  = color,
-                        fieldSize   = 48,
-                        figureType  = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE ),
-                        borderColor = color
+                        X               = row,
+                        Y               = column,
+                        Index           = index,
+                        fieldColor      = color,
+                        fieldSize       = 48,
+                        figureType      = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE ),
+                        highlightColor  = Colors.NO_COLOR
                     } );
                     mChessBoardCollection[ index ].fieldClicked += new EventHandler<FieldClickedEventArg>( onFieldClicked );
                     index++;
@@ -86,9 +85,9 @@ namespace ChessTable.ViewModels
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
-        private void onPaintBorder( Object aSender, PaintBorderEventArg aItemToPaint )
+        private void onSetHighlight( Object aSender, SetHighlightEventArg aItemToPaint )
         {
-            mChessBoardCollection[ aItemToPaint.index ].borderColor = aItemToPaint.color;
+            mChessBoardCollection[ aItemToPaint.index ].highlightColor = aItemToPaint.color;
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -213,7 +212,7 @@ namespace ChessTable.ViewModels
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
-        private Int32 mLastClickedField;
+        //private Int32 mLastClickedField;
 
         private String mWindowState;
         private Int32 mWindowWidth;

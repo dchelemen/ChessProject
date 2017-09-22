@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChessTable.Common
 {
-    public class PaintBorderEventArg
+    public class SetHighlightEventArg
     {
         public Colors color { get; set; }
         public Int32 index { get; set; }

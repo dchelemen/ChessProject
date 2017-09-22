@@ -21,7 +21,7 @@ namespace ChessTable.ViewModels
         }
         public void onMenuStartBtnClicked()
         {
-            Boolean isGameReady = false;
+             Boolean isGameReady = false;
             if ( mSelectedGameType == GameType.CUSTOM_GAME )
             {
                 mCustomBoardView = new CustomBoardView();

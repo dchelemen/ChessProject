@@ -13,9 +13,9 @@
 
     public enum TableHighLight
     {
-        TABLEHIGHLIGHT_NONE,
-        TABLEHIGHLIGHT_BLUE,
-        TABLEHIGHLIGHT_RED
+        NONE,
+        BLUE,
+        RED
     }
 
     public enum Colors
@@ -24,6 +24,7 @@
         BLACK,
         RED,
         GREEN,
+        BLUE,
         NO_COLOR
     }
 

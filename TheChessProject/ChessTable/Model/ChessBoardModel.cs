@@ -104,10 +104,10 @@ namespace ChessTable.Model
 
             setPossibleMoves();
 
-            paintBorder( this, new PaintBorderEventArg
-            {
+			setHighlight( this, new SetHighlightEventArg
+			{
                 index = aFigureToMove.index,
-                color = Colors.RED
+                color = Colors.BLUE
             } );
 
             mIsFirstClick = false;
@@ -117,11 +117,10 @@ namespace ChessTable.Model
 
         private void moveFigureTo( ModelItem aPlaceHere )
         {
-            Colors originalColor = ( mFigureToMove.x + mFigureToMove.y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
-            paintBorder( this, new PaintBorderEventArg
-            {
+			setHighlight(this, new SetHighlightEventArg
+			{
                 index = mFigureToMove.index,
-                color = originalColor
+                color = Colors.NO_COLOR
             } );
 
             mIsFirstClick = true;
@@ -141,7 +140,7 @@ namespace ChessTable.Model
                 else
                 {
                     ModelItem oldItem = blackFigures.Where( X => X.index == aPlaceHere.index ).FirstOrDefault();
-                    blackFigures.Remove( oldItem   );
+                    blackFigures.Remove( oldItem );
                 }
             }
             ModelItem tempItem;
@@ -279,16 +278,16 @@ namespace ChessTable.Model
 
             if ( chessBoard[ aX ][ aY ].type.Item1 == Colors.NO_COLOR )
             {
-                paintBorder( this, new PaintBorderEventArg
-                {
+				setHighlight( this, new SetHighlightEventArg
+				{
                     index = aX * 8 + aY,
-                    color = Colors.GREEN
+                    color = Colors.BLUE
                 } );
             }
             else
             {
-                paintBorder( this, new PaintBorderEventArg
-                {
+				setHighlight( this, new SetHighlightEventArg
+				{
                     index = aX * 8 + aY,
                     color = Colors.RED
                 } );
@@ -300,7 +299,7 @@ namespace ChessTable.Model
 
         public event EventHandler<PutFigureOnTheTableEventArg> fieldClicked;
 
-        public event EventHandler<PaintBorderEventArg> paintBorder;
+        public event EventHandler< SetHighlightEventArg > setHighlight;
         public Boolean isGameReady { get; set; }
         public List<ModelItem> whiteFigures { get; set; }
         public List<ModelItem> blackFigures { get; set; }

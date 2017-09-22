@@ -12,6 +12,7 @@
     <Window.Resources>
         <converters:FigureConverter x:Key="FigureConverter"/>
         <converters:ColorConverter x:Key="ColorConverter"/>
+        <converters:HighlightConverter x:Key="HighlightConverter"/>
     </Window.Resources>
     <Grid>
         <ItemsControl ItemsSource="{Binding mChessBoardCollection}">
@@ -24,7 +25,8 @@
                 <DataTemplate>
                     <Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
                         <Canvas Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor, Converter={StaticResource ColorConverter}}" Stroke="{Binding borderColor, Converter={StaticResource ColorConverter}}" StrokeThickness="3"/>
+                            <Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor, Converter={StaticResource ColorConverter}}"/>
+                            <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding highlightColor, Converter={StaticResource HighlightConverter }}"/>
                             <Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding figureType, Converter={StaticResource FigureConverter }}"/>
                         </Canvas>
                     </Button>

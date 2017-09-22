@@ -77,9 +77,7 @@ namespace ChessTable.ViewModels
             }
 
             mChessBoardCollection[ mLastClickedField ].figureType = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
-
-            Colors color = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
-            mChessBoardCollection[ mLastClickedField ].borderColor = color;
+            mChessBoardCollection[ mLastClickedField ].highlightColor = Colors.NO_COLOR;
             mLastClickedField = -1;
         }
 
@@ -100,15 +98,15 @@ namespace ChessTable.ViewModels
                 for ( Int16 column = 0; column < 8; column++ )
                 {
                     color = ( row + column ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
-                    mChessBoardCollection.Add( new BoardItem()
+                    mChessBoardCollection.Add(new BoardItem()
                     {
                         X = row,
                         Y = column,
                         Index = index,
                         fieldColor = color,
                         fieldSize = 48,
-                        figureType = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE ),
-                        borderColor = color
+                        figureType = new Tuple<Colors, FigureType>(Colors.NO_COLOR, FigureType.NO_FIGURE),
+                        highlightColor = Colors.NO_COLOR
                     } );
                     mChessBoardCollection[ index ].fieldClicked += new EventHandler< FieldClickedEventArg >( onFieldClicked );
                     index++;
@@ -124,7 +122,7 @@ namespace ChessTable.ViewModels
                     Index = row,
                     fieldColor = Colors.BLACK,
                     fieldSize = 48,
-                    borderColor = Colors.WHITE,
+                    highlightColor = Colors.NO_COLOR,
                     Color = Colors.BLACK
                 } );
 
@@ -135,7 +133,7 @@ namespace ChessTable.ViewModels
                     Index = row,
                     fieldColor = Colors.BLACK,
                     fieldSize = 48,
-                    borderColor = Colors.WHITE,
+                    highlightColor = Colors.NO_COLOR,
                     Color = Colors.WHITE
                 } );
 
@@ -166,15 +164,13 @@ namespace ChessTable.ViewModels
             {
                 if ( selectedPanelItem.Item2 == FigureType.NO_FIGURE )
                 {
-                    Colors color = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
-                    mChessBoardCollection[ mLastClickedField ].borderColor = color;
+                    mChessBoardCollection[ mLastClickedField ].highlightColor = Colors.NO_COLOR;
                     mLastClickedField = -1;
-
                     return;
                 }
                 if ( aArguments.type == selectedPanelItem ) //Same Figure?
                 {
-                    mChessBoardCollection[ mLastClickedField ].borderColor = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
+                    mChessBoardCollection[ mLastClickedField ].highlightColor = Colors.NO_COLOR;
                     mLastClickedField = -1;
                 }
                 else // We put another Figure instead of it
@@ -233,11 +229,10 @@ namespace ChessTable.ViewModels
                 {
                     if ( mLastClickedField != -1 )
                     {
-                        Colors color = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
-                        mChessBoardCollection[ mLastClickedField ].borderColor = color;
+                        mChessBoardCollection[ mLastClickedField ].highlightColor = Colors.NO_COLOR;
                     }
 
-                    mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+                    mChessBoardCollection[ aArguments.index ].highlightColor = Colors.BLUE;
                     mLastClickedField = aArguments.index;                    
                 }
                 return;
@@ -245,14 +240,13 @@ namespace ChessTable.ViewModels
 
             if ( mLastClickedField != -1 ) // last selected item becomes non selected
             {
-                Colors color = ( mChessBoardCollection[ mLastClickedField ].X + mChessBoardCollection[ mLastClickedField ].Y ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
-                mChessBoardCollection[ mLastClickedField ].borderColor = color;
+                mChessBoardCollection[ mLastClickedField ].highlightColor = Colors.NO_COLOR;
             }
             mLastClickedField = aArguments.index;
 
             if ( selectedPanelItem == aArguments.type )
             {
-                mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+                mChessBoardCollection[ aArguments.index ].highlightColor = Colors.RED;
                 mLastClickedField = aArguments.index;
                 return;
             }
@@ -279,7 +273,7 @@ namespace ChessTable.ViewModels
                         index   = aArguments.index
                     } );
                 }
-                mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+                mChessBoardCollection[ aArguments.index ].highlightColor = Colors.RED;
                 mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
                 return;
             }
@@ -312,7 +306,7 @@ namespace ChessTable.ViewModels
                         index = aArguments.index
                     } );
                 }
-                mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+                mChessBoardCollection[ aArguments.index ].highlightColor = Colors.RED;
                 mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
                 return;
             }
@@ -325,7 +319,7 @@ namespace ChessTable.ViewModels
             {
                 mChessBoardModel.blackFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().type = selectedPanelItem;
             }
-            mChessBoardCollection[ aArguments.index ].borderColor = Colors.RED;
+            mChessBoardCollection[ aArguments.index ].highlightColor = Colors.RED;
             mChessBoardCollection[ aArguments.index ].figureType = selectedPanelItem;
         }
 
@@ -335,18 +329,18 @@ namespace ChessTable.ViewModels
         {
             if ( selectedPanelItem == aArguments.type )
             {
-                mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureType == selectedPanelItem ).FirstOrDefault().borderColor = Colors.WHITE;
+                mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureType == selectedPanelItem ).FirstOrDefault().highlightColor = Colors.NO_COLOR;
                 selectedPanelItem = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
                 return;
             }
             if ( selectedPanelItem.Item2 != FigureType.NO_FIGURE )
             {
-                mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureType == selectedPanelItem ).FirstOrDefault().borderColor = Colors.WHITE;
+                mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureType == selectedPanelItem ).FirstOrDefault().highlightColor = Colors.NO_COLOR;
             }
 
             selectedPanelItem = aArguments.type;
 
-            mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureType == selectedPanelItem ).FirstOrDefault().borderColor = Colors.RED;
+            mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureType == selectedPanelItem ).FirstOrDefault().highlightColor = Colors.RED;
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------

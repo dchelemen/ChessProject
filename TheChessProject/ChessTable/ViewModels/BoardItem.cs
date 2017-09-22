@@ -39,18 +39,18 @@ namespace ChessTable.ViewModels
             }
         }
 
-        public Colors borderColor
+        public Colors highlightColor
         {
             get
             {
-                return mBorderColor;
+                return mHighlightColor;
             }
             set
             {
-                if ( mBorderColor != value )
+                if ( mHighlightColor != value )
                 {
-                    mBorderColor = value;
-                    OnPropertyChanged( "borderColor" );
+                    mHighlightColor = value;
+                    OnPropertyChanged( "highlightColor" );
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace ChessTable.ViewModels
         public event EventHandler< FieldClickedEventArg > fieldClicked;
 
         private Colors mFieldColor;
-        private Colors mBorderColor;
+        private Colors mHighlightColor;
 
         private Tuple<Colors, FigureType> mFigureType;
         private Int32 mFieldSize;

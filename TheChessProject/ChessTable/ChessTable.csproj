@@ -84,6 +84,7 @@
     <Compile Include="ViewModels\Converters\ColorConverter.cs" />
     <Compile Include="ViewModels\Converters\FigureConverter.cs" />
     <Compile Include="ViewModels\Converters\GameTypeConverter.cs" />
+    <Compile Include="ViewModels\Converters\HighlightConverter.cs" />
     <Compile Include="ViewModels\Converters\PlayerToStartConverter.cs" />
     <Compile Include="ViewModels\CustomBoardViewModel.cs" />
     <Compile Include="ViewModels\ImplementedInterfaces\DelegateCommand.cs" />
@@ -127,7 +128,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Blue_Highlight.png" />
+    <Resource Include="Images\Red_Highlight.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Black_Bishop.png" />
     <Resource Include="Images\Black_King.png" />
