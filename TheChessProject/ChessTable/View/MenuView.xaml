@@ -1,88 +1,88 @@
 ﻿<Window x:Class="ChessTable.View.MenuView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChessTable.View"
-        xmlns:converters="clr-namespace:ChessTable.ViewModels.Converters"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Window.Resources>
-        <converters:PlayerToStartConverter x:Key="PlayerToStartConverter"/>
-        <converters:AlgorithmConverter x:Key="AlgorithmConverter"/>
-        <converters:ColorConverter x:Key="ColorConverter"/>
-        <converters:GameTypeConverter x:Key="GameTypeConverter"/>
-    </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="35"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <GroupBox Grid.Column="0" Header="Player 1">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Content="Choose an Algorithm:"/>
-                    <ComboBox Margin="2" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding mPlayerAlgorithms}" SelectedValue="{Binding playerOneAlgorithm, Converter={StaticResource AlgorithmConverter}}" />
-                    <Label Grid.Row="1" Grid.Column="0" Content="Choose a Heuristic:"/>
-                    <ComboBox Margin="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
-                    <Label Grid.Row="2" Grid.Column="0" Content="Choose a Color:"/>
-                    <ComboBox Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding mColors}" SelectedValue="{Binding selectedColor, Converter={StaticResource ColorConverter}}" Grid.ColumnSpan="2"/>
-                </Grid>
-            </GroupBox>
-            <GroupBox Grid.Column="1" Header="Player 2">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Content="Choose an Algorithm:"/>
-                    <ComboBox Margin="2" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding mPlayerAlgorithms}" SelectedValue="{Binding playerTwoAlgorithm, Converter={StaticResource AlgorithmConverter}}"/>
-                    <Label Grid.Row="1" Grid.Column="0" Content="Choose a Heuristic:"/>
-                    <ComboBox Margin="2" Grid.Row="1" Grid.Column="1"/>
-                </Grid>
-            </GroupBox>
-        </Grid>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Content="Choose Game type:"/>
-            <ComboBox Margin="2" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding mGameTypes}" SelectedValue="{Binding selectedGameType, Converter={StaticResource GameTypeConverter}}"/>
-            <Label Grid.Column="0" Grid.Row="1" Content="Choose Color to start:"/>
-            <ComboBox Margin="2" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding mPlayers}" SelectedValue="{Binding selectedStartingColor, Converter={StaticResource ColorConverter}}"/>
-        </Grid>
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
-            <Button Margin="5" Grid.Column="1" Content="Start" Command="{Binding onMenuStartBtnClickedCommand}"/>
-        </Grid>
-    </Grid>
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:ChessTable.View"
+		xmlns:converters="clr-namespace:ChessTable.ViewModels.Converters"
+		mc:Ignorable="d"
+		Title="MainWindow" Height="350" Width="525">
+	<Window.Resources>
+		<converters:PlayerToStartConverter x:Key="PlayerToStartConverter"/>
+		<converters:AlgorithmConverter x:Key="AlgorithmConverter"/>
+		<converters:ColorConverter x:Key="ColorConverter"/>
+		<converters:GameTypeConverter x:Key="GameTypeConverter"/>
+	</Window.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="35"/>
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<GroupBox Grid.Column="0" Header="Player 1">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="100"/>
+					</Grid.ColumnDefinitions>
+					<Label Grid.Row="0" Grid.Column="0" Content="Choose an Algorithm:"/>
+					<ComboBox Margin="2" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding mPlayerAlgorithms}" SelectedValue="{Binding playerOneAlgorithm, Converter={StaticResource AlgorithmConverter}}" />
+					<Label Grid.Row="1" Grid.Column="0" Content="Choose a Heuristic:"/>
+					<ComboBox Margin="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+					<Label Grid.Row="2" Grid.Column="0" Content="Choose a Color:"/>
+					<ComboBox Margin="2" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding mColors}" SelectedValue="{Binding selectedColor, Converter={StaticResource ColorConverter}}" Grid.ColumnSpan="2"/>
+				</Grid>
+			</GroupBox>
+			<GroupBox Grid.Column="1" Header="Player 2">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="100"/>
+					</Grid.ColumnDefinitions>
+					<Label Grid.Row="0" Grid.Column="0" Content="Choose an Algorithm:"/>
+					<ComboBox Margin="2" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding mPlayerAlgorithms}" SelectedValue="{Binding playerTwoAlgorithm, Converter={StaticResource AlgorithmConverter}}"/>
+					<Label Grid.Row="1" Grid.Column="0" Content="Choose a Heuristic:"/>
+					<ComboBox Margin="2" Grid.Row="1" Grid.Column="1"/>
+				</Grid>
+			</GroupBox>
+		</Grid>
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<Label Grid.Column="0" Grid.Row="0" Content="Choose Game type:"/>
+			<ComboBox Margin="2" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding mGameTypes}" SelectedValue="{Binding selectedGameType, Converter={StaticResource GameTypeConverter}}"/>
+			<Label Grid.Column="0" Grid.Row="1" Content="Choose Color to start:"/>
+			<ComboBox Margin="2" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding mPlayers}" SelectedValue="{Binding selectedStartingColor, Converter={StaticResource ColorConverter}}"/>
+		</Grid>
+		<Grid Grid.Row="3">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="100"/>
+			</Grid.ColumnDefinitions>
+			<Button Margin="5" Grid.Column="1" Content="Start" Command="{Binding onMenuStartBtnClickedCommand}"/>
+		</Grid>
+	</Grid>
 </Window>

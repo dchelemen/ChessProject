@@ -4,20 +4,23 @@ using ChessTable.ViewModels;
 
 namespace ChessTable
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
-    {
-        private MenuView mainView;
-        private MenuViewModel menuViewModel;
+	/// <summary>
+	/// Interaction logic for App.xaml
+	/// </summary>
+	public partial class App : Application
+	{
+		App()
+		{
+			menuViewModel			= new MenuViewModel();
+			mainView				= new MenuView();
+			mainView.DataContext	= menuViewModel; 
+			mainView.Show();
+		}
 
-        App()
-        {
-            mainView = new MenuView();
-            menuViewModel = new MenuViewModel();
-            mainView.DataContext = menuViewModel; 
-            mainView.Show();
-        }
-    }
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		private MenuView			mainView;
+		private MenuViewModel		menuViewModel;
+
+	}
 }

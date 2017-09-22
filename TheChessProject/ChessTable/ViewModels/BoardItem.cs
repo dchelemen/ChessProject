@@ -4,104 +4,117 @@ using ChessTable.ViewModels.ImplementedInterfaces;
 
 namespace ChessTable.ViewModels
 {
-    public class BoardItem : ViewModelBase
-    {
-        public BoardItem()
-        {
-            onFieldClickedCommand = new DelegateCommand( x => onFieldClicked() );
-        }
-        
-        public void onFieldClicked()
-        {
-            fieldClicked( this, new FieldClickedEventArg
-            {
-                x = X,
-                y = Y,
-                index = Index,
-                type = figureType
-            } );
-        }
+	public class BoardItem : ViewModelBase
+	{
+		public BoardItem()
+		{
+			onFieldClickedCommand = new DelegateCommand( x => onFieldClicked() );
+		}
 
+		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-        public Colors fieldColor
-        {
-            get
-            {
-                return mFieldColor;
-            }
-            set
-            {
-                if ( mFieldColor != value )
-                {
-                    mFieldColor = value;
-                    OnPropertyChanged( "fieldColor" );
-                }
-            }
-        }
+		public void onFieldClicked()
+		{
+			fieldClicked( this, new FieldClickedEventArg
+			{
+				x		= X,
+				y		= Y,
+				index	= Index,
+				type	= figureType
+			} );
+		}
 
-        public Colors highlightColor
-        {
-            get
-            {
-                return mHighlightColor;
-            }
-            set
-            {
-                if ( mHighlightColor != value )
-                {
-                    mHighlightColor = value;
-                    OnPropertyChanged( "highlightColor" );
-                }
-            }
-        }
+		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-        public Tuple<Colors, FigureType> figureType
-        {
-            get
-            {
-                return mFigureType;
-            }
-            set
-            {
-                if ( mFigureType != value )
-                {
-                    mFigureType = value;
-                    OnPropertyChanged( "figureType" );
-                }
-            }
-        }
+		public Colors fieldColor
+		{
+			get
+			{
+				return mFieldColor;
+			}
+			set
+			{
+				if ( mFieldColor != value )
+				{
+					mFieldColor = value;
+					OnPropertyChanged( "fieldColor" );
+				}
+			}
+		}
 
-        public Int32 fieldSize
-        {
-            get
-            {
-                return mFieldSize;
-            }
-            set
-            {
-                if ( mFieldSize != value )
-                {
-                    mFieldSize = value;
-                    OnPropertyChanged( "fieldSize" );
-                }
-            }
-        }
+		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-        public DelegateCommand onFieldClickedCommand { get; private set; }
-        public Int32 X { get; set; }
+		public Colors highlightColor
+		{
+			get
+			{
+				return mHighlightColor;
+			}
+			set
+			{
+				if ( mHighlightColor != value )
+				{
+					mHighlightColor = value;
+					OnPropertyChanged( "highlightColor" );
+				}
+			}
+		}
 
-        public Int32 Y { get; set; }
+		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-        public Int32 Index { get; set; }
+		public Tuple< Colors, FigureType > figureType
+		{
+			get
+			{
+				return mFigureType;
+			}
+			set
+			{
+				if ( mFigureType != value )
+				{
+					mFigureType = value;
+					OnPropertyChanged( "figureType" );
+				}
+			}
+		}
 
-        public Colors Color { get; set; }
+		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-        public event EventHandler< FieldClickedEventArg > fieldClicked;
+		public Int32 fieldSize
+		{
+			get
+			{
+				return mFieldSize;
+			}
+			set
+			{
+				if ( mFieldSize != value )
+				{
+					mFieldSize = value;
+					OnPropertyChanged( "fieldSize" );
+				}
+			}
+		}
 
-        private Colors mFieldColor;
-        private Colors mHighlightColor;
+		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-        private Tuple<Colors, FigureType> mFigureType;
-        private Int32 mFieldSize;
-    }
+		public DelegateCommand								onFieldClickedCommand { get; private set; }
+		public Int32										X { get; set; }
+
+		public Int32										Y { get; set; }
+
+		public Int32										Index { get; set; }
+
+		public Colors										Color { get; set; }
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		public event EventHandler< FieldClickedEventArg >	fieldClicked;
+
+		private Colors										mFieldColor;
+		private Colors										mHighlightColor;
+
+		private Tuple< Colors, FigureType >					mFigureType;
+		private Int32										mFieldSize;
+	}
 }

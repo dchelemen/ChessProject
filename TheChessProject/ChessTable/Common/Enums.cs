@@ -1,51 +1,61 @@
 ﻿namespace ChessTable.Common
 {
-    public enum FigureType
-    {
-        KING,
-        QUEEN,
-        ROOK,
-        BISHOP,
-        KNIGHT,
-        PAWN,
-        NO_FIGURE
-    }
+	public enum FigureType
+	{
+		KING,
+		QUEEN,
+		ROOK,
+		BISHOP,
+		KNIGHT,
+		PAWN,
+		NO_FIGURE
+	}
 
-    public enum TableHighLight
-    {
-        NONE,
-        BLUE,
-        RED
-    }
+	//-----------------------------------------------------------------------------------------------------------------------------------------
 
-    public enum Colors
-    {
-        WHITE,
-        BLACK,
-        RED,
-        GREEN,
-        BLUE,
-        NO_COLOR
-    }
+	public enum TableHighLight
+	{
+		NONE,
+		BLUE,
+		RED
+	}
 
-    public enum Player
-    {
-        PLAYER_ONE,
-        PLAYER_TWO,
-        NO_PLAYER
-    }
+	//-----------------------------------------------------------------------------------------------------------------------------------------
 
-    public enum Algorithm
-    {
-        HUMAN,
-        RANDOM,
-        ALPHA_BETA
-    }
+	public enum Colors
+	{
+		WHITE,
+		BLACK,
+		RED,
+		GREEN,
+		BLUE,
+		NO_COLOR
+	}
 
-    public enum GameType
-    {
-        STANDARD_GAME,
-        END_GAME,
-        CUSTOM_GAME
-    }
+	//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	public enum Player
+	{
+		PLAYER_ONE,
+		PLAYER_TWO,
+		NO_PLAYER
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	public enum Algorithm
+	{
+		HUMAN,
+		RANDOM,
+		ALPHA_BETA
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	public enum GameType
+	{
+		STANDARD_GAME,
+		END_GAME,
+		CUSTOM_GAME
+	}
 }
