@@ -22,10 +22,10 @@ namespace ChessTable.Model
 
 			mFigureToMove		= new ModelItem
 								{
-									index   = -1,
-									type    = new Tuple< Colors, FigureType >( Colors.NO_COLOR, FigureType.NO_FIGURE ),
-									x       = -1,
-									y       = -1
+									index	= -1,
+									type	= new Tuple< Colors, FigureType >( Colors.NO_COLOR, FigureType.NO_FIGURE ),
+									x		= -1,
+									y		= -1
 								};
 		}
 
@@ -43,10 +43,10 @@ namespace ChessTable.Model
 				{
 					chessBoardRow.Add( new ModelItem
 					{
-						index   = row * 8 + column,
-						x       = row,
-						y       = column,
-						type    = new Tuple< Colors, FigureType >( Colors.NO_COLOR, FigureType.NO_FIGURE )
+						index	= row * 8 + column,
+						x		= row,
+						y		= column,
+						type	= new Tuple< Colors, FigureType >( Colors.NO_COLOR, FigureType.NO_FIGURE )
 					} );
 				}
 				chessBoard.Add( chessBoardRow );
@@ -57,10 +57,10 @@ namespace ChessTable.Model
 				chessBoard[ item.x ][ item.y ] = item;
 				fieldClicked( this, new PutFigureOnTheTableEventArg
 				{
-					type    = item.type,
-					x       = item.x,
-					y       = item.y,
-					index   = item.index
+					type	= item.type,
+					x		= item.x,
+					y		= item.y,
+					index	= item.index
 				} );
 			}
 
@@ -69,10 +69,10 @@ namespace ChessTable.Model
 				chessBoard[ item.x ][ item.y ] = item;
 				fieldClicked( this, new PutFigureOnTheTableEventArg
 				{
-					type    = item.type,
-					x       = item.x,
-					y       = item.y,
-					index   = item.index
+					type	= item.type,
+					x		= item.x,
+					y		= item.y,
+					index	= item.index
 				} );
 			}
 		}
