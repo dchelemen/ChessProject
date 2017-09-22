@@ -17,10 +17,10 @@ namespace ChessTable.ViewModels
 		{
 			fieldClicked( this, new FieldClickedEventArg
 			{
-				x		= X,
-				y		= Y,
-				index	= Index,
-				type	= figureType
+				x			= X,
+				y			= Y,
+				index		= Index,
+				figureItem	= figureItem
 			} );
 		}
 
@@ -62,18 +62,18 @@ namespace ChessTable.ViewModels
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public Tuple< Colors, FigureType > figureType
+		public FigureItem figureItem
 		{
 			get
 			{
-				return mFigureType;
+				return mFigureItem;
 			}
 			set
 			{
-				if ( mFigureType != value )
+				if ( mFigureItem != value )
 				{
-					mFigureType = value;
-					OnPropertyChanged( "figureType" );
+					mFigureItem = value;
+					OnPropertyChanged( "figureItem" );
 				}
 			}
 		}
@@ -114,7 +114,7 @@ namespace ChessTable.ViewModels
 		private Colors										mFieldColor;
 		private Colors										mHighlightColor;
 
-		private Tuple< Colors, FigureType >					mFigureType;
+		private FigureItem									mFigureItem;
 		private Int32										mFieldSize;
 	}
 }

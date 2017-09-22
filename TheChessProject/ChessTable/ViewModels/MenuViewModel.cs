@@ -71,135 +71,135 @@ namespace ChessTable.ViewModels
 				{
 					mChessBoardModel.whiteFigures.Add( new ModelItem
 					{
-						index	= ( 6 * 8 ) + column,
-						x		= 6,
-						y		= column,
-						type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.PAWN )
+						index		= ( 6 * 8 ) + column,
+						x			= 6,
+						y			= column,
+						figureItem	= new FigureItem( Colors.WHITE, FigureType.PAWN )
 					} );
 
 					mChessBoardModel.blackFigures.Add( new ModelItem
 					{
-						index	= ( 1 * 8 ) + column,
-						x		= 1,
-						y		= column,
-						type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.PAWN )
+						index		= ( 1 * 8 ) + column,
+						x			= 1,
+						y			= column,
+						figureItem	= new FigureItem( Colors.BLACK, FigureType.PAWN )
 					} );
 				}
 
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 0,
-					x		= 7,
-					y		= 0,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.ROOK )
+					index		= ( 7 * 8 ) + 0,
+					x			= 7,
+					y			= 0,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.ROOK )
 				} );
 
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 7,
-					x		= 7,
-					y		= 7,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.ROOK )
+					index		= ( 7 * 8 ) + 7,
+					x			= 7,
+					y			= 7,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.ROOK )
 				} );
 
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 1,
-					x		= 7,
-					y		= 1,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.KNIGHT )
+					index		= ( 7 * 8 ) + 1,
+					x			= 7,
+					y			= 1,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.KNIGHT )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 6,
-					x		= 7,
-					y		= 6,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.KNIGHT )
+					index		= ( 7 * 8 ) + 6,
+					x			= 7,
+					y			= 6,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.KNIGHT )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 2,
-					x		= 7,
-					y		= 2,
-					type = new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.BISHOP )
+					index		= ( 7 * 8 ) + 2,
+					x			= 7,
+					y			= 2,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.BISHOP )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 5,
-					x		= 7,
-					y		= 5,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.BISHOP )
+					index		= ( 7 * 8 ) + 5,
+					x			= 7,
+					y			= 5,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.BISHOP )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 3,
-					x		= 7,
-					y		= 3,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.QUEEN )
+					index		= ( 7 * 8 ) + 3,
+					x			= 7,
+					y			= 3,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.QUEEN )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 4,
-					x		= 7,
-					y		= 4,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.KING )
+					index		= ( 7 * 8 ) + 4,
+					x			= 7,
+					y			= 4,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.KING )
 				} );
 
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 0,
-					x		= 0,
-					y		= 0,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.ROOK )
+					index		= ( 0 * 8 ) + 0,
+					x			= 0,
+					y			= 0,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.ROOK )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 7,
-					x		= 0,
-					y		= 7,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.ROOK )
+					index		= ( 0 * 8 ) + 7,
+					x			= 0,
+					y			= 7,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.ROOK )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 1,
-					x		= 0,
-					y		= 1,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.KNIGHT )
+					index		= ( 0 * 8 ) + 1,
+					x			= 0,
+					y			= 1,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.KNIGHT )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 6,
-					x		= 0,
-					y		= 6,
-					type = new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.KNIGHT )
+					index		= ( 0 * 8 ) + 6,
+					x			= 0,
+					y			= 6,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.KNIGHT )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 2,
-					x		= 0,
-					y		= 2,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.BISHOP )
+					index		= ( 0 * 8 ) + 2,
+					x			= 0,
+					y			= 2,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.BISHOP )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 5,
-					x		= 0,
-					y		= 5,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.BISHOP )
+					index		= ( 0 * 8 ) + 5,
+					x			= 0,
+					y			= 5,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.BISHOP )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 3,
-					x		= 0,
-					y		= 3,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.QUEEN )
+					index		= ( 0 * 8 ) + 3,
+					x			= 0,
+					y			= 3,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.QUEEN )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 4,
-					x		= 0,
-					y		= 4,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.KING )
+					index		= ( 0 * 8 ) + 4,
+					x			= 0,
+					y			= 4,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.KING )
 				} );
 			}
 			else
@@ -208,135 +208,135 @@ namespace ChessTable.ViewModels
 				{
 					mChessBoardModel.blackFigures.Add( new ModelItem
 					{
-						index	= ( 6 * 8 ) + column,
-						x		= 6,
-						y		= column,
-						type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.PAWN )
+						index		= ( 6 * 8 ) + column,
+						x			= 6,
+						y			= column,
+						figureItem	= new FigureItem( Colors.BLACK, FigureType.PAWN )
 					} );
 
 					mChessBoardModel.whiteFigures.Add( new ModelItem
 					{
-						index	= ( 1 * 8 ) + column,
-						x		= 1,
-						y		= column,
-						type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.PAWN )
+						index		= ( 1 * 8 ) + column,
+						x			= 1,
+						y			= column,
+						figureItem	= new FigureItem( Colors.WHITE, FigureType.PAWN )
 					} );
 				}
 
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 0,
-					x		= 7,
-					y		= 0,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.ROOK )
+					index		= ( 7 * 8 ) + 0,
+					x			= 7,
+					y			= 0,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.ROOK )
 				} );
 
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 7,
-					x		= 7,
-					y		= 7,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.ROOK )
+					index		= ( 7 * 8 ) + 7,
+					x			= 7,
+					y			= 7,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.ROOK )
 				} );
 
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 1,
-					x		= 7,
-					y		= 1,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.KNIGHT )
+					index		= ( 7 * 8 ) + 1,
+					x			= 7,
+					y			= 1,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.KNIGHT )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 6,
-					x		= 7,
-					y		= 6,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.KNIGHT )
+					index		= ( 7 * 8 ) + 6,
+					x			= 7,
+					y			= 6,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.KNIGHT )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 2,
-					x		= 7,
-					y		= 2,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.BISHOP )
+					index		= ( 7 * 8 ) + 2,
+					x			= 7,
+					y			= 2,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.BISHOP )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 5,
-					x		= 7,
-					y		= 5,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.BISHOP )
+					index		= ( 7 * 8 ) + 5,
+					x			= 7,
+					y			= 5,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.BISHOP )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 3,
-					x		= 7,
-					y		= 3,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.KING )
+					index		= ( 7 * 8 ) + 3,
+					x			= 7,
+					y			= 3,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.KING )
 				} );
 				mChessBoardModel.blackFigures.Add( new ModelItem
 				{
-					index	= ( 7 * 8 ) + 4,
-					x		= 7,
-					y		= 4,
-					type	= new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.QUEEN )
+					index		= ( 7 * 8 ) + 4,
+					x			= 7,
+					y			= 4,
+					figureItem	= new FigureItem( Colors.BLACK, FigureType.QUEEN )
 				} );
 
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 0,
-					x		= 0,
-					y		= 0,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.ROOK )
+					index		= ( 0 * 8 ) + 0,
+					x			= 0,
+					y			= 0,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.ROOK )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 7,
-					x		= 0,
-					y		= 7,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.ROOK )
+					index		= ( 0 * 8 ) + 7,
+					x			= 0,
+					y			= 7,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.ROOK )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 1,
-					x		= 0,
-					y		= 1,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.KNIGHT )
+					index		= ( 0 * 8 ) + 1,
+					x			= 0,
+					y			= 1,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.KNIGHT )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 6,
-					x		= 0,
-					y		= 6,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.KNIGHT )
+					index		= ( 0 * 8 ) + 6,
+					x			= 0,
+					y			= 6,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.KNIGHT )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 2,
-					x		= 0,
-					y		= 2,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.BISHOP )
+					index		= ( 0 * 8 ) + 2,
+					x			= 0,
+					y			= 2,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.BISHOP )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 5,
-					x		= 0,
-					y		= 5,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.BISHOP )
+					index		= ( 0 * 8 ) + 5,
+					x			= 0,
+					y			= 5,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.BISHOP )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 3,
-					x		= 0,
-					y		= 3,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.KING )
+					index		= ( 0 * 8 ) + 3,
+					x			= 0,
+					y			= 3,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.KING )
 				} );
 				mChessBoardModel.whiteFigures.Add( new ModelItem
 				{
-					index	= ( 0 * 8 ) + 4,
-					x		= 0,
-					y		= 4,
-					type	= new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.QUEEN )
+					index		= ( 0 * 8 ) + 4,
+					x			= 0,
+					y			= 4,
+					figureItem	= new FigureItem( Colors.WHITE, FigureType.QUEEN )
 				} );
 			}
 

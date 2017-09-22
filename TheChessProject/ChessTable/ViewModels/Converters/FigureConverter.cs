@@ -9,15 +9,15 @@ namespace ChessTable.ViewModels.Converters
 	{
 		public Object Convert( Object value, Type targetType, Object parameter, System.Globalization.CultureInfo culture )
 		{
-			if ( value == null || ! ( value is Tuple< Colors, FigureType > ) )
+			if ( value == null || ! ( value is FigureItem ) )
 			{
 				return Binding.DoNothing;
 			}
 
-			Tuple< Colors, FigureType > figureType = ( Tuple< Colors, FigureType > )value;
-			if ( figureType.Item1 == Colors.BLACK )
+			FigureItem figure = ( FigureItem )value;
+			if ( figure.color == Colors.BLACK )
 			{
-				switch ( figureType.Item2 )
+				switch ( figure.figureType )
 				{
 					case FigureType.KING:	return "/Images/Black_King.png";
 					case FigureType.QUEEN:	return "/Images/Black_Queen.png";
@@ -29,7 +29,7 @@ namespace ChessTable.ViewModels.Converters
 			}
 			else
 			{
-				switch ( figureType.Item2 )
+				switch ( figure.figureType )
 				{
 					case FigureType.KING:	return "/Images/White_King.png";
 					case FigureType.QUEEN:	return "/Images/White_Queen.png";
@@ -40,7 +40,7 @@ namespace ChessTable.ViewModels.Converters
 				}
 			}
 
-			if ( figureType.Item1 == Colors.NO_COLOR || figureType.Item2 == FigureType.NO_FIGURE )
+			if ( figure.color == Colors.NO_COLOR || figure.figureType == FigureType.NO_FIGURE )
 			{
 				return DependencyProperty.UnsetValue;
 			}
@@ -63,54 +63,54 @@ namespace ChessTable.ViewModels.Converters
 
 				if ( figureType == "/Images/Black_King.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.KING );
+					return new FigureItem( Colors.BLACK, FigureType.KING );
 				}
 				else if ( figureType == "/Images/Black_Queen.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.QUEEN );
+					return new FigureItem( Colors.BLACK, FigureType.QUEEN );
 				}
 				else if ( figureType == "/Images/Black_Rook.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.ROOK );
+					return new FigureItem( Colors.BLACK, FigureType.ROOK );
 				}
 				else if ( figureType == "/Images/Black_Bishop.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.BISHOP );
+					return new FigureItem( Colors.BLACK, FigureType.BISHOP );
 				}
 				else if ( figureType == "/Images/Black_Knight.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.KNIGHT );
+					return new FigureItem( Colors.BLACK, FigureType.KNIGHT );
 				}
 				else if ( figureType == "/Images/Black_Pawn.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.BLACK, FigureType.PAWN );
+					return new FigureItem( Colors.BLACK, FigureType.PAWN );
 				}
 				else if ( figureType == "/Images/White_King.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.KING );
+					return new FigureItem( Colors.WHITE, FigureType.KING );
 				}
 				else if ( figureType == "/Images/White_Queen.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.QUEEN );
+					return new FigureItem( Colors.WHITE, FigureType.QUEEN );
 				}
 				else if ( figureType == "/Images/White_Rook.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.ROOK );
+					return new FigureItem( Colors.WHITE, FigureType.ROOK );
 				}
 				else if ( figureType == "/Images/White_Bishop.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.BISHOP );
+					return new FigureItem( Colors.WHITE, FigureType.BISHOP );
 				}
 				else if ( figureType == "/Images/White_Knight.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.KNIGHT );
+					return new FigureItem( Colors.WHITE, FigureType.KNIGHT );
 				}
 				else if ( figureType == "/Images/White_Pawn.png" )
 				{
-					return new Tuple< Colors, FigureType >( Colors.WHITE, FigureType.PAWN );
+					return new FigureItem( Colors.WHITE, FigureType.PAWN );
 				}
 
-				return new Tuple< Colors, FigureType > ( Colors.NO_COLOR, FigureType.NO_FIGURE );
+				return new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 			}
 			catch
 			{

@@ -73,6 +73,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Common\FieldClickedEventArg.cs" />
+    <Compile Include="Common\FigureItem.cs" />
     <Compile Include="Common\PaintBorderEventArg.cs" />
     <Compile Include="Common\PutFigureOnTheTableEventArg.cs" />
     <Compile Include="Model\ModelItem.cs" />

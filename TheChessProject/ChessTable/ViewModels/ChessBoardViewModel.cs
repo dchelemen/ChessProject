@@ -26,7 +26,7 @@ namespace ChessTable.ViewModels
 			boardSize               = 384;
 			mChessBoardCollection   = new ObservableCollection< BoardItem >();
 
-			selectedPanelItem       = new Tuple< Colors, FigureType >( Colors.NO_COLOR, FigureType.NO_FIGURE );
+			selectedPanelItem       = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 
 			setupCustomBoard();
 			mChessBoardModel.startModel();
@@ -49,13 +49,13 @@ namespace ChessTable.ViewModels
 					color = ( row + column ) % 2 == 0 ? Colors.WHITE : Colors.BLACK;
 					mChessBoardCollection.Add( new BoardItem()
 					{
-						X               = row,
-						Y               = column,
-						Index           = index,
-						fieldColor      = color,
-						fieldSize       = 48,
-						figureType      = new Tuple< Colors, FigureType >( Colors.NO_COLOR, FigureType.NO_FIGURE ),
-						highlightColor  = Colors.NO_COLOR
+						X				= row,
+						Y				= column,
+						Index			= index,
+						fieldColor		= color,
+						fieldSize		= 48,
+						figureItem		= new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE ),
+						highlightColor	= Colors.NO_COLOR
 					} );
 					mChessBoardCollection[ index ].fieldClicked += new EventHandler< FieldClickedEventArg >( onFieldClicked );
 					index++;
@@ -69,10 +69,10 @@ namespace ChessTable.ViewModels
 		{
 			mChessBoardModel.moveFigure( new ModelItem
 			{
-				index   = aArguments.index,
-				type    = aArguments.type,
-				x       = aArguments.x,
-				y       = aArguments.y
+				index		= aArguments.index,
+				figureItem	= aArguments.figureItem,
+				x			= aArguments.x,
+				y			= aArguments.y
 			} );
 		}
 
@@ -80,7 +80,7 @@ namespace ChessTable.ViewModels
 
 		private void onPutFigureOnTheTableEventArg( Object aSender, PutFigureOnTheTableEventArg aArguments )
 		{
-			mChessBoardCollection[ aArguments.index ].figureType = aArguments.type;
+			mChessBoardCollection[ aArguments.index ].figureItem = aArguments.figureItem;
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
@@ -208,7 +208,7 @@ namespace ChessTable.ViewModels
 
 		public ObservableCollection< BoardItem >	mChessBoardCollection { get; set; }
 
-		public Tuple< Colors, FigureType >			selectedPanelItem { get; set; }
+		public FigureItem							selectedPanelItem { get; set; }
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 

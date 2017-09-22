@@ -22,10 +22,10 @@ namespace ChessTable.Model
 
 			mFigureToMove		= new ModelItem
 								{
-									index	= -1,
-									type	= new Tuple< Colors, FigureType >( Colors.NO_COLOR, FigureType.NO_FIGURE ),
-									x		= -1,
-									y		= -1
+									index		= -1,
+									figureItem	= new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE ),
+									x			= -1,
+									y			= -1
 								};
 		}
 
@@ -43,10 +43,10 @@ namespace ChessTable.Model
 				{
 					chessBoardRow.Add( new ModelItem
 					{
-						index	= row * 8 + column,
-						x		= row,
-						y		= column,
-						type	= new Tuple< Colors, FigureType >( Colors.NO_COLOR, FigureType.NO_FIGURE )
+						index		= row * 8 + column,
+						x			= row,
+						y			= column,
+						figureItem	= new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE )
 					} );
 				}
 				chessBoard.Add( chessBoardRow );
@@ -57,10 +57,10 @@ namespace ChessTable.Model
 				chessBoard[ item.x ][ item.y ] = item;
 				fieldClicked( this, new PutFigureOnTheTableEventArg
 				{
-					type	= item.type,
-					x		= item.x,
-					y		= item.y,
-					index	= item.index
+					figureItem	= item.figureItem,
+					x			= item.x,
+					y			= item.y,
+					index		= item.index
 				} );
 			}
 
@@ -69,10 +69,10 @@ namespace ChessTable.Model
 				chessBoard[ item.x ][ item.y ] = item;
 				fieldClicked( this, new PutFigureOnTheTableEventArg
 				{
-					type	= item.type,
-					x		= item.x,
-					y		= item.y,
-					index	= item.index
+					figureItem	= item.figureItem,
+					x			= item.x,
+					y			= item.y,
+					index		= item.index
 				} );
 			}
 		}
@@ -95,7 +95,7 @@ namespace ChessTable.Model
 
 		private void moveFigureFrom( ModelItem aFigureToMove )
 		{
-			if ( aFigureToMove.type.Item1 != mCurrentColor )
+			if ( aFigureToMove.figureItem.color != mCurrentColor )
 			{
 				return;
 			}
@@ -125,14 +125,14 @@ namespace ChessTable.Model
 
 			mIsFirstClick = true;
 
-			if ( aPlaceHere.type.Item1 == mCurrentColor )
+			if ( aPlaceHere.figureItem.color == mCurrentColor )
 			{
 				return;
 			}
 
-			if ( aPlaceHere.type.Item1 != Colors.NO_COLOR )
+			if ( aPlaceHere.figureItem.color != Colors.NO_COLOR )
 			{
-				if ( aPlaceHere.type.Item1 == Colors.WHITE )
+				if ( aPlaceHere.figureItem.color == Colors.WHITE )
 				{
 					ModelItem oldItem = whiteFigures.Where( X => X.index == aPlaceHere.index ).FirstOrDefault();
 					whiteFigures.Remove( oldItem );
@@ -162,21 +162,21 @@ namespace ChessTable.Model
 
 			fieldClicked( this, new PutFigureOnTheTableEventArg
 			{
-				index	= mFigureToMove.index,
-				type	= new Tuple<Colors, FigureType>(Colors.NO_COLOR, FigureType.NO_FIGURE),
-				x		= mFigureToMove.x,
-				y		= mFigureToMove.y,
+				index		= mFigureToMove.index,
+				figureItem	= new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE ),
+				x			= mFigureToMove.x,
+				y			= mFigureToMove.y,
 			} );
-			chessBoard[ mFigureToMove.x ][ mFigureToMove.y ].type = new Tuple<Colors, FigureType>( Colors.NO_COLOR, FigureType.NO_FIGURE );
+			chessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 
 			fieldClicked( this, new PutFigureOnTheTableEventArg
 			{
-				index	= aPlaceHere.index,
-				type	= mFigureToMove.type,
-				x		= aPlaceHere.x,
-				y		= aPlaceHere.y,
+				index		= aPlaceHere.index,
+				figureItem	= mFigureToMove.figureItem,
+				x			= aPlaceHere.x,
+				y			= aPlaceHere.y,
 			} );
-			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].type = mFigureToMove.type;
+			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = mFigureToMove.figureItem;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -184,15 +184,15 @@ namespace ChessTable.Model
 		private void setPossibleMoves()
 		{
 			possibleMoves.Clear();
-			switch ( mFigureToMove.type.Item2 )
+			switch ( mFigureToMove.figureItem.figureType )
 			{
-				case FigureType.KING: break;
-				case FigureType.QUEEN: break;
-				case FigureType.ROOK: break;
-				case FigureType.BISHOP: break;
-				case FigureType.KNIGHT: break;
-				case FigureType.PAWN: setPawnMoves(); break;
-				case FigureType.NO_FIGURE: break;
+				case FigureType.KING:					break;
+				case FigureType.QUEEN:					break;
+				case FigureType.ROOK:					break;
+				case FigureType.BISHOP:					break;
+				case FigureType.KNIGHT:					break;
+				case FigureType.PAWN: setPawnMoves();	break;
+				case FigureType.NO_FIGURE:				break;
 			}
 		}
 
@@ -271,12 +271,12 @@ namespace ChessTable.Model
 				return false;
 			}
 
-			if ( chessBoard[ aX ][ aY ].type.Item1 == mFigureToMove.type.Item1 )
+			if ( chessBoard[ aX ][ aY ].figureItem.color == mFigureToMove.figureItem.color )
 			{
 				return false;
 			}
 
-			if ( chessBoard[ aX ][ aY ].type.Item1 == Colors.NO_COLOR )
+			if ( chessBoard[ aX ][ aY ].figureItem.color == Colors.NO_COLOR )
 			{
 				setHighlight( this, new SetHighlightEventArg
 				{
