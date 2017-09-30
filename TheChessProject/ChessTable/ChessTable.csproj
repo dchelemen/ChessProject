@@ -76,8 +76,11 @@
     <Compile Include="Common\FigureItem.cs" />
     <Compile Include="Common\PaintBorderEventArg.cs" />
     <Compile Include="Common\PutFigureOnTheTableEventArg.cs" />
+    <Compile Include="Model\Rules\RookRule.cs" />
+    <Compile Include="Model\Rules\RulesBase.cs" />
     <Compile Include="Model\ModelItem.cs" />
     <Compile Include="Model\ChessBoardModel.cs" />
+    <Compile Include="Model\Rules\PawnRule.cs" />
     <Compile Include="ViewModels\BoardItem.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="ViewModels\ChessBoardViewModel.cs" />

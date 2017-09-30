@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using ChessTable.Model.Rules;
 
 namespace ChessTable.Model
 {
@@ -117,32 +118,31 @@ namespace ChessTable.Model
 
 		private void moveFigureTo( ModelItem aPlaceHere )
 		{
-			setHighlight( this, new SetHighlightEventArg
-			{
-				index = mFigureToMove.index,
-				color = Colors.NO_COLOR
-			} );
-
 			mIsFirstClick = true;
 
-			if ( aPlaceHere.figureItem.color == mCurrentColor )
+			if ( aPlaceHere == mFigureToMove )
 			{
+				removeHighLights();
 				return;
 			}
 
-			if ( aPlaceHere.figureItem.color != Colors.NO_COLOR )
+			if ( ! possibleMoves.Contains( aPlaceHere ) )
 			{
-				if ( aPlaceHere.figureItem.color == Colors.WHITE )
-				{
-					ModelItem oldItem = whiteFigures.Where( X => X.index == aPlaceHere.index ).FirstOrDefault();
-					whiteFigures.Remove( oldItem );
-				}
-				else
-				{
-					ModelItem oldItem = blackFigures.Where( X => X.index == aPlaceHere.index ).FirstOrDefault();
-					blackFigures.Remove( oldItem );
-				}
+				mIsFirstClick = false;
+				return;
 			}
+
+			if ( aPlaceHere.figureItem.color == Colors.WHITE )
+			{
+				//ModelItem oldItem = whiteFigures.Where( X => X.index == aPlaceHere.index ).FirstOrDefault();
+				whiteFigures.Remove( aPlaceHere );
+			}
+			else if ( aPlaceHere.figureItem.color == Colors.BLACK )
+			{
+				//ModelItem oldItem = blackFigures.Where( X => X.index == aPlaceHere.index ).FirstOrDefault();
+				blackFigures.Remove( aPlaceHere );
+			}
+
 			ModelItem tempItem;
 
 			if ( mCurrentColor == Colors.WHITE )
@@ -177,6 +177,28 @@ namespace ChessTable.Model
 				y			= aPlaceHere.y,
 			} );
 			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = mFigureToMove.figureItem;
+
+			removeHighLights();
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		private void removeHighLights()
+		{
+			setHighlight( this, new SetHighlightEventArg // Removing HighLights from the Figure itself
+			{
+				index = mFigureToMove.index,
+				color = Colors.NO_COLOR
+			} );
+
+			foreach ( ModelItem fields in possibleMoves ) // Removing HighLights from the possible moves
+			{
+				setHighlight( this, new SetHighlightEventArg
+				{
+					index = fields.index,
+					color = Colors.NO_COLOR
+				} );
+			}
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -186,113 +208,31 @@ namespace ChessTable.Model
 			possibleMoves.Clear();
 			switch ( mFigureToMove.figureItem.figureType )
 			{
-				case FigureType.KING:					break;
-				case FigureType.QUEEN:					break;
-				case FigureType.ROOK:					break;
-				case FigureType.BISHOP:					break;
-				case FigureType.KNIGHT:					break;
-				case FigureType.PAWN: setPawnMoves();	break;
-				case FigureType.NO_FIGURE:				break;
-			}
-		}
-
-		//----------------------------------------------------------------------------------------------------------------------------------------
-
-		private void setPawnMoves()
-		{
-			Int32 x, y;
-			if ( mCurrentColor == mPlayer1Color )
-			{
-				if ( mFigureToMove.x == 6 )
+			case FigureType.KING:					break;
+			case FigureType.QUEEN:					break;
+			case FigureType.ROOK:
 				{
-					x = mFigureToMove.x - 2;
-					y = mFigureToMove.y;
-
-					if ( isTargetRight( x, y ) )
-					{
-						possibleMoves.Add( new ModelItem
-						{
-							x		= x,
-							y		= y,
-							index	= x * 8 + y,
-						} );
-					}
-				}
-
-				x = mFigureToMove.x - 1;
-				y = mFigureToMove.y;
-
-				if ( isTargetRight( x, y ) )
+					RookRule rookRule	= new RookRule( chessBoard, mPlayer1Color, mFigureToMove );
+					possibleMoves		= rookRule.setPossibleMoves();
+				} break;
+			case FigureType.BISHOP:					break;
+			case FigureType.KNIGHT:					break;
+			case FigureType.PAWN:
 				{
-					possibleMoves.Add( new ModelItem
-					{
-						x		= x,
-						y		= y,
-						index	= x * 8 + y,
-					} );
-				}
-
-				y = mFigureToMove.y - 1;
-
-				if ( isTargetRight( x, y ) )
-				{
-					possibleMoves.Add( new ModelItem
-					{
-						x		= x,
-						y		= y,
-						index	= x * 8 + y,
-					} );
-				}
-
-				y = mFigureToMove.y + 1;
-
-				if ( isTargetRight( x, y ) )
-				{
-					possibleMoves.Add( new ModelItem
-					{
-						x		= x,
-						y		= y,
-						index	= x * 8 + y,
-					} );
-				}
-			}
-			else
-			{
-
-			}
-		}
-
-		//----------------------------------------------------------------------------------------------------------------------------------------
-
-		Boolean isTargetRight( Int32 aX, Int32 aY )
-		{
-			if ( aX < 0 || aX > 7 || aY < 0 || aY > 7 )
-			{
-				return false;
+					PawnRule pawnRule	= new PawnRule( chessBoard, mPlayer1Color, mFigureToMove );
+					possibleMoves		= pawnRule.setPossibleMoves();
+				} break;
+			case FigureType.NO_FIGURE:				break;
 			}
 
-			if ( chessBoard[ aX ][ aY ].figureItem.color == mFigureToMove.figureItem.color )
-			{
-				return false;
-			}
-
-			if ( chessBoard[ aX ][ aY ].figureItem.color == Colors.NO_COLOR )
+			foreach ( ModelItem fields in possibleMoves )
 			{
 				setHighlight( this, new SetHighlightEventArg
 				{
-					index = aX * 8 + aY,
+					index = fields.index,
 					color = Colors.BLUE
 				} );
 			}
-			else
-			{
-				setHighlight( this, new SetHighlightEventArg
-				{
-					index = aX * 8 + aY,
-					color = Colors.RED
-				} );
-			}
-			return true;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
