@@ -208,7 +208,11 @@ namespace ChessTable.Model
 			possibleMoves.Clear();
 			switch ( mFigureToMove.figureItem.figureType )
 			{
-			case FigureType.KING:					break;
+			case FigureType.KING:
+				{
+					KingRule kingRule	= new KingRule( chessBoard, mPlayer1Color, mFigureToMove );
+					possibleMoves		= kingRule.setPossibleMoves();
+				} break;
 			case FigureType.QUEEN:					break;
 			case FigureType.ROOK:
 				{
@@ -222,7 +226,7 @@ namespace ChessTable.Model
 					PawnRule pawnRule	= new PawnRule( chessBoard, mPlayer1Color, mFigureToMove );
 					possibleMoves		= pawnRule.setPossibleMoves();
 				} break;
-			case FigureType.NO_FIGURE:				break;
+			case FigureType.NO_FIGURE: break;
 			}
 
 			foreach ( ModelItem fields in possibleMoves )

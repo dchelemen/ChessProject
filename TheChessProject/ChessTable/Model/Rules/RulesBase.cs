@@ -24,7 +24,20 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		protected abstract Boolean isValidField( Int32 aX, Int32 aY );
+		protected Boolean isValidField( Int32 aX, Int32 aY )
+		{
+			if ( aX < 0 || aX > 7 || aY < 0 || aY > 7 )
+			{
+				return false;
+			}
+
+			if ( mChessBoard[ aX ][ aY ].figureItem.color == mFigureToMove.figureItem.color )
+			{
+				return false;
+			}
+
+			return true;
+		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
