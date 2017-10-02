@@ -22,69 +22,17 @@ namespace ChessTable.Model.Rules
 		{
 			List< ModelItem > possibleMoves		= new List< ModelItem >();
 
-			Int32 xCoord						= mFigureToMove.x + 1; // Lets move Down;
-			Int32 yCoord						= mFigureToMove.y;
+			// Lets move Down;
+			setPossibleMovesInLoop( ref possibleMoves, 1, 0 );
 
-			while ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
+			// Lets move Up;
+			setPossibleMovesInLoop( ref possibleMoves, -1, 0 );
 
-				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
-				{
-					break;
-				}
+			// Lets move Right;
+			setPossibleMovesInLoop( ref possibleMoves, 0, 1 );
 
-				xCoord += 1;
-			}
-
-			xCoord								= mFigureToMove.x - 1; // Lets move Up;
-			yCoord								= mFigureToMove.y;
-
-			while ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-
-				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
-				{
-					break;
-				}
-
-				xCoord -= 1;
-			}
-
-			xCoord								= mFigureToMove.x; // Lets move Right;
-			yCoord								= mFigureToMove.y + 1;
-
-			while ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-
-				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
-				{
-					break;
-				}
-
-				yCoord += 1;
-			}
-
-			xCoord								= mFigureToMove.x; // Lets move Left;
-			yCoord								= mFigureToMove.y - 1;
-
-			while ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-
-				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
-				{
-					break;
-				}
-
-				yCoord -= 1;
-			}
+			// Lets move Left;
+			setPossibleMovesInLoop( ref possibleMoves, 0, -1 );
 
 			return possibleMoves;
 		}

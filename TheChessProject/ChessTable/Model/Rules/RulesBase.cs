@@ -24,6 +24,40 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
+		protected void setPossibleMovesInLoop( ref List< ModelItem > aPossibleMoves, Int32 aAddX, Int32 aAddY )
+		{
+			Int32 xCoord	= mFigureToMove.x + aAddX;
+			Int32 yCoord	= mFigureToMove.y + aAddY;
+			while ( isValidField( xCoord, yCoord ) )
+			{
+				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
+				aPossibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
+
+				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
+				{
+					break;
+				}
+
+				xCoord += aAddX;
+				yCoord += aAddY;
+			}
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		protected void setOnePossibleMove( ref List< ModelItem > aPossibleMoves, Int32 aAddX, Int32 aAddY )
+		{
+			Int32 xCoord	= mFigureToMove.x + aAddX;
+			Int32 yCoord	= mFigureToMove.y + aAddY;
+			if ( isValidField( xCoord, yCoord ) )
+			{
+				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
+				aPossibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
+			}
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
 		protected Boolean isValidField( Int32 aX, Int32 aY )
 		{
 			if ( aX < 0 || aX > 7 || aY < 0 || aY > 7 )

@@ -44,6 +44,8 @@ namespace ChessTable.Model.Rules
 				}
 			}
 
+			//------
+
 			yCoord		= ( mFigureToMove.y - 1 );
 			isValid		= isValidField( xCoord, yCoord );
 			if ( isValid && ( mChessBoard[ xCoord ][ yCoord ].figureItem.figureType != FigureType.NO_FIGURE ) ) // Can we hit someone on the left?
@@ -51,6 +53,9 @@ namespace ChessTable.Model.Rules
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
 				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
 			}
+
+			//------
+
 			yCoord		= ( mFigureToMove.y + 1 );
 			isValid		= isValidField( xCoord, yCoord );
 			if ( isValid && ( mChessBoard[ xCoord ][ yCoord ].figureItem.figureType != FigureType.NO_FIGURE ) ) // Can we hit someone on the right?

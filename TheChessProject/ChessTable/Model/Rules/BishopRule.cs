@@ -21,74 +21,18 @@ namespace ChessTable.Model.Rules
 		public override List< ModelItem > setPossibleMoves()
 		{
 			List< ModelItem > possibleMoves		= new List< ModelItem >();
+			
+			// Lets move Down and Left;
+			setPossibleMovesInLoop( ref possibleMoves, 1, -1 );
 
-			Int32 xCoord						= mFigureToMove.x + 1; // Lets move Down and Right;
-			Int32 yCoord						= mFigureToMove.y + 1;
+			// Lets move Down and Right;
+			setPossibleMovesInLoop( ref possibleMoves, 1, 1 );
 
-			while ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
+			// Lets move Up and Right;
+			setPossibleMovesInLoop( ref possibleMoves, -1, 1 );
 
-				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
-				{
-					break;
-				}
-
-				xCoord += 1;
-				yCoord += 1;
-			}
-
-			xCoord								= mFigureToMove.x + 1; // Lets move Down and Left;
-			yCoord								= mFigureToMove.y - 1;
-
-			while ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-
-				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
-				{
-					break;
-				}
-
-				xCoord += 1;
-				yCoord -= 1;
-			}
-
-			xCoord								= mFigureToMove.x - 1; // Lets move Up and Right;
-			yCoord								= mFigureToMove.y + 1;
-
-			while ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-
-				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
-				{
-					break;
-				}
-
-				xCoord -= 1;
-				yCoord += 1;
-			}
-
-			xCoord								= mFigureToMove.x - 1; // Lets move Up and Left;
-			yCoord								= mFigureToMove.y - 1;
-
-			while ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-
-				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
-				{
-					break;
-				}
-
-				xCoord -= 1;
-				yCoord -= 1;
-			}
+			// Lets move Up and Left;
+			setPossibleMovesInLoop( ref possibleMoves, -1, -1 );
 
 			return possibleMoves;
 		}

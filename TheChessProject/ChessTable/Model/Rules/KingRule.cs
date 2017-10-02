@@ -22,69 +22,29 @@ namespace ChessTable.Model.Rules
 		{
 			List< ModelItem > possibleMoves		= new List< ModelItem >();
 
-			Int32 xCoord						= mFigureToMove.x + 1; // Lets move Down;
-			Int32 yCoord						= mFigureToMove.y - 1;
-			if ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-			}
+			// Lets move Down and Left;
+			setOnePossibleMove( ref possibleMoves, 1, -1 );
 
-			xCoord								= mFigureToMove.x + 1; // Lets move Down;
-			yCoord								= mFigureToMove.y;
-			if ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-			}
+			// Lets move Down;
+			setOnePossibleMove( ref possibleMoves, 1, 0 );
 
-			xCoord								= mFigureToMove.x + 1; // Lets move Down;
-			yCoord								= mFigureToMove.y + 1;
-			if ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-			}
+			// Lets move Down and Right;
+			setOnePossibleMove( ref possibleMoves, 1, 1 );
 
-			xCoord								= mFigureToMove.x; // Lets move Down;
-			yCoord								= mFigureToMove.y - 1;
-			if ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-			}
+			// Lets move Right;
+			setOnePossibleMove( ref possibleMoves, 0, 1 );
 
-			xCoord								= mFigureToMove.x; // Lets move Down;
-			yCoord								= mFigureToMove.y + 1;
-			if ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-			}
+			// Lets move Up and Right;
+			setOnePossibleMove( ref possibleMoves, -1, 1 );
 
-			xCoord								= mFigureToMove.x - 1; // Lets move Down;
-			yCoord								= mFigureToMove.y - 1;
-			if ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-			}
+			// Lets move Up;
+			setOnePossibleMove( ref possibleMoves, -1, 0 );
 
-			xCoord								= mFigureToMove.x - 1; // Lets move Down;
-			yCoord								= mFigureToMove.y;
-			if ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-			}
+			// Lets move Up and Left;
+			setOnePossibleMove( ref possibleMoves, -1, -1 );
 
-			xCoord								= mFigureToMove.x - 1; // Lets move Down;
-			yCoord								= mFigureToMove.y + 1;
-			if ( isValidField( xCoord, yCoord ) )
-			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
-			}
+			// Lets move Left;
+			setOnePossibleMove( ref possibleMoves, 0, -1 );
 
 			return possibleMoves;
 		}
