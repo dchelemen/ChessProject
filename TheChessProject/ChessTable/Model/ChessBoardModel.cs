@@ -213,7 +213,11 @@ namespace ChessTable.Model
 					KingRule kingRule		= new KingRule( chessBoard, mPlayer1Color, mFigureToMove );
 					possibleMoves			= kingRule.setPossibleMoves();
 				} break;
-			case FigureType.QUEEN:					break;
+			case FigureType.QUEEN:
+				{
+					QueenRule queenRule		= new QueenRule( chessBoard, mPlayer1Color, mFigureToMove );
+					possibleMoves			= queenRule.setPossibleMoves();
+				} break;
 			case FigureType.ROOK:
 				{
 					RookRule rookRule		= new RookRule( chessBoard, mPlayer1Color, mFigureToMove );
