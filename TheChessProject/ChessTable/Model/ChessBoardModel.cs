@@ -210,23 +210,27 @@ namespace ChessTable.Model
 			{
 			case FigureType.KING:
 				{
-					KingRule kingRule	= new KingRule( chessBoard, mPlayer1Color, mFigureToMove );
-					possibleMoves		= kingRule.setPossibleMoves();
+					KingRule kingRule		= new KingRule( chessBoard, mPlayer1Color, mFigureToMove );
+					possibleMoves			= kingRule.setPossibleMoves();
 				} break;
 			case FigureType.QUEEN:					break;
 			case FigureType.ROOK:
 				{
-					RookRule rookRule	= new RookRule( chessBoard, mPlayer1Color, mFigureToMove );
-					possibleMoves		= rookRule.setPossibleMoves();
+					RookRule rookRule		= new RookRule( chessBoard, mPlayer1Color, mFigureToMove );
+					possibleMoves			= rookRule.setPossibleMoves();
 				} break;
-			case FigureType.BISHOP:					break;
+			case FigureType.BISHOP:
+				{
+					BishopRule bishopRule	= new BishopRule( chessBoard, mPlayer1Color, mFigureToMove );
+					possibleMoves			= bishopRule.setPossibleMoves();
+				} break;
 			case FigureType.KNIGHT:					break;
 			case FigureType.PAWN:
 				{
-					PawnRule pawnRule	= new PawnRule( chessBoard, mPlayer1Color, mFigureToMove );
-					possibleMoves		= pawnRule.setPossibleMoves();
+					PawnRule pawnRule		= new PawnRule( chessBoard, mPlayer1Color, mFigureToMove );
+					possibleMoves			= pawnRule.setPossibleMoves();
 				} break;
-			case FigureType.NO_FIGURE: break;
+			case FigureType.NO_FIGURE:		break;
 			}
 
 			foreach ( ModelItem fields in possibleMoves )
