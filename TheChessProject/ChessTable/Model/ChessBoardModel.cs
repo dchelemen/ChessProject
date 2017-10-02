@@ -228,7 +228,11 @@ namespace ChessTable.Model
 					BishopRule bishopRule	= new BishopRule( chessBoard, mPlayer1Color, mFigureToMove );
 					possibleMoves			= bishopRule.setPossibleMoves();
 				} break;
-			case FigureType.KNIGHT:					break;
+			case FigureType.KNIGHT:
+				{
+					KnightRule knightRule	= new KnightRule( chessBoard, mPlayer1Color, mFigureToMove );
+					possibleMoves			= knightRule.setPossibleMoves();
+				} break;
 			case FigureType.PAWN:
 				{
 					PawnRule pawnRule		= new PawnRule( chessBoard, mPlayer1Color, mFigureToMove );
