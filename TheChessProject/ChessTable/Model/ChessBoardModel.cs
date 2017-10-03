@@ -211,32 +211,32 @@ namespace ChessTable.Model
 			case FigureType.KING:
 				{
 					KingRule kingRule		= new KingRule( chessBoard, mPlayer1Color, mFigureToMove );
-					possibleMoves			= kingRule.setPossibleMoves();
+					possibleMoves			= kingRule.possibleMoves();
 				} break;
 			case FigureType.QUEEN:
 				{
 					QueenRule queenRule		= new QueenRule( chessBoard, mPlayer1Color, mFigureToMove );
-					possibleMoves			= queenRule.setPossibleMoves();
+					possibleMoves			= queenRule.possibleMoves();
 				} break;
 			case FigureType.ROOK:
 				{
 					RookRule rookRule		= new RookRule( chessBoard, mPlayer1Color, mFigureToMove );
-					possibleMoves			= rookRule.setPossibleMoves();
+					possibleMoves			= rookRule.possibleMoves();
 				} break;
 			case FigureType.BISHOP:
 				{
 					BishopRule bishopRule	= new BishopRule( chessBoard, mPlayer1Color, mFigureToMove );
-					possibleMoves			= bishopRule.setPossibleMoves();
+					possibleMoves			= bishopRule.possibleMoves();
 				} break;
 			case FigureType.KNIGHT:
 				{
 					KnightRule knightRule	= new KnightRule( chessBoard, mPlayer1Color, mFigureToMove );
-					possibleMoves			= knightRule.setPossibleMoves();
+					possibleMoves			= knightRule.possibleMoves();
 				} break;
 			case FigureType.PAWN:
 				{
 					PawnRule pawnRule		= new PawnRule( chessBoard, mPlayer1Color, mFigureToMove );
-					possibleMoves			= pawnRule.setPossibleMoves();
+					possibleMoves			= pawnRule.possibleMoves();
 				} break;
 			case FigureType.NO_FIGURE:		break;
 			}
