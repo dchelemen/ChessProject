@@ -20,18 +20,18 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract List< ModelItem > setPossibleMoves();
+		public abstract List< ModelItem > possibleMoves();
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		protected void setPossibleMovesInLoop( ref List< ModelItem > aPossibleMoves, Int32 aAddX, Int32 aAddY )
+		protected void setPossibleMovesInLoop( Int32 aAddX, Int32 aAddY )
 		{
 			Int32 xCoord	= mFigureToMove.x + aAddX;
 			Int32 yCoord	= mFigureToMove.y + aAddY;
 			while ( isValidField( xCoord, yCoord ) )
 			{
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				aPossibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
+				mPossibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
 
 				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
 				{
@@ -45,14 +45,14 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		protected void setOnePossibleMove( ref List< ModelItem > aPossibleMoves, Int32 aAddX, Int32 aAddY )
+		protected void setOnePossibleMove( Int32 aAddX, Int32 aAddY )
 		{
 			Int32 xCoord	= mFigureToMove.x + aAddX;
 			Int32 yCoord	= mFigureToMove.y + aAddY;
 			if ( isValidField( xCoord, yCoord ) )
 			{
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				aPossibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
+				mPossibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
 			}
 		}
 
@@ -76,6 +76,7 @@ namespace ChessTable.Model
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
 		protected List< List < ModelItem > >		mChessBoard { get; set; }
+		protected List< ModelItem >					mPossibleMoves { get; set; }
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 

@@ -17,9 +17,9 @@ namespace ChessTable.Model.Rules
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override List< ModelItem > setPossibleMoves()
+		public override List< ModelItem > possibleMoves()
 		{
-			List< ModelItem > possibleMoves		= new List< ModelItem >();
+			mPossibleMoves						= new List< ModelItem >();
 			Int32 xCoord						= -1;
 			Int32 yCoord						= -1;
 			Boolean isValid						= false;
@@ -36,11 +36,11 @@ namespace ChessTable.Model.Rules
 			isValid = isValidField( xCoord, yCoord );
 			if ( isValid && mChessBoard[ xCoord ][ yCoord ].figureItem.figureType == FigureType.NO_FIGURE ) // Can we move forward?
 			{
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
+				mPossibleMoves.Add( new ModelItem( xCoord, yCoord, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
 
 				if ( mFigureToMove.x == isPlayer1Moves2 && mChessBoard[ xCoord + isPlayer1Turn ][ yCoord ].figureItem.figureType == FigureType.NO_FIGURE ) // Can we make 2 steps forward?
 				{
-					possibleMoves.Add( new ModelItem( xCoord + isPlayer1Turn, yCoord, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
+					mPossibleMoves.Add( new ModelItem( xCoord + isPlayer1Turn, yCoord, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
 				}
 			}
 
@@ -51,7 +51,7 @@ namespace ChessTable.Model.Rules
 			if ( isValid && ( mChessBoard[ xCoord ][ yCoord ].figureItem.figureType != FigureType.NO_FIGURE ) ) // Can we hit someone on the left?
 			{
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
+				mPossibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
 			}
 
 			//------
@@ -61,10 +61,10 @@ namespace ChessTable.Model.Rules
 			if ( isValid && ( mChessBoard[ xCoord ][ yCoord ].figureItem.figureType != FigureType.NO_FIGURE ) ) // Can we hit someone on the right?
 			{
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				possibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
+				mPossibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
 			}
 
-			return possibleMoves;
+			return mPossibleMoves;
 		}
 		
 		//----------------------------------------------------------------------------------------------------------------------------------------
