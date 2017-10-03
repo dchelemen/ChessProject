@@ -20,31 +20,16 @@ namespace ChessTable.Model.Rules
 
 		public override List< ModelItem > possibleMoves()
 		{
-			mPossibleMoves		= new List< ModelItem >();
+			mPossibleMoves = new List< ModelItem >();
 
-			// Lets move Down and Left;
-			setOnePossibleMove( 1, -1 );
-
-			// Lets move Down;
-			setOnePossibleMove( 1, 0 );
-
-			// Lets move Down and Right;
-			setOnePossibleMove( 1, 1 );
-
-			// Lets move Right;
-			setOnePossibleMove( 0, 1 );
-
-			// Lets move Up and Right;
-			setOnePossibleMove( -1, 1 );
-
-			// Lets move Up;
-			setOnePossibleMove( -1, 0 );
-
-			// Lets move Up and Left;
-			setOnePossibleMove( -1, -1 );
-
-			// Lets move Left;
-			setOnePossibleMove( 0, -1 );
+			setOnePossibleMove( +1, -1 ); // Lets move Down and Left;
+			setOnePossibleMove( +1, +0 ); // Lets move Down;
+			setOnePossibleMove( +1, +1 ); // Lets move Down and Right;
+			setOnePossibleMove( +0, +1 ); // Lets move Right;
+			setOnePossibleMove( -1, +1 ); // Lets move Up and Right;
+			setOnePossibleMove( -1, +0 ); // Lets move Up;
+			setOnePossibleMove( -1, -1 ); // Lets move Up and Left;
+			setOnePossibleMove( +0, -1 ); // Lets move Left;
 
 			return mPossibleMoves;
 		}
