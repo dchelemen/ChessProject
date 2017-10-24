@@ -55,7 +55,7 @@ namespace ChessTable.Model
 
 			foreach ( ModelItem item in whiteFigures )
 			{
-				chessBoard[ item.x ][ item.y ] = item;
+				chessBoard[ item.x ][ item.y ] = new ModelItem( item.x, item.y, item.figureItem.color, item.figureItem.figureType );
 				fieldClicked( this, new PutFigureOnTheTableEventArg
 				{
 					figureItem	= item.figureItem,
@@ -67,7 +67,7 @@ namespace ChessTable.Model
 
 			foreach ( ModelItem item in blackFigures )
 			{
-				chessBoard[ item.x ][ item.y ] = item;
+				chessBoard[ item.x ][ item.y ] = new ModelItem( item.x, item.y, item.figureItem.color, item.figureItem.figureType );
 				fieldClicked( this, new PutFigureOnTheTableEventArg
 				{
 					figureItem	= item.figureItem,
@@ -134,12 +134,10 @@ namespace ChessTable.Model
 
 			if ( aPlaceHere.figureItem.color == Colors.WHITE )
 			{
-				//ModelItem oldItem = whiteFigures.Where( X => X.index == aPlaceHere.index ).FirstOrDefault();
 				whiteFigures.Remove( aPlaceHere );
 			}
 			else if ( aPlaceHere.figureItem.color == Colors.BLACK )
 			{
-				//ModelItem oldItem = blackFigures.Where( X => X.index == aPlaceHere.index ).FirstOrDefault();
 				blackFigures.Remove( aPlaceHere );
 			}
 
@@ -176,8 +174,8 @@ namespace ChessTable.Model
 				x			= aPlaceHere.x,
 				y			= aPlaceHere.y,
 			} );
-			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = mFigureToMove.figureItem;
 
+			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = new FigureItem( mFigureToMove.figureItem.color, mFigureToMove.figureItem.figureType );
 			removeHighLights();
 		}
 
@@ -210,7 +208,7 @@ namespace ChessTable.Model
 			{
 			case FigureType.KING:
 				{
-					KingRule kingRule		= new KingRule( chessBoard, mPlayer1Color, mFigureToMove );
+					KingRule kingRule		= new KingRule( chessBoard, mPlayer1Color, mFigureToMove, blackFigures, whiteFigures );
 					possibleMoves			= kingRule.possibleMoves();
 				} break;
 			case FigureType.QUEEN:

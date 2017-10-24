@@ -67,7 +67,7 @@ namespace ChessTable.ViewModels
 
 			if ( selectedColor == Colors.WHITE )
 			{
-				for ( Int32 column = 0; column < 8; column++ )
+				for ( Int32 column = 0; column < 8; column++ ) // set Pawns
 				{
 					mChessBoardModel.whiteFigures.Add( new ModelItem
 					{

@@ -45,7 +45,7 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		protected void setOnePossibleMove( Int32 aAddX, Int32 aAddY )
+		protected virtual void setOnePossibleMove( Int32 aAddX, Int32 aAddY )
 		{
 			Int32 xCoord	= mFigureToMove.x + aAddX;
 			Int32 yCoord	= mFigureToMove.y + aAddY;
