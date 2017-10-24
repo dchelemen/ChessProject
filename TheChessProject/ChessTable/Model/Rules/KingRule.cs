@@ -77,7 +77,7 @@ namespace ChessTable.Model.Rules
 				enemyFigures = mWhiteFigures;
 			}
 
-			ModelItem enemyFigure = new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType );
+			ModelItem targetFigure = new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType );
 			modelItem.figureItem.figureType		= mFigureToMove.figureItem.figureType;
 			modelItem.figureItem.color			= mFigureToMove.figureItem.color;
 
@@ -90,8 +90,8 @@ namespace ChessTable.Model.Rules
 				List< ModelItem > enemysPossibleMove = possibleMoveOfEnemy( enemy );
 				if ( enemysPossibleMove.Contains( modelItem ) )
 				{
-					modelItem.figureItem.figureType		= enemyFigure.figureItem.figureType;
-					modelItem.figureItem.color			= enemyFigure.figureItem.color;
+					modelItem.figureItem.figureType		= targetFigure.figureItem.figureType;
+					modelItem.figureItem.color			= targetFigure.figureItem.color;
 
 					mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.figureType		= mFigureToMove.figureItem.figureType;
 					mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.color			= mFigureToMove.figureItem.color;
@@ -99,8 +99,8 @@ namespace ChessTable.Model.Rules
 				}
 			}
 
-			modelItem.figureItem.figureType		= enemyFigure.figureItem.figureType;
-			modelItem.figureItem.color			= enemyFigure.figureItem.color;
+			modelItem.figureItem.figureType		= targetFigure.figureItem.figureType;
+			modelItem.figureItem.color			= targetFigure.figureItem.color;
 
 			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.figureType		= mFigureToMove.figureItem.figureType;
 			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.color			= mFigureToMove.figureItem.color;
