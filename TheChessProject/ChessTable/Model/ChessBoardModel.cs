@@ -153,7 +153,6 @@ namespace ChessTable.Model
 			}
 
 			ModelItem tempItem;
-
 			if ( mCurrentColor == Colors.WHITE )
 			{
 				tempItem = whiteFigures.Where( X => X.index == mFigureToMove.index ).FirstOrDefault();
@@ -169,24 +168,12 @@ namespace ChessTable.Model
 			tempItem.x		= aPlaceHere.x;
 			tempItem.y		= aPlaceHere.y;
 
-			fieldClicked( this, new PutFigureOnTheTableEventArg
-			{
-				index		= mFigureToMove.index,
-				figureItem	= new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE ),
-				x			= mFigureToMove.x,
-				y			= mFigureToMove.y,
-			} );
+			fieldClicked( this, new PutFigureOnTheTableEventArg( mFigureToMove.x, mFigureToMove.y, mFigureToMove.index, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
 			chessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 
-			fieldClicked( this, new PutFigureOnTheTableEventArg
-			{
-				index		= aPlaceHere.index,
-				figureItem	= mFigureToMove.figureItem,
-				x			= aPlaceHere.x,
-				y			= aPlaceHere.y,
-			} );
-
+			fieldClicked( this, new PutFigureOnTheTableEventArg( aPlaceHere.x, aPlaceHere.y, aPlaceHere.index, mFigureToMove.figureItem.color, mFigureToMove.figureItem.figureType ) );
 			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = new FigureItem( mFigureToMove.figureItem.color, mFigureToMove.figureItem.figureType );
+
 			removeHighLights();
 		}
 
@@ -293,42 +280,19 @@ namespace ChessTable.Model
 			newKingPlace.x		= aPlaceHere.x;
 			newKingPlace.y		= aPlaceHere.y;
 
-			fieldClicked( this, new PutFigureOnTheTableEventArg
-			{
-				index		= mFigureToMove.index,
-				figureItem	= new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE ),
-				x			= mFigureToMove.x,
-				y			= mFigureToMove.y,
-			} );
+			fieldClicked( this, new PutFigureOnTheTableEventArg( mFigureToMove.x, mFigureToMove.y, mFigureToMove.index, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
 			chessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 
-			fieldClicked( this, new PutFigureOnTheTableEventArg
-			{
-				index		= aPlaceHere.index,
-				figureItem	= mFigureToMove.figureItem,
-				x			= aPlaceHere.x,
-				y			= aPlaceHere.y,
-			} );
+			fieldClicked( this, new PutFigureOnTheTableEventArg( aPlaceHere.x, aPlaceHere.y, aPlaceHere.index, mFigureToMove.figureItem.color, mFigureToMove.figureItem.figureType ) );
 			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = new FigureItem( mFigureToMove.figureItem.color, mFigureToMove.figureItem.figureType );
 
 			// move the Rook
 
-			fieldClicked( this, new PutFigureOnTheTableEventArg
-			{
-				index		= newRookPlace.index,
-				figureItem	= new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE ),
-				x			= newRookPlace.x,
-				y			= newRookPlace.y,
-			} );
+			fieldClicked( this, new PutFigureOnTheTableEventArg( newRookPlace.x, newRookPlace.y, newRookPlace.index, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
 			chessBoard[ newRookPlace.x ][ newRookPlace.y ].figureItem = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 
-			fieldClicked( this, new PutFigureOnTheTableEventArg
-			{
-				index		= aPlaceHere.index + moveYCoordForRookBy,
-				figureItem	= new FigureItem( newRookPlace.figureItem.color, newRookPlace.figureItem.figureType ),
-				x			= newRookPlace.x,
-				y			= aPlaceHere.y + moveYCoordForRookBy,
-			} );
+			fieldClicked( this, new PutFigureOnTheTableEventArg( newRookPlace.x, aPlaceHere.y + moveYCoordForRookBy, aPlaceHere.index + moveYCoordForRookBy,
+																							newRookPlace.figureItem.color, newRookPlace.figureItem.figureType ) );
 			chessBoard[ newRookPlace.x ][ aPlaceHere.y + moveYCoordForRookBy ].figureItem = new FigureItem( newRookPlace.figureItem.color, newRookPlace.figureItem.figureType );
 
 			newRookPlace.index = aPlaceHere.index + moveYCoordForRookBy;
