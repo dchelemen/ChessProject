@@ -34,6 +34,8 @@ namespace ChessTable.Model
 
 		public void startModel()
 		{
+			mCastlingRule	= new CastlingRule();
+
 			chessBoard		= new List< List< ModelItem > >();
 			possibleMoves	= new List< ModelItem >();
 
@@ -132,6 +134,15 @@ namespace ChessTable.Model
 				return;
 			}
 
+			if ( mCastlingRule.isCastling( mFigureToMove, aPlaceHere ) )
+			{
+				castling( aPlaceHere );
+				removeHighLights();
+				return;
+			}
+
+			mCastlingRule.updateCastlingState( mFigureToMove );
+
 			if ( aPlaceHere.figureItem.color == Colors.WHITE )
 			{
 				whiteFigures.Remove( aPlaceHere );
@@ -208,7 +219,7 @@ namespace ChessTable.Model
 			{
 			case FigureType.KING:
 				{
-					KingRule kingRule		= new KingRule( chessBoard, mPlayer1Color, mFigureToMove, blackFigures, whiteFigures );
+					KingRule kingRule		= new KingRule( chessBoard, mPlayer1Color, mFigureToMove, blackFigures, whiteFigures, mCastlingRule );
 					possibleMoves			= kingRule.possibleMoves();
 				} break;
 			case FigureType.QUEEN:
@@ -251,6 +262,83 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
+		private void castling( ModelItem aPlaceHere )
+		{
+			ModelItem newKingPlace;
+			ModelItem newRookPlace;
+			ModelItem leftRook;
+			ModelItem rightRook;
+
+			if ( mCurrentColor == Colors.WHITE )
+			{
+				rightRook		= whiteFigures.Where( X => X.y == 7 && X.figureItem.figureType == FigureType.ROOK ).FirstOrDefault();
+				leftRook		= whiteFigures.Where( X => X.y == 0 && X.figureItem.figureType == FigureType.ROOK ).FirstOrDefault();
+				newKingPlace	= whiteFigures.Where( X => X.index == mFigureToMove.index ).FirstOrDefault();
+				newRookPlace	= ( aPlaceHere.y > 4 ? rightRook : leftRook );
+				mCurrentColor	= Colors.BLACK;
+			}
+			else
+			{
+				rightRook		= blackFigures.Where( X => X.y == 7 && X.figureItem.figureType == FigureType.ROOK ).FirstOrDefault();
+				leftRook		= blackFigures.Where( X => X.y == 0 && X.figureItem.figureType == FigureType.ROOK ).FirstOrDefault();
+				newKingPlace	= blackFigures.Where( X => X.index == mFigureToMove.index ).FirstOrDefault();
+				newRookPlace	= ( aPlaceHere.y > 4 ? rightRook : leftRook );
+				mCurrentColor	= Colors.WHITE;
+			}
+			Int32 moveYCoordForRookBy = ( newRookPlace == leftRook ? 1 : -1 );
+
+			// move the King
+
+			newKingPlace.index	= aPlaceHere.index;
+			newKingPlace.x		= aPlaceHere.x;
+			newKingPlace.y		= aPlaceHere.y;
+
+			fieldClicked( this, new PutFigureOnTheTableEventArg
+			{
+				index		= mFigureToMove.index,
+				figureItem	= new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE ),
+				x			= mFigureToMove.x,
+				y			= mFigureToMove.y,
+			} );
+			chessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
+
+			fieldClicked( this, new PutFigureOnTheTableEventArg
+			{
+				index		= aPlaceHere.index,
+				figureItem	= mFigureToMove.figureItem,
+				x			= aPlaceHere.x,
+				y			= aPlaceHere.y,
+			} );
+			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = new FigureItem( mFigureToMove.figureItem.color, mFigureToMove.figureItem.figureType );
+
+			// move the Rook
+
+			fieldClicked( this, new PutFigureOnTheTableEventArg
+			{
+				index		= newRookPlace.index,
+				figureItem	= new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE ),
+				x			= newRookPlace.x,
+				y			= newRookPlace.y,
+			} );
+			chessBoard[ newRookPlace.x ][ newRookPlace.y ].figureItem = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
+
+			fieldClicked( this, new PutFigureOnTheTableEventArg
+			{
+				index		= aPlaceHere.index + moveYCoordForRookBy,
+				figureItem	= new FigureItem( newRookPlace.figureItem.color, newRookPlace.figureItem.figureType ),
+				x			= newRookPlace.x,
+				y			= aPlaceHere.y + moveYCoordForRookBy,
+			} );
+			chessBoard[ newRookPlace.x ][ aPlaceHere.y + moveYCoordForRookBy ].figureItem = new FigureItem( newRookPlace.figureItem.color, newRookPlace.figureItem.figureType );
+
+			newRookPlace.index = aPlaceHere.index + moveYCoordForRookBy;
+			newRookPlace.y = aPlaceHere.y + moveYCoordForRookBy;
+
+			removeHighLights();
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
 		public event EventHandler< PutFigureOnTheTableEventArg >	fieldClicked;
 
 		public event EventHandler< SetHighlightEventArg >			setHighlight;
@@ -271,5 +359,6 @@ namespace ChessTable.Model
 		private Boolean												mIsFirstClick;
 
 		private ModelItem											mFigureToMove;
+		private CastlingRule										mCastlingRule;
 	}
 }

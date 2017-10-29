@@ -12,11 +12,12 @@ namespace ChessTable.Model.Rules
 		
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public KingRule( List< List< ModelItem > > aChessBoard, Colors aPlayer1Color, ModelItem aFigureToMove, List< ModelItem > aBlackFigures, List< ModelItem > aWhiteFigures )
+		public KingRule( List< List< ModelItem > > aChessBoard, Colors aPlayer1Color, ModelItem aFigureToMove, List< ModelItem > aBlackFigures, List< ModelItem > aWhiteFigures, CastlingRule aCastlingRule = null )
 			: base( aChessBoard, aPlayer1Color, aFigureToMove )
 		{
 			mBlackFigures = aBlackFigures;
 			mWhiteFigures = aWhiteFigures;
+			mCastlingRule = aCastlingRule;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -34,6 +35,19 @@ namespace ChessTable.Model.Rules
 			setOnePossibleMove( -1, -1 ); // Lets move Up and Left;
 			setOnePossibleMove( +0, -1 ); // Lets move Left;
 
+			Boolean canCastling		= mCastlingRule.canCastling( mFigureToMove, mChessBoard, +0, -2 );
+			Boolean isTheWayClear	= mPossibleMoves.Where( x => x.index == mFigureToMove.index - 1 ).Count() == 1;
+			if ( canCastling && isTheWayClear )
+			{
+				setOnePossibleMove( +0, -2 );
+			}
+
+			canCastling		= mCastlingRule.canCastling( mFigureToMove, mChessBoard, +0, +2 );
+			isTheWayClear	= mPossibleMoves.Where( x => x.index == mFigureToMove.index + 1 ).Count() == 1;
+			if ( canCastling && isTheWayClear )
+			{
+				setOnePossibleMove( +0, +2 );
+			}
 			return mPossibleMoves;
 		}
 
@@ -154,5 +168,6 @@ namespace ChessTable.Model.Rules
 
 		List< ModelItem > mBlackFigures;
 		List< ModelItem > mWhiteFigures;
+		CastlingRule mCastlingRule;
 	}
 }
