@@ -35,6 +35,7 @@ namespace ChessTable.ViewModels
 			mBlackFigureCollection	= new ObservableCollection< BoardItem >();
 			mWhiteFigureCollection	= new ObservableCollection< BoardItem >();
 			mChessBoardModel		= new ChessBoardModel( aPlayer1Color, aStartingColor, aPlayer1Algorithm, aPlayer2Algorithm );
+			mChessBoardModel.disableCastling();
 
 			setupCustomBoard();
 		}

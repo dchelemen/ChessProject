@@ -28,14 +28,13 @@ namespace ChessTable.Model
 									x			= -1,
 									y			= -1
 								};
+			mCastlingRule	= new CastlingRule();
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
 		public void startModel()
 		{
-			mCastlingRule	= new CastlingRule();
-
 			chessBoard		= new List< List< ModelItem > >();
 			possibleMoves	= new List< ModelItem >();
 
@@ -299,6 +298,13 @@ namespace ChessTable.Model
 			newRookPlace.y = aPlaceHere.y + moveYCoordForRookBy;
 
 			removeHighLights();
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		public void disableCastling()
+		{
+			mCastlingRule.disable();
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------

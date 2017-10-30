@@ -41,6 +41,11 @@ namespace ChessTable.Model.Rules
 
 		public Boolean canCastling( ModelItem aFigureToMove, List< List< ModelItem > > aChessBoard, Int32 aX, Int32 aY )
 		{
+			if ( aFigureToMove.figureItem.color == Colors.WHITE && ! isWhiteKingNotMoved || aFigureToMove.figureItem.color == Colors.BLACK && ! isBlackKingNotMoved )
+			{
+				return false;
+			}
+
 			Int32 stepMore					= ( aY > 0 ? aY + 1 : aY - 1 );
 			FigureType theFigureWeCheck		= aChessBoard[ aFigureToMove.x ][ aFigureToMove.y + stepMore ].figureItem.figureType;
 			Boolean isTheWayEmpty			= theFigureWeCheck == FigureType.ROOK || theFigureWeCheck == FigureType.NO_FIGURE;
@@ -49,7 +54,7 @@ namespace ChessTable.Model.Rules
 			if ( aFigureToMove.figureItem.color == Colors.WHITE )
 			{
 				isTheCurrentRookNotMoved = ( aY > 0 && isWhiteRightRookNotMoved || aY < 0 && isWhiteLeftRookNotMoved );
-				if ( isTheCurrentRookNotMoved && isTheWayEmpty && isWhiteKingNotMoved )
+				if ( isTheCurrentRookNotMoved && isTheWayEmpty )
 				{
 					return true;
 				}
@@ -57,7 +62,7 @@ namespace ChessTable.Model.Rules
 			}
 
 			isTheCurrentRookNotMoved = ( aY > 0 && isBlackRightRookNotMoved || aY < 0 && isBlackLeftRookNotMoved );
-			if ( isTheCurrentRookNotMoved && isTheWayEmpty && isBlackKingNotMoved )
+			if ( isTheCurrentRookNotMoved && isTheWayEmpty )
 			{
 				return true;
 			}
@@ -107,6 +112,19 @@ namespace ChessTable.Model.Rules
 				isBlackRightRookNotMoved = false;
 				return;
 			}
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		public void disable()
+		{
+			isWhiteKingNotMoved			= false;
+			isWhiteLeftRookNotMoved		= false;
+			isWhiteRightRookNotMoved	= false;
+
+			isBlackKingNotMoved			= false;
+			isBlackLeftRookNotMoved		= false;
+			isBlackRightRookNotMoved	= false;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
