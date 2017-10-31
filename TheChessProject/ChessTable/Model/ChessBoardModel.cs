@@ -297,6 +297,7 @@ namespace ChessTable.Model
 			newRookPlace.index = aPlaceHere.index + moveYCoordForRookBy;
 			newRookPlace.y = aPlaceHere.y + moveYCoordForRookBy;
 
+			mCastlingRule.updateCastlingState( mFigureToMove );
 			removeHighLights();
 		}
 
