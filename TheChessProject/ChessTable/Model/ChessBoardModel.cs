@@ -29,6 +29,7 @@ namespace ChessTable.Model
 									y			= -1
 								};
 			mCastlingRule	= new CastlingRule();
+			mEnPassantRule	= new EnPassantRule();
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -36,7 +37,7 @@ namespace ChessTable.Model
 		public void startModel()
 		{
 			chessBoard		= new List< List< ModelItem > >();
-			possibleMoves	= new List< ModelItem >();
+			possibleMoves	= new List< Int32 >();
 
 			for ( Int32 row = 0; row < 8; row++ )
 			{
@@ -120,14 +121,13 @@ namespace ChessTable.Model
 		private void moveFigureTo( ModelItem aPlaceHere )
 		{
 			mIsFirstClick = true;
-
 			if ( aPlaceHere == mFigureToMove )
 			{
 				removeHighLights();
 				return;
 			}
 
-			if ( ! possibleMoves.Contains( aPlaceHere ) )
+			if ( ! possibleMoves.Contains( aPlaceHere.index ) )
 			{
 				mIsFirstClick = false;
 				return;
@@ -141,15 +141,16 @@ namespace ChessTable.Model
 			}
 
 			mCastlingRule.updateCastlingState( mFigureToMove );
+			if ( mEnPassantRule.isEnPassantActive && aPlaceHere.index == mEnPassantRule.temporaryPawn.index && mFigureToMove.figureItem.figureType == FigureType.PAWN )
+			{
+				removeFigureFromWhiteOrBlack( mEnPassantRule.originalPawn );
+				fieldClicked( this, new PutFigureOnTheTableEventArg( mEnPassantRule.originalPawn.x, mEnPassantRule.originalPawn.y, mEnPassantRule.originalPawn.index, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
+				mEnPassantRule.originalPawn.figureItem.color		= Colors.NO_COLOR;
+				mEnPassantRule.originalPawn.figureItem.figureType	= FigureType.NO_FIGURE;
+			}
+			mEnPassantRule.setEnPassant( mFigureToMove, aPlaceHere, chessBoard );
 
-			if ( aPlaceHere.figureItem.color == Colors.WHITE )
-			{
-				whiteFigures.Remove( aPlaceHere );
-			}
-			else if ( aPlaceHere.figureItem.color == Colors.BLACK )
-			{
-				blackFigures.Remove( aPlaceHere );
-			}
+			removeFigureFromWhiteOrBlack( aPlaceHere );
 
 			ModelItem tempItem;
 			if ( mCurrentColor == Colors.WHITE )
@@ -186,11 +187,11 @@ namespace ChessTable.Model
 				color = Colors.NO_COLOR
 			} );
 
-			foreach ( ModelItem fields in possibleMoves ) // Removing HighLights from the possible moves
+			foreach ( Int32 fields in possibleMoves ) // Removing HighLights from the possible moves
 			{
 				setHighlight( this, new SetHighlightEventArg
 				{
-					index = fields.index,
+					index = fields,
 					color = Colors.NO_COLOR
 				} );
 			}
@@ -236,13 +237,27 @@ namespace ChessTable.Model
 			case FigureType.NO_FIGURE:		break;
 			}
 
-			foreach ( ModelItem fields in possibleMoves )
+			foreach ( Int32 fields in possibleMoves )
 			{
 				setHighlight( this, new SetHighlightEventArg
 				{
-					index = fields.index,
+					index = fields,
 					color = Colors.BLUE
 				} );
+			}
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		void removeFigureFromWhiteOrBlack( ModelItem aFigureToRemove )
+		{
+			if ( aFigureToRemove.figureItem.color == Colors.WHITE )
+			{
+				whiteFigures.Remove( aFigureToRemove );
+			}
+			else if ( aFigureToRemove.figureItem.color == Colors.BLACK )
+			{
+				blackFigures.Remove( aFigureToRemove );
 			}
 		}
 
@@ -317,7 +332,7 @@ namespace ChessTable.Model
 		public List< ModelItem >									whiteFigures { get; set; }
 		public List< ModelItem >									blackFigures { get; set; }
 
-		private List< ModelItem >									possibleMoves { get; set; }
+		private List< Int32 >										possibleMoves { get; set; }
 		private List< List< ModelItem > >							chessBoard { get; set; }
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
@@ -331,5 +346,6 @@ namespace ChessTable.Model
 
 		private ModelItem											mFigureToMove;
 		private CastlingRule										mCastlingRule;
+		private EnPassantRule										mEnPassantRule;
 	}
 }

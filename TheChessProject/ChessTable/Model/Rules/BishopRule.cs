@@ -1,4 +1,5 @@
 ﻿using ChessTable.Common;
+using System;
 using System.Collections.Generic;
 
 namespace ChessTable.Model.Rules
@@ -14,9 +15,9 @@ namespace ChessTable.Model.Rules
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override List< ModelItem > possibleMoves()
+		public override List< Int32 > possibleMoves()
 		{
-			mPossibleMoves = new List< ModelItem >();
+			mPossibleMoves = new List< Int32 >();
 
 			setPossibleMovesInLoop( +1, -1 ); // Lets move Down and Left;
 			setPossibleMovesInLoop( +1, +1 ); // Lets move Down and Right;

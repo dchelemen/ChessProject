@@ -20,9 +20,9 @@ namespace ChessTable.Model.Rules
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override List< ModelItem > possibleMoves()
+		public override List< Int32 > possibleMoves()
 		{
-			mPossibleMoves = new List< ModelItem >();
+			mPossibleMoves = new List< Int32 >();
 
 			setOnePossibleMove( +1, -1 ); // Lets move Down and Left;
 			setOnePossibleMove( +1, +0 ); // Lets move Down;
@@ -34,14 +34,14 @@ namespace ChessTable.Model.Rules
 			setOnePossibleMove( +0, -1 ); // Lets move Left;
 
 			Boolean canCastling		= mCastlingRule.canCastling( mFigureToMove, mChessBoard, +0, -2 );
-			Boolean isTheWayClear	= mPossibleMoves.Where( x => x.index == mFigureToMove.index - 1 ).Count() == 1;
+			Boolean isTheWayClear	= mPossibleMoves.Contains( mFigureToMove.index - 1 );
 			if ( canCastling && isTheWayClear )
 			{
 				setOnePossibleMove( +0, -2 );
 			}
 
 			canCastling		= mCastlingRule.canCastling( mFigureToMove, mChessBoard, +0, +2 );
-			isTheWayClear	= mPossibleMoves.Where( x => x.index == mFigureToMove.index + 1 ).Count() == 1;
+			isTheWayClear	= mPossibleMoves.Contains( mFigureToMove.index + 1 );
 			if ( canCastling && isTheWayClear )
 			{
 				setOnePossibleMove( +0, +2 );
@@ -49,9 +49,11 @@ namespace ChessTable.Model.Rules
 			return mPossibleMoves;
 		}
 
-		public List< ModelItem > possibleMovesForDeepLvl()
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		public List< Int32 > possibleMovesForDeepLvl()
 		{
-			mPossibleMoves = new List< ModelItem >();
+			mPossibleMoves = new List< Int32 >();
 
 			base.setOnePossibleMove( +1, -1 ); // Lets move Down and Left;
 			base.setOnePossibleMove( +1, +0 ); // Lets move Down;
@@ -99,8 +101,8 @@ namespace ChessTable.Model.Rules
 
 			foreach ( ModelItem enemy in enemyFigures )
 			{
-				List< ModelItem > enemysPossibleMove = possibleMoveOfEnemy( enemy );
-				if ( enemysPossibleMove.Contains( modelItem ) )
+				List< Int32 > enemysPossibleMove = possibleMoveOfEnemy( enemy );
+				if ( enemysPossibleMove.Contains( modelItem.index ) )
 				{
 					modelItem.figureItem.figureType		= targetFigure.figureItem.figureType;
 					modelItem.figureItem.color			= targetFigure.figureItem.color;
@@ -117,14 +119,14 @@ namespace ChessTable.Model.Rules
 			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.figureType		= mFigureToMove.figureItem.figureType;
 			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.color			= mFigureToMove.figureItem.color;
 
-			mPossibleMoves.Add( new ModelItem( xCoord, yCoord, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
+			mPossibleMoves.Add( ( ( 8 * xCoord ) + yCoord ) );
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		List< ModelItem > possibleMoveOfEnemy( ModelItem aEnemy )
+		List< Int32 > possibleMoveOfEnemy( ModelItem aEnemy )
 		{
-			List< ModelItem > possibleMoves = new List< ModelItem >();
+			List< Int32 > possibleMoves = new List< Int32 >();
 			switch ( aEnemy.figureItem.figureType )
 			{
 			case FigureType.KING:

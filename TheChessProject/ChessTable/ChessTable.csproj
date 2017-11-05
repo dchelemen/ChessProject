@@ -78,6 +78,7 @@
     <Compile Include="Common\PutFigureOnTheTableEventArg.cs" />
     <Compile Include="Model\Rules\BishopRule.cs" />
     <Compile Include="Model\Rules\CastlingRule.cs" />
+    <Compile Include="Model\Rules\EnPassantRule.cs" />
     <Compile Include="Model\Rules\KingRule.cs" />
     <Compile Include="Model\Rules\KnightRule.cs" />
     <Compile Include="Model\Rules\QueenRule.cs" />

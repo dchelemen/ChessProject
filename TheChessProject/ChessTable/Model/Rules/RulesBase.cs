@@ -17,7 +17,7 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract List< ModelItem > possibleMoves();
+		public abstract List< Int32 > possibleMoves();
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ namespace ChessTable.Model
 			while ( isValidField( xCoord, yCoord ) )
 			{
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				mPossibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
+				mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
 
 				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
 				{
@@ -49,7 +49,7 @@ namespace ChessTable.Model
 			if ( isValidField( xCoord, yCoord ) )
 			{
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				mPossibleMoves.Add( new ModelItem( xCoord, yCoord, figureItem.color, figureItem.figureType ) );
+				mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
 			}
 		}
 
@@ -73,7 +73,7 @@ namespace ChessTable.Model
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
 		protected List< List < ModelItem > >		mChessBoard { get; set; }
-		protected List< ModelItem >					mPossibleMoves { get; set; }
+		protected List< Int32 >					mPossibleMoves { get; set; }
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
