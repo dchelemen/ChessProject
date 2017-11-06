@@ -18,6 +18,7 @@ namespace ChessTable.ViewModels
 			mChessBoardModel = aChessBoardModel;
 			mChessBoardModel.fieldClicked   += new EventHandler< PutFigureOnTheTableEventArg >( onPutFigureOnTheTableEventArg );
 			mChessBoardModel.setHighlight   += new EventHandler< SetHighlightEventArg >( onSetHighlight );
+			mChessBoardModel.setIsEnable	+= new EventHandler< Boolean >( onSetIsEnable );
 
 			windowState             = "Normal";
 			windowWidth             = 640;
@@ -92,6 +93,16 @@ namespace ChessTable.ViewModels
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
+		private void onSetIsEnable( Object aSender, Boolean aIsEnable )
+		{
+			foreach ( var field in mChessBoardCollection )
+			{
+				field.isEnabled = aIsEnable;
+			}
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+	
 		private void calculateFieldSize()
 		{
 			Int32 minSize	= windowHeight < windowWidth ? windowHeight : windowWidth;

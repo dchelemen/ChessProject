@@ -98,6 +98,24 @@ namespace ChessTable.ViewModels
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
+		public Boolean isEnabled
+		{
+			get
+			{
+				return mIsEnabled;
+			}
+			set
+			{
+				if ( mIsEnabled != value )
+				{
+					mIsEnabled = value;
+					OnPropertyChanged( "isEnabled" );
+				}
+			}
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
 		public DelegateCommand								onFieldClickedCommand { get; private set; }
 		public Int32										X { get; set; }
 
@@ -116,5 +134,6 @@ namespace ChessTable.ViewModels
 
 		private FigureItem									mFigureItem;
 		private Int32										mFieldSize;
+		private Boolean										mIsEnabled;
 	}
 }

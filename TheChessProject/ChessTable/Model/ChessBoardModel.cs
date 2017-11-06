@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using ChessTable.Model.Rules;
+using ChessTable.Model.Algorithms;
 
 namespace ChessTable.Model
 {
@@ -11,8 +12,8 @@ namespace ChessTable.Model
 		public ChessBoardModel( Colors aPlayer1Color, Colors aStartingColor, Algorithm aPlayer1Algorithm, Algorithm aPlayer2Algorithm )
 		{
 			mPlayer1Color		= aPlayer1Color;
-			mPlayer1Algorithm	= aPlayer1Algorithm;
-			mPlayer2Algorithm	= aPlayer2Algorithm;
+			mPlayer1Algorithm	= setAlgorithm( aPlayer1Algorithm );
+			mPlayer2Algorithm	= setAlgorithm( aPlayer1Algorithm );
 			mCurrentColor		= aStartingColor;
 
 			whiteFigures		= new List< ModelItem >();
@@ -20,6 +21,7 @@ namespace ChessTable.Model
 
 			isGameReady			= false;
 			mIsFirstClick		= true;
+			mIsBoardEnabled		= false;
 
 			mFigureToMove		= new ModelItem
 								{
@@ -78,6 +80,51 @@ namespace ChessTable.Model
 					index		= item.index
 				} );
 			}
+
+			if ( mPlayer1Color == Colors.WHITE )
+			{
+				mPlayer1Algorithm.setTree( whiteFigures, blackFigures );
+				mPlayer2Algorithm.setTree( blackFigures, whiteFigures );
+			}
+			else
+			{
+				mPlayer1Algorithm.setTree( blackFigures, whiteFigures );
+				mPlayer2Algorithm.setTree( whiteFigures, blackFigures );
+			}
+
+			nextPlayer();
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		private void nextPlayer( Move aLastMove = null )
+		{
+			if ( mIsBoardEnabled )
+			{
+				mIsBoardEnabled = false;
+				setIsEnable( this, mIsBoardEnabled );
+			}
+
+			BaseAlgorithm currentAlgorithm = ( mCurrentColor == mPlayer1Color ? mPlayer1Algorithm : mPlayer2Algorithm );
+
+			Boolean isActiveAlgorithm = currentAlgorithm.isActive();
+			if ( ! isActiveAlgorithm )
+			{
+				mIsBoardEnabled = true;
+				setIsEnable( this, mIsBoardEnabled );
+			}
+			else
+			{
+				currentAlgorithm.refreshTree( aLastMove );
+				Move nextMove = currentAlgorithm.nextMove();
+
+				ModelItem figureToMove		= chessBoard[ nextMove.mMoveFromX ][ nextMove.mMoveFromY ];
+				ModelItem placeHereTemp		= chessBoard[ nextMove.mMoveToX ][ nextMove.mMoveToY ];
+
+				mFigureToMove = new ModelItem( figureToMove.x, figureToMove.y, figureToMove.figureItem.color, figureToMove.figureItem.figureType );
+
+				moveFigureTo( new ModelItem( placeHereTemp.x, placeHereTemp.y, placeHereTemp.figureItem.color, placeHereTemp.figureItem.figureType ) );
+			}
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -90,6 +137,19 @@ namespace ChessTable.Model
 			}
 			else
 			{
+				if ( aIndex == mFigureToMove )
+				{
+					removeHighLights();
+					mIsFirstClick = true;
+					return;
+				}
+
+				if ( ! possibleMoves.Contains( aIndex.index ) )
+				{
+					return;
+				}
+
+				mIsFirstClick = true;
 				moveFigureTo( aIndex );
 			}
 		}
@@ -120,19 +180,6 @@ namespace ChessTable.Model
 
 		private void moveFigureTo( ModelItem aPlaceHere )
 		{
-			mIsFirstClick = true;
-			if ( aPlaceHere == mFigureToMove )
-			{
-				removeHighLights();
-				return;
-			}
-
-			if ( ! possibleMoves.Contains( aPlaceHere.index ) )
-			{
-				mIsFirstClick = false;
-				return;
-			}
-
 			if ( mCastlingRule.isCastling( mFigureToMove, aPlaceHere ) )
 			{
 				castling( aPlaceHere );
@@ -175,6 +222,7 @@ namespace ChessTable.Model
 			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = new FigureItem( mFigureToMove.figureItem.color, mFigureToMove.figureItem.figureType );
 
 			removeHighLights();
+			nextPlayer();
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -325,9 +373,23 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
+		private BaseAlgorithm setAlgorithm( Algorithm aAlgorithm )
+		{
+			switch ( aAlgorithm )
+			{
+			case Algorithm.HUMAN: return new HumanAlgorithm();
+			default: return new HumanAlgorithm();
+			}
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
 		public event EventHandler< PutFigureOnTheTableEventArg >	fieldClicked;
 
 		public event EventHandler< SetHighlightEventArg >			setHighlight;
+
+		public event EventHandler< Boolean >						setIsEnable;
+
 		public Boolean												isGameReady { get; set; }
 		public List< ModelItem >									whiteFigures { get; set; }
 		public List< ModelItem >									blackFigures { get; set; }
@@ -338,11 +400,12 @@ namespace ChessTable.Model
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
 		private Colors												mPlayer1Color;
-		private Algorithm											mPlayer1Algorithm;
-		private Algorithm											mPlayer2Algorithm;
+		private BaseAlgorithm										mPlayer1Algorithm;
+		private BaseAlgorithm										mPlayer2Algorithm;
 		private Colors												mCurrentColor;
 
 		private Boolean												mIsFirstClick;
+		private Boolean												mIsBoardEnabled;
 
 		private ModelItem											mFigureToMove;
 		private CastlingRule										mCastlingRule;

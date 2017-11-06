@@ -23,7 +23,7 @@
 			</ItemsControl.ItemsPanel>
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}">
+					<Button Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding onFieldClickedCommand}" IsEnabled="{Binding isEnabled}">
 						<Canvas Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
 							<Rectangle Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Fill="{Binding fieldColor, Converter={StaticResource ColorConverter}}"/>
 							<Image Width="{Binding fieldSize, Mode=TwoWay}" Height="{Binding fieldSize, Mode=TwoWay}" Source="{Binding highlightColor, Converter={StaticResource HighlightConverter }}"/>
