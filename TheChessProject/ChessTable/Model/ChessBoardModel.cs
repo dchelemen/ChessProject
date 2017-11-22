@@ -12,8 +12,9 @@ namespace ChessTable.Model
 		public ChessBoardModel( Colors aPlayer1Color, Colors aStartingColor, Algorithm aPlayer1Algorithm, Algorithm aPlayer2Algorithm )
 		{
 			mPlayer1Color		= aPlayer1Color;
-			mPlayer1Algorithm	= setAlgorithm( aPlayer1Algorithm );
-			mPlayer2Algorithm	= setAlgorithm( aPlayer1Algorithm );
+			Colors player2Color	= ( aPlayer1Color == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
+			mPlayer1Algorithm	= setAlgorithm( aPlayer1Algorithm, mPlayer1Color );
+			mPlayer2Algorithm	= setAlgorithm( aPlayer2Algorithm, player2Color );
 			mCurrentColor		= aStartingColor;
 
 			whiteFigures		= new List< ModelItem >();
@@ -81,16 +82,8 @@ namespace ChessTable.Model
 				} );
 			}
 
-			if ( mPlayer1Color == Colors.WHITE )
-			{
-				mPlayer1Algorithm.setTree( whiteFigures, blackFigures );
-				mPlayer2Algorithm.setTree( blackFigures, whiteFigures );
-			}
-			else
-			{
-				mPlayer1Algorithm.setTree( blackFigures, whiteFigures );
-				mPlayer2Algorithm.setTree( whiteFigures, blackFigures );
-			}
+			mPlayer1Algorithm.setTree( chessBoard, whiteFigures, blackFigures, mCastlingRule );
+			mPlayer2Algorithm.setTree( chessBoard, whiteFigures, blackFigures, mCastlingRule );
 
 			nextPlayer();
 		}
@@ -107,23 +100,18 @@ namespace ChessTable.Model
 
 			BaseAlgorithm currentAlgorithm = ( mCurrentColor == mPlayer1Color ? mPlayer1Algorithm : mPlayer2Algorithm );
 
-			Boolean isActiveAlgorithm = currentAlgorithm.isActive();
-			if ( ! isActiveAlgorithm )
+			if ( ! currentAlgorithm.isActive )
 			{
 				mIsBoardEnabled = true;
 				setIsEnable( this, mIsBoardEnabled );
 			}
 			else
 			{
-				currentAlgorithm.refreshTree( aLastMove );
-				Move nextMove = currentAlgorithm.nextMove();
+				currentAlgorithm.refreshTree( chessBoard, whiteFigures, blackFigures, mCastlingRule, aLastMove );
+				Move nextMove = currentAlgorithm.nextMove( chessBoard, whiteFigures, blackFigures, mCastlingRule );
+				mFigureToMove = nextMove.itemFrom;
 
-				ModelItem figureToMove		= chessBoard[ nextMove.mMoveFromX ][ nextMove.mMoveFromY ];
-				ModelItem placeHereTemp		= chessBoard[ nextMove.mMoveToX ][ nextMove.mMoveToY ];
-
-				mFigureToMove = new ModelItem( figureToMove.x, figureToMove.y, figureToMove.figureItem.color, figureToMove.figureItem.figureType );
-
-				moveFigureTo( new ModelItem( placeHereTemp.x, placeHereTemp.y, placeHereTemp.figureItem.color, placeHereTemp.figureItem.figureType ) );
+				moveFigureTo( nextMove.itemTo );
 			}
 		}
 
@@ -184,6 +172,8 @@ namespace ChessTable.Model
 			{
 				castling( aPlaceHere );
 				removeHighLights();
+				Move move = new Move( mFigureToMove, chessBoard[ aPlaceHere.x ][ aPlaceHere.y ] );
+				nextPlayer( move );
 				return;
 			}
 
@@ -222,7 +212,9 @@ namespace ChessTable.Model
 			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = new FigureItem( mFigureToMove.figureItem.color, mFigureToMove.figureItem.figureType );
 
 			removeHighLights();
-			nextPlayer();
+
+			Move lastMove = new Move( mFigureToMove, chessBoard[ aPlaceHere.x ][ aPlaceHere.y ] );
+			nextPlayer( lastMove );
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -373,12 +365,13 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		private BaseAlgorithm setAlgorithm( Algorithm aAlgorithm )
+		private BaseAlgorithm setAlgorithm( Algorithm aAlgorithm, Colors aAlgorithmsColor )
 		{
 			switch ( aAlgorithm )
 			{
-			case Algorithm.HUMAN: return new HumanAlgorithm();
-			default: return new HumanAlgorithm();
+			case Algorithm.HUMAN: return new HumanAlgorithm( mPlayer1Color, aAlgorithmsColor );
+			case Algorithm.RANDOM: return new RandomAlgorithm( mPlayer1Color, aAlgorithmsColor );
+			default: return new HumanAlgorithm( mPlayer1Color, aAlgorithmsColor );
 			}
 		}
 

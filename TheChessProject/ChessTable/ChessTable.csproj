@@ -78,6 +78,7 @@
     <Compile Include="Common\PutFigureOnTheTableEventArg.cs" />
     <Compile Include="Model\Algorithms\BaseAlgorithm.cs" />
     <Compile Include="Model\Algorithms\HumanAlgorithm.cs" />
+    <Compile Include="Model\Algorithms\RandomAlgorithm.cs" />
     <Compile Include="Model\Algorithms\TreeNode.cs" />
     <Compile Include="Model\Move.cs" />
     <Compile Include="Model\Rules\BishopRule.cs" />

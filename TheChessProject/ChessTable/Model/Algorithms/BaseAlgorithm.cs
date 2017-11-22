@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ChessTable.Common;
+using ChessTable.Model.Rules;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,29 +10,72 @@ namespace ChessTable.Model.Algorithms
 {
 	public abstract class BaseAlgorithm
 	{
-		public BaseAlgorithm()
+		public BaseAlgorithm( Colors aPlayer1Color, Colors aMyColor )
 		{
+			player1Color	= aPlayer1Color;
+			myColor			= aMyColor;
 			mTree = null;
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract void setTree( List< ModelItem > aPlayersFigures, List< ModelItem > enemyFigures);
-
-		//-----------------------------------------------------------------------------------------------------------------------------------------
-
-		public abstract Boolean isActive();
+		public abstract void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule );
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract void refreshTree( Move aLastMove );
+		public abstract void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove );
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract Move nextMove();
+		public abstract Move nextMove( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule );
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+		protected List< Int32 > possibleMoves( List< List< ModelItem > > aChessBoard, List< ModelItem > aBlackFigures, List< ModelItem > aWhiteFigures, CastlingRule aCastlingRule, ModelItem currentFigure )
+		{
+			List< Int32 > possibleMoves = new List< Int32 >();
+			switch ( currentFigure.figureItem.figureType )
+			{
+			case FigureType.KING:
+				{
+					KingRule kingRule		= new KingRule( aChessBoard, player1Color, currentFigure, aBlackFigures, aWhiteFigures, aCastlingRule );
+					possibleMoves			= kingRule.possibleMoves();
+				} break;
+			case FigureType.QUEEN:
+				{
+					QueenRule queenRule		= new QueenRule( aChessBoard, player1Color, currentFigure );
+					possibleMoves			= queenRule.possibleMoves();
+				} break;
+			case FigureType.ROOK:
+				{
+					RookRule rookRule		= new RookRule( aChessBoard, player1Color, currentFigure );
+					possibleMoves			= rookRule.possibleMoves();
+				} break;
+			case FigureType.BISHOP:
+				{
+					BishopRule bishopRule	= new BishopRule( aChessBoard, player1Color, currentFigure );
+					possibleMoves			= bishopRule.possibleMoves();
+				} break;
+			case FigureType.KNIGHT:
+				{
+					KnightRule knightRule	= new KnightRule( aChessBoard, player1Color, currentFigure );
+					possibleMoves			= knightRule.possibleMoves();
+				} break;
+			case FigureType.PAWN:
+				{
+					PawnRule pawnRule		= new PawnRule( aChessBoard, player1Color, currentFigure );
+					possibleMoves			= pawnRule.possibleMoves();
+				} break;
+			case FigureType.NO_FIGURE:		break;
+			}
+
+			return possibleMoves;
+		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
 		protected List< TreeNode > mTree { get; set; }
+		public Boolean isActive { get; set; }
+		protected Colors player1Color { get; set; }
+		protected Colors myColor { get; set; }
 	}
 }

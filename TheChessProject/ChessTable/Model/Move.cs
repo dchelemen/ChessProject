@@ -12,40 +12,16 @@ namespace ChessTable.Model
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public Move( Int32 aFromIndex, Int32 aToIndex )
+		public Move( ModelItem aItemFrom, ModelItem aItemTo )
 		{
-			mMoveFromIndex	= aFromIndex;
-			mMoveToIndex	= aToIndex;
-
-			mMoveFromX		= ( aFromIndex % 8 );
-			mMoveFromY		= ( aFromIndex / 8 );
-
-			mMoveToX		= ( aToIndex % 8 );
-			mMoveToY		= ( aToIndex / 8 );
+			itemFrom	= new ModelItem( aItemFrom.x, aItemFrom.y, aItemFrom.figureItem.color, aItemFrom.figureItem.figureType );
+			itemTo		= new ModelItem( aItemTo.x, aItemTo.y, aItemTo.figureItem.color, aItemTo.figureItem.figureType );
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public Move( Int32 aFromX, Int32 aFromY, Int32 aToX, Int32 aToY )
-		{
-			mMoveFromIndex	= ( ( aFromX * 8 ) + aFromY );
-			mMoveToIndex	= ( ( aToX * 8 ) + aToY );;
+		public ModelItem itemFrom;
 
-			mMoveFromX		= aFromX;
-			mMoveFromY		= aFromY;
-
-			mMoveToX		= aToX;
-			mMoveToY		= aToY;
-		}
-
-		//-----------------------------------------------------------------------------------------------------------------------------------------
-
-		public Int32 mMoveFromIndex;
-		public Int32 mMoveFromX;
-		public Int32 mMoveFromY;
-
-		public Int32 mMoveToIndex;
-		public Int32 mMoveToX;
-		public Int32 mMoveToY;
+		public ModelItem itemTo;
 	}
 }
