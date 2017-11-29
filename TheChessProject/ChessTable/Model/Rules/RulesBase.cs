@@ -1,4 +1,5 @@
 ﻿using ChessTable.Common;
+using ChessTable.Model.Rules;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +18,7 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract List< Int32 > possibleMoves();
+		public abstract List< Int32 > possibleMoves( ChessRule aChess );
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -73,7 +74,7 @@ namespace ChessTable.Model
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
 		protected List< List < ModelItem > >		mChessBoard { get; set; }
-		protected List< Int32 >					mPossibleMoves { get; set; }
+		protected List< Int32 >						mPossibleMoves { get; set; }
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 

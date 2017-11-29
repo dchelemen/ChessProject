@@ -15,7 +15,7 @@ namespace ChessTable.Model.Rules
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override List< Int32 > possibleMoves()
+		public override List< Int32 > possibleMoves( ChessRule aChess )
 		{
 			mPossibleMoves = new List< Int32 >();
 
@@ -27,6 +27,17 @@ namespace ChessTable.Model.Rules
 			setPossibleMovesInLoop( -1, +0 ); // Lets move Up;
 			setPossibleMovesInLoop( -1, -1 ); // Lets move Up and Left;
 			setPossibleMovesInLoop( +0, -1 ); // Lets move Left;
+
+			if ( aChess.isChess )
+			{
+				for ( Int32 i = ( mPossibleMoves.Count - 1 ); i >= 0; i-- )
+				{
+					if ( ! aChess.positionsToBreakChess.Contains( mPossibleMoves[ i ] ) && mPossibleMoves[ i ] != aChess.chessGiverPosition )
+					{
+						mPossibleMoves.RemoveAt( i );
+					}
+				}
+			}
 
 			return mPossibleMoves;
 		}

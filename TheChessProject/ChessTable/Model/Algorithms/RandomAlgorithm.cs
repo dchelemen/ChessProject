@@ -30,14 +30,14 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove )
+		public override void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove, ChessRule aChess )
 		{
-			setTree( aChessBoard, aWhiteFigures, aBlackFigures, aCastlingRule );
+			setTree( aChessBoard, aWhiteFigures, aBlackFigures, aCastlingRule, aChess );
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule )
+		public override void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, ChessRule aChess )
 		{
 			mTree = new List< TreeNode >();
 
@@ -46,7 +46,7 @@ namespace ChessTable.Model.Algorithms
 
 			foreach ( ModelItem item in myFigures )
 			{
-				possibleMovesOfTheItem = possibleMoves( aChessBoard, aBlackFigures, aWhiteFigures, aCastlingRule, item );
+				possibleMovesOfTheItem = possibleMoves( aChessBoard, aBlackFigures, aWhiteFigures, aCastlingRule, item, aChess );
 				addNewTreeNode( item, possibleMovesOfTheItem, aChessBoard );
 			}
 		}

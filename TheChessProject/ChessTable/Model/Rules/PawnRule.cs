@@ -14,7 +14,7 @@ namespace ChessTable.Model.Rules
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override List< Int32 > possibleMoves()
+		public override List< Int32 > possibleMoves( ChessRule aChess )
 		{
 			mPossibleMoves						= new List< Int32 >();
 			Int32 xCoord						= -1;
@@ -59,6 +59,17 @@ namespace ChessTable.Model.Rules
 			{
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
 				mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
+			}
+
+			if ( aChess.isChess )
+			{
+				for ( Int32 i = ( mPossibleMoves.Count - 1 ); i >= 0; i-- )
+				{
+					if ( ! aChess.positionsToBreakChess.Contains( mPossibleMoves[ i ] ) && mPossibleMoves[ i ] != aChess.chessGiverPosition )
+					{
+						mPossibleMoves.RemoveAt( i );
+					}
+				}
 			}
 
 			return mPossibleMoves;

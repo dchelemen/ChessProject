@@ -83,6 +83,7 @@
     <Compile Include="Model\Move.cs" />
     <Compile Include="Model\Rules\BishopRule.cs" />
     <Compile Include="Model\Rules\CastlingRule.cs" />
+    <Compile Include="Model\Rules\ChessRule.cs" />
     <Compile Include="Model\Rules\EnPassantRule.cs" />
     <Compile Include="Model\Rules\KingRule.cs" />
     <Compile Include="Model\Rules\KnightRule.cs" />

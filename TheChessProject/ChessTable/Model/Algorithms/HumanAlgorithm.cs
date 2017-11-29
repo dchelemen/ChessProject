@@ -18,14 +18,14 @@ namespace ChessTable.Model.Algorithms
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aPlayersFigures, List< ModelItem > enemyFigures, CastlingRule aCastlingRule )
+		public override void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aPlayersFigures, List< ModelItem > enemyFigures, CastlingRule aCastlingRule, ChessRule aChess )
 		{
 
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove )
+		public override void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove, ChessRule aChess )
 		{
 
 		}
