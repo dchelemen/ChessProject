@@ -8,7 +8,8 @@ namespace ChessTable.Model.Rules
 	{
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public PawnRule( List< List< ModelItem > > aChessBoard, Colors aPlayer1Color, ModelItem aFigureToMove ) : base( aChessBoard, aPlayer1Color, aFigureToMove )
+		public PawnRule( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, Colors aPlayer1Color, ModelItem aFigureToMove, Boolean aIsCheckChess )
+			: base( aChessBoard, aWhiteFigures, aBlackFigures, aPlayer1Color, aFigureToMove, aIsCheckChess )
 		{
 		}
 
@@ -27,19 +28,32 @@ namespace ChessTable.Model.Rules
 				isPlayer1Turn		= -1; // we removes one from X if player 2 turns
 				isPlayer1Moves2		= 6; // we checks that is the pawn on line 6. If he is, he will able to step 2
 			}
-
+			
+			Boolean canWeMoveForward = false;
 			xCoord = ( mFigureToMove.x + isPlayer1Turn ); // Depends on the current player, X + 1 or X - 1
 			yCoord = mFigureToMove.y;
 			isValid = isValidField( xCoord, yCoord );
 			if ( isValid && mChessBoard[ xCoord ][ yCoord ].figureItem.figureType == FigureType.NO_FIGURE ) // Can we move forward?
 			{
-				mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
-
-				if ( mFigureToMove.x == isPlayer1Moves2 && mChessBoard[ xCoord + isPlayer1Turn ][ yCoord ].figureItem.figureType == FigureType.NO_FIGURE ) // Can we make 2 steps forward?
+				canWeMoveForward = true;
+				if( ! mIsCheckChess || ! isChess( xCoord, yCoord ) )
 				{
-					mPossibleMoves.Add( ( 8 * ( xCoord + isPlayer1Turn ) ) + yCoord );
+					mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
 				}
 			}
+
+			//------
+
+			xCoord += isPlayer1Turn; // Depends on the current player, X + 1 or X - 1
+			isValid = isValidField( xCoord, yCoord );
+			if ( canWeMoveForward && mFigureToMove.x == isPlayer1Moves2 && mChessBoard[ xCoord ][ yCoord ].figureItem.figureType == FigureType.NO_FIGURE ) // Can we make 2 steps forward?
+			{
+				if( ! mIsCheckChess || ! isChess( xCoord, yCoord ) )
+				{
+					mPossibleMoves.Add( ( 8 * ( xCoord ) ) + yCoord );
+				}
+			}
+			xCoord -= isPlayer1Turn;
 
 			//------
 
@@ -47,8 +61,11 @@ namespace ChessTable.Model.Rules
 			isValid		= isValidField( xCoord, yCoord );
 			if ( isValid && ( mChessBoard[ xCoord ][ yCoord ].figureItem.figureType != FigureType.NO_FIGURE ) ) // Can we hit someone on the left?
 			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
+				if( ! mIsCheckChess || ! isChess( xCoord, yCoord ) )
+				{
+					FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
+					mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
+				}
 			}
 
 			//------
@@ -57,18 +74,10 @@ namespace ChessTable.Model.Rules
 			isValid		= isValidField( xCoord, yCoord );
 			if ( isValid && ( mChessBoard[ xCoord ][ yCoord ].figureItem.figureType != FigureType.NO_FIGURE ) ) // Can we hit someone on the right?
 			{
-				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
-				mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
-			}
-
-			if ( aChess.isChess )
-			{
-				for ( Int32 i = ( mPossibleMoves.Count - 1 ); i >= 0; i-- )
+				if( ! mIsCheckChess || ! isChess( xCoord, yCoord ) )
 				{
-					if ( ! aChess.positionsToBreakChess.Contains( mPossibleMoves[ i ] ) && mPossibleMoves[ i ] != aChess.chessGiverPosition )
-					{
-						mPossibleMoves.RemoveAt( i );
-					}
+					FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
+					mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
 				}
 			}
 

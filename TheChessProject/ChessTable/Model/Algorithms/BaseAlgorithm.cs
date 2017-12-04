@@ -37,32 +37,32 @@ namespace ChessTable.Model.Algorithms
 			{
 			case FigureType.KING:
 				{
-					KingRule kingRule		= new KingRule( aChessBoard, player1Color, currentFigure, aBlackFigures, aWhiteFigures, aCastlingRule );
+					KingRule kingRule		= new KingRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true, aCastlingRule );
 					possibleMoves			= kingRule.possibleMoves( aChess );
 				} break;
 			case FigureType.QUEEN:
 				{
-					QueenRule queenRule		= new QueenRule( aChessBoard, player1Color, currentFigure );
+					QueenRule queenRule		= new QueenRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
 					possibleMoves			= queenRule.possibleMoves( aChess );
 				} break;
 			case FigureType.ROOK:
 				{
-					RookRule rookRule		= new RookRule( aChessBoard, player1Color, currentFigure );
+					RookRule rookRule		= new RookRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
 					possibleMoves			= rookRule.possibleMoves( aChess );
 				} break;
 			case FigureType.BISHOP:
 				{
-					BishopRule bishopRule	= new BishopRule( aChessBoard, player1Color, currentFigure );
+					BishopRule bishopRule	= new BishopRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
 					possibleMoves			= bishopRule.possibleMoves( aChess );
 				} break;
 			case FigureType.KNIGHT:
 				{
-					KnightRule knightRule	= new KnightRule( aChessBoard, player1Color, currentFigure );
+					KnightRule knightRule	= new KnightRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
 					possibleMoves			= knightRule.possibleMoves( aChess );
 				} break;
 			case FigureType.PAWN:
 				{
-					PawnRule pawnRule		= new PawnRule( aChessBoard, player1Color, currentFigure );
+					PawnRule pawnRule		= new PawnRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
 					possibleMoves			= pawnRule.possibleMoves( aChess );
 				} break;
 			case FigureType.NO_FIGURE:		break;

@@ -10,8 +10,8 @@ namespace ChessTable.Model.Rules
 		
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public KingRule( List< List< ModelItem > > aChessBoard, Colors aPlayer1Color, ModelItem aFigureToMove, List< ModelItem > aBlackFigures, List< ModelItem > aWhiteFigures, CastlingRule aCastlingRule = null )
-			: base( aChessBoard, aPlayer1Color, aFigureToMove )
+		public KingRule( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, Colors aPlayer1Color, ModelItem aFigureToMove, Boolean aIsCheckChess, CastlingRule aCastlingRule = null )
+			: base( aChessBoard, aWhiteFigures, aBlackFigures, aPlayer1Color, aFigureToMove, false )
 		{
 			mBlackFigures = aBlackFigures;
 			mWhiteFigures = aWhiteFigures;
@@ -132,32 +132,32 @@ namespace ChessTable.Model.Rules
 			{
 			case FigureType.KING:
 				{
-					KingRule kingRule		= new KingRule( mChessBoard, mPlayer1Color, aEnemy, mBlackFigures, mWhiteFigures );
+					KingRule kingRule		= new KingRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
 					possibleMoves			= kingRule.possibleMovesForDeepLvl();
 				} break;
 			case FigureType.QUEEN:
 				{
-					QueenRule queenRule		= new QueenRule( mChessBoard, mPlayer1Color, aEnemy );
+					QueenRule queenRule		= new QueenRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
 					possibleMoves			= queenRule.possibleMoves( chess );
 				} break;
 			case FigureType.ROOK:
 				{
-					RookRule rookRule		= new RookRule( mChessBoard, mPlayer1Color, aEnemy );
+					RookRule rookRule		= new RookRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
 					possibleMoves			= rookRule.possibleMoves( chess );
 				} break;
 			case FigureType.BISHOP:
 				{
-					BishopRule bishopRule	= new BishopRule( mChessBoard, mPlayer1Color, aEnemy );
+					BishopRule bishopRule	= new BishopRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
 					possibleMoves			= bishopRule.possibleMoves( chess );
 				} break;
 			case FigureType.KNIGHT:
 				{
-					KnightRule knightRule	= new KnightRule( mChessBoard, mPlayer1Color, aEnemy );
+					KnightRule knightRule	= new KnightRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
 					possibleMoves			= knightRule.possibleMoves( chess );
 				} break;
 			case FigureType.PAWN:
 				{
-					PawnRule pawnRule		= new PawnRule( mChessBoard, mPlayer1Color, aEnemy );
+					PawnRule pawnRule		= new PawnRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
 					possibleMoves			= pawnRule.possibleMoves( chess );
 				} break;
 			case FigureType.NO_FIGURE:		break;
@@ -167,8 +167,6 @@ namespace ChessTable.Model.Rules
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		List< ModelItem > mBlackFigures;
-		List< ModelItem > mWhiteFigures;
 		CastlingRule mCastlingRule;
 	}
 }

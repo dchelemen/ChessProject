@@ -2,6 +2,7 @@
 using ChessTable.Model.Rules;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ChessTable.Model
 {
@@ -9,11 +10,14 @@ namespace ChessTable.Model
 	{
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public RulesBase( List< List< ModelItem > > aChessBoard, Colors aPlayer1Color, ModelItem aFigureToMove )
+		public RulesBase( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, Colors aPlayer1Color, ModelItem aFigureToMove, Boolean aIsCheckChess )
 		{
 			mChessBoard		= aChessBoard;
+			mWhiteFigures	= aWhiteFigures;
+			mBlackFigures	= aBlackFigures;
 			mPlayer1Color	= aPlayer1Color;
 			mFigureToMove	= aFigureToMove;
+			mIsCheckChess	= aIsCheckChess;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -28,10 +32,18 @@ namespace ChessTable.Model
 			Int32 yCoord	= mFigureToMove.y + aAddY;
 			while ( isValidField( xCoord, yCoord ) )
 			{
+				if( mIsCheckChess && isChess( xCoord, yCoord ) )
+				{
+					xCoord += aAddX;
+					yCoord += aAddY;
+					continue;
+				}
+
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
 				mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
-
-				if ( figureItem.figureType != FigureType.NO_FIGURE ) // when enemies found, break!
+				
+				List< ModelItem > enemyFigures = ( mFigureToMove.figureItem.color == Colors.WHITE ? mBlackFigures : mWhiteFigures );
+				if ( figureItem.figureType != FigureType.NO_FIGURE && enemyFigures.Contains( mChessBoard[ xCoord ][ yCoord ] ) ) // when enemies found, break!
 				{
 					break;
 				}
@@ -49,6 +61,11 @@ namespace ChessTable.Model
 			Int32 yCoord	= mFigureToMove.y + aAddY;
 			if ( isValidField( xCoord, yCoord ) )
 			{
+				if( mIsCheckChess && isChess( xCoord, yCoord ) )
+				{
+					return;
+				}
+
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
 				mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
 			}
@@ -73,12 +90,103 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
+		protected Boolean isChess( Int32 aX, Int32 aY )
+		{
+			Boolean noChess									= false;
+
+			FigureItem targetItem							= new FigureItem( mChessBoard[ aX ][ aY ].figureItem.color, mChessBoard[ aX ][ aY ].figureItem.figureType );
+			mChessBoard[ aX ][ aY ].figureItem.color		= mFigureToMove.figureItem.color;
+			mChessBoard[ aX ][ aY ].figureItem.figureType	= mFigureToMove.figureItem.figureType;
+			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.color					= Colors.NO_COLOR;
+			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.figureType				= FigureType.NO_FIGURE;
+
+			List< ModelItem > enemyFigures;
+			List< ModelItem > myFigures;
+
+			if ( mFigureToMove.figureItem.color == Colors.WHITE )
+			{
+				myFigures		= mWhiteFigures;
+				enemyFigures	= mBlackFigures;
+			}
+			else
+			{
+				myFigures		= mBlackFigures;
+				enemyFigures	= mWhiteFigures;
+			}
+			Int32 MyKingPosition = myFigures.Where( X => X.figureItem.figureType == FigureType.KING ).FirstOrDefault().index;
+			foreach ( ModelItem figure in enemyFigures )
+			{
+				if ( figure.x == aX && figure.y == aY )
+				{
+					continue;
+				}
+
+				List< Int32 > possibleMoves = getPossibleMoves( figure );
+				if ( possibleMoves.Contains( MyKingPosition ) )
+				{
+					noChess = true;
+					break;
+				}
+			}
+
+			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.color					= mChessBoard[ aX ][ aY ].figureItem.color;
+			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.figureType				= mChessBoard[ aX ][ aY ].figureItem.figureType;
+			mChessBoard[ aX ][ aY ].figureItem.color		= targetItem.color;
+			mChessBoard[ aX ][ aY ].figureItem.figureType	= targetItem.figureType;
+
+			return noChess;
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		private List< Int32 > getPossibleMoves( ModelItem aFigureToMove )
+		{
+			List< Int32 > pMoves = new List< Int32 >();
+			switch ( aFigureToMove.figureItem.figureType )
+			{
+			case FigureType.QUEEN:
+				{
+					QueenRule queenRule		= new QueenRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
+					pMoves			= queenRule.possibleMoves( new ChessRule() );
+				} break;
+			case FigureType.ROOK:
+				{
+					RookRule rookRule		= new RookRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
+					pMoves			= rookRule.possibleMoves( new ChessRule() );
+				} break;
+			case FigureType.BISHOP:
+				{
+					BishopRule bishopRule	= new BishopRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
+					pMoves			= bishopRule.possibleMoves( new ChessRule() );
+				} break;
+			case FigureType.KNIGHT:
+				{
+					KnightRule knightRule	= new KnightRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
+					pMoves			= knightRule.possibleMoves( new ChessRule() );
+				} break;
+			case FigureType.PAWN:
+				{
+					PawnRule pawnRule		= new PawnRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
+					pMoves			= pawnRule.possibleMoves( new ChessRule() );
+				} break;
+			case FigureType.NO_FIGURE:		break;
+			}
+
+			return pMoves;
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
 		protected List< List < ModelItem > >		mChessBoard { get; set; }
+		protected List< ModelItem >					mWhiteFigures { get; set; }
+		protected List< ModelItem >					mBlackFigures { get; set; }
 		protected List< Int32 >						mPossibleMoves { get; set; }
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
 		protected Colors							mPlayer1Color;
 		protected ModelItem							mFigureToMove;
+		protected Int32								mKingIndex;
+		protected Boolean							mIsCheckChess;
 	}
 }

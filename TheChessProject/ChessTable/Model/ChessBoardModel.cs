@@ -20,7 +20,7 @@ namespace ChessTable.Model
 			nextPlayer			= new EventHandler< Move >( onNextPlayer );
 			mTimer				= new Timer();
 			mTimer.Elapsed		+= new ElapsedEventHandler( onTimerFinished );
-			mTimer.Interval		= 100;
+			mTimer.Interval		= 1000;
 
 			whiteFigures		= new List< ModelItem >();
 			blackFigures		= new List< ModelItem >();
@@ -160,7 +160,7 @@ namespace ChessTable.Model
 
 			mFigureToMove = aFigureToMove;
 
-			possibleMoves = getPossibleMoves( mFigureToMove );
+			possibleMoves = getPossibleMoves( mFigureToMove, true );
 
 			setHighlight( this, new SetHighlightEventArg
 			{
@@ -236,14 +236,26 @@ namespace ChessTable.Model
 
 			mLastMove = new Move( mFigureToMove, chessBoard[ aPlaceHere.x ][ aPlaceHere.y ] );
 
-			ModelItem lastItem = chessBoard[ aPlaceHere.x ][ aPlaceHere.y ];
-			List< Int32 > posMoves = getPossibleMoves( new ModelItem( lastItem.x, lastItem.y, lastItem.figureItem.color, lastItem.figureItem.figureType ) );
-			foreach ( Int32 index in posMoves )
+			List< ModelItem > enemyFigures;
+			List< ModelItem > myFigures;
+			if ( mFigureToMove.figureItem.color == Colors.WHITE )
 			{
-				ModelItem item = chessBoard[ index / 8 ][ index % 8 ];
-				if ( item.figureItem.figureType == FigureType.KING && lastItem.figureItem.color != item.figureItem.color )
+				myFigures		= whiteFigures;
+				enemyFigures	= blackFigures;
+			}
+			else
+			{
+				myFigures		= blackFigures;
+				enemyFigures	= whiteFigures;
+			}
+
+			Int32 enemyKingPosition = enemyFigures.Where( X => X.figureItem.figureType == FigureType.KING ).FirstOrDefault().index;
+			foreach ( ModelItem myFigure in myFigures )
+			{
+				List< Int32 > posMoves = getPossibleMoves( myFigure, false );
+				if ( posMoves.Contains( enemyKingPosition ) )
 				{
-					mChessRule.setChess( index, lastItem, posMoves );
+					mChessRule.setChess( enemyKingPosition, new ModelItem( myFigure.x, myFigure.y, myFigure.figureItem.color, myFigure.figureItem.figureType ), posMoves );
 					break;
 				}
 			}
@@ -272,39 +284,39 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		private List< Int32 > getPossibleMoves( ModelItem aFigureToMove )
+		private List< Int32 > getPossibleMoves( ModelItem aFigureToMove, Boolean shouldCheckChess )
 		{
 			List< Int32 > pMoves = new List< Int32 >();
 			switch ( aFigureToMove.figureItem.figureType )
 			{
 			case FigureType.KING:
 				{
-					KingRule kingRule		= new KingRule( chessBoard, mPlayer1Color, aFigureToMove, blackFigures, whiteFigures, mCastlingRule );
+					KingRule kingRule		= new KingRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess, mCastlingRule );
 					pMoves			= kingRule.possibleMoves( mChessRule );
 				} break;
 			case FigureType.QUEEN:
 				{
-					QueenRule queenRule		= new QueenRule( chessBoard, mPlayer1Color, aFigureToMove );
+					QueenRule queenRule		= new QueenRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
 					pMoves			= queenRule.possibleMoves( mChessRule );
 				} break;
 			case FigureType.ROOK:
 				{
-					RookRule rookRule		= new RookRule( chessBoard, mPlayer1Color, aFigureToMove );
+					RookRule rookRule		= new RookRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
 					pMoves			= rookRule.possibleMoves( mChessRule );
 				} break;
 			case FigureType.BISHOP:
 				{
-					BishopRule bishopRule	= new BishopRule( chessBoard, mPlayer1Color, aFigureToMove );
+					BishopRule bishopRule	= new BishopRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
 					pMoves			= bishopRule.possibleMoves( mChessRule );
 				} break;
 			case FigureType.KNIGHT:
 				{
-					KnightRule knightRule	= new KnightRule( chessBoard, mPlayer1Color, aFigureToMove );
+					KnightRule knightRule	= new KnightRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
 					pMoves			= knightRule.possibleMoves( mChessRule );
 				} break;
 			case FigureType.PAWN:
 				{
-					PawnRule pawnRule		= new PawnRule( chessBoard, mPlayer1Color, aFigureToMove );
+					PawnRule pawnRule		= new PawnRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
 					pMoves			= pawnRule.possibleMoves( mChessRule );
 				} break;
 			case FigureType.NO_FIGURE:		break;
@@ -380,14 +392,26 @@ namespace ChessTable.Model
 
 			mCastlingRule.updateCastlingState( mFigureToMove );
 
-			ModelItem lastItem = chessBoard[ newRookPlace.x ][ aPlaceHere.y + moveYCoordForRookBy ];
-			List< Int32 > posMoves = getPossibleMoves( new ModelItem( lastItem.x, lastItem.y, lastItem.figureItem.color, lastItem.figureItem.figureType ) );
-			foreach ( Int32 index in posMoves )
+			List< ModelItem > enemyFigures;
+			List< ModelItem > myFigures;
+			if ( mFigureToMove.figureItem.color == Colors.WHITE )
 			{
-				ModelItem item = chessBoard[ index / 8 ][ index % 8 ];
-				if ( item.figureItem.figureType == FigureType.KING && lastItem.figureItem.color != item.figureItem.color )
+				myFigures		= whiteFigures;
+				enemyFigures	= blackFigures;
+			}
+			else
+			{
+				myFigures		= blackFigures;
+				enemyFigures	= whiteFigures;
+			}
+
+			Int32 enemyKingPosition = enemyFigures.Where( X => X.figureItem.figureType == FigureType.KING ).FirstOrDefault().index;
+			foreach ( ModelItem myFigure in myFigures )
+			{
+				List< Int32 > posMoves = getPossibleMoves( myFigure, false );
+				if ( posMoves.Contains( enemyKingPosition ) )
 				{
-					mChessRule.setChess( index, lastItem, posMoves );
+					mChessRule.setChess( enemyKingPosition, new ModelItem( myFigure.x, myFigure.y, myFigure.figureItem.color, myFigure.figureItem.figureType ), posMoves );
 					break;
 				}
 			}
