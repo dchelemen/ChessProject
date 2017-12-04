@@ -38,8 +38,6 @@ namespace ChessTable.Model
 									x			= -1,
 									y			= -1
 								};
-
-			mEnPassantRule		= new EnPassantRule();
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -202,14 +200,26 @@ namespace ChessTable.Model
 			}
 			updateCastling();
 
-			if ( mEnPassantRule.isEnPassantActive && aPlaceHere.index == mEnPassantRule.temporaryPawn.index && mFigureToMove.figureItem.figureType == FigureType.PAWN )
+			FigureItem enPassantFigure = chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem;
+			if ( mFigureToMove.figureItem.figureType == FigureType.PAWN && Math.Abs( mFigureToMove.x - aPlaceHere.x ) == 2 )
 			{
-				removeFigureFromWhiteOrBlack( mEnPassantRule.originalPawn );
-				fieldClicked( this, new PutFigureOnTheTableEventArg( mEnPassantRule.originalPawn.x, mEnPassantRule.originalPawn.y, mEnPassantRule.originalPawn.index, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
-				mEnPassantRule.originalPawn.figureItem.color		= Colors.NO_COLOR;
-				mEnPassantRule.originalPawn.figureItem.figureType	= FigureType.NO_FIGURE;
+				removeEnPassantPawn();
+				Int32 enPassantX = ( mFigureToMove.x == 1 ? 2 : 5 );
+				chessBoard[ enPassantX ][ mFigureToMove.y ].figureItem.color = mFigureToMove.figureItem.color;
+				chessBoard[ enPassantX ][ mFigureToMove.y ].figureItem.figureType = FigureType.EN_PASSANT_PAWN;
 			}
-			mEnPassantRule.setEnPassant( mFigureToMove, aPlaceHere, chessBoard );
+			else if ( enPassantFigure.figureType == FigureType.EN_PASSANT_PAWN && mFigureToMove.figureItem.figureType == FigureType.PAWN
+						&& enPassantFigure.color != mFigureToMove.figureItem.color )
+			{
+				Int32 originalPawnX = ( aPlaceHere.x == 2 ? 3 : 4 );
+				ModelItem originalPawn = chessBoard[ originalPawnX ][ aPlaceHere.y ];
+				removeFigureFromWhiteOrBlack( originalPawn );
+				fieldClicked( this, new PutFigureOnTheTableEventArg( originalPawn.x, originalPawn.y, originalPawn.index, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
+			}
+			else
+			{
+				removeEnPassantPawn();
+			}
 
 			removeFigureFromWhiteOrBlack( aPlaceHere );
 
@@ -464,6 +474,25 @@ namespace ChessTable.Model
 			}
 		}
 
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		void removeEnPassantPawn()
+		{
+			foreach ( var row in chessBoard )
+			{
+				foreach ( var modelItem in row )
+				{
+					if ( modelItem.figureItem.figureType == FigureType.EN_PASSANT_PAWN )
+					{
+						modelItem.figureItem.figureType = FigureType.NO_FIGURE;
+						modelItem.figureItem.color		= Colors.NO_COLOR;
+					}
+				}
+			}
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
 		public event EventHandler< PutFigureOnTheTableEventArg >	fieldClicked;
 
 		public event EventHandler< SetHighlightEventArg >			setHighlight;
@@ -491,7 +520,6 @@ namespace ChessTable.Model
 		private Boolean												mIsBoardEnabled;
 
 		private ModelItem											mFigureToMove;
-		private EnPassantRule										mEnPassantRule;
 		private Timer												mTimer;
 	}
 }

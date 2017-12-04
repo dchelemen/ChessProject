@@ -59,7 +59,7 @@ namespace ChessTable.Model.Rules
 
 			yCoord		= ( mFigureToMove.y - 1 );
 			isValid		= isValidField( xCoord, yCoord );
-			if ( isValid && ( mChessBoard[ xCoord ][ yCoord ].figureItem.figureType != FigureType.NO_FIGURE ) ) // Can we hit someone on the left?
+			if ( isValid && ( mChessBoard[ xCoord ][ yCoord ].figureItem.figureType != FigureType.NO_FIGURE || mChessBoard[ xCoord ][ yCoord ].figureItem.figureType == FigureType.EN_PASSANT_PAWN ) ) // Can we hit someone on the left?
 			{
 				if( ! mIsCheckChess || ! isChess( xCoord, yCoord ) )
 				{
@@ -72,7 +72,7 @@ namespace ChessTable.Model.Rules
 
 			yCoord		= ( mFigureToMove.y + 1 );
 			isValid		= isValidField( xCoord, yCoord );
-			if ( isValid && ( mChessBoard[ xCoord ][ yCoord ].figureItem.figureType != FigureType.NO_FIGURE ) ) // Can we hit someone on the right?
+			if ( isValid && ( mChessBoard[ xCoord ][ yCoord ].figureItem.figureType != FigureType.NO_FIGURE || mChessBoard[ xCoord ][ yCoord ].figureItem.figureType == FigureType.EN_PASSANT_PAWN ) ) // Can we hit someone on the right?
 			{
 				if( ! mIsCheckChess || ! isChess( xCoord, yCoord ) )
 				{

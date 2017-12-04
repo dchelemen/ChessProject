@@ -41,9 +41,9 @@ namespace ChessTable.Model
 
 				FigureItem figureItem = mChessBoard[ xCoord ][ yCoord ].figureItem;
 				mPossibleMoves.Add( ( 8 * xCoord ) + yCoord );
-				
+
 				List< ModelItem > enemyFigures = ( mFigureToMove.figureItem.color == Colors.WHITE ? mBlackFigures : mWhiteFigures );
-				if ( figureItem.figureType != FigureType.NO_FIGURE && enemyFigures.Contains( mChessBoard[ xCoord ][ yCoord ] ) ) // when enemies found, break!
+				if ( figureItem.figureType != FigureType.NO_FIGURE && figureItem.figureType != FigureType.EN_PASSANT_PAWN && enemyFigures.Contains( mChessBoard[ xCoord ][ yCoord ] ) ) // when enemies found, break!
 				{
 					break;
 				}
