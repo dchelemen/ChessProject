@@ -19,25 +19,25 @@ namespace ChessTable.Model.Algorithms
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule );
+		public abstract void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures );
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove );
+		public abstract void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, Move aLastMove );
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule );
+		public abstract Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures );
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
-		protected List< Int32 > possibleMoves( List< List< ModelItem > > aChessBoard, List< ModelItem > aBlackFigures, List< ModelItem > aWhiteFigures, CastlingRule aCastlingRule, ModelItem currentFigure)
+		protected List< Int32 > possibleMoves( List< List< ModelItem > > aChessBoard, List< ModelItem > aBlackFigures, List< ModelItem > aWhiteFigures, ModelItem currentFigure)
 		{
 			List< Int32 > possibleMoves = new List< Int32 >();
 			switch ( currentFigure.figureItem.figureType )
 			{
 			case FigureType.KING:
 				{
-					KingRule kingRule		= new KingRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true, aCastlingRule );
+					KingRule kingRule		= new KingRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
 					possibleMoves			= kingRule.possibleMoves();
 				} break;
 			case FigureType.QUEEN:

@@ -35,7 +35,6 @@ namespace ChessTable.ViewModels
 			mBlackFigureCollection	= new ObservableCollection< BoardItem >();
 			mWhiteFigureCollection	= new ObservableCollection< BoardItem >();
 			mChessBoardModel		= new ChessBoardModel( aPlayer1Color, aStartingColor, aPlayer1Algorithm, aPlayer2Algorithm );
-			mChessBoardModel.disableCastling();
 
 			setupCustomBoard();
 		}
@@ -142,19 +141,19 @@ namespace ChessTable.ViewModels
 				mWhiteFigureCollection[ row ].fieldClicked += new EventHandler< FieldClickedEventArg >( onPanelClicked );
 			}
 
-			mBlackFigureCollection[ 0 ].figureItem = new FigureItem( Colors.BLACK ,FigureType.KING   );
-			mBlackFigureCollection[ 1 ].figureItem = new FigureItem( Colors.BLACK, FigureType.QUEEN  );
-			mBlackFigureCollection[ 2 ].figureItem = new FigureItem( Colors.BLACK, FigureType.ROOK   );
-			mBlackFigureCollection[ 3 ].figureItem = new FigureItem( Colors.BLACK, FigureType.BISHOP );
-			mBlackFigureCollection[ 4 ].figureItem = new FigureItem( Colors.BLACK, FigureType.KNIGHT );
-			mBlackFigureCollection[ 5 ].figureItem = new FigureItem( Colors.BLACK, FigureType.PAWN   );
+			mBlackFigureCollection[ 0 ].figureItem = new FigureItem( Colors.BLACK ,FigureType.MOVED_KING	);
+			mBlackFigureCollection[ 1 ].figureItem = new FigureItem( Colors.BLACK, FigureType.QUEEN			);
+			mBlackFigureCollection[ 2 ].figureItem = new FigureItem( Colors.BLACK, FigureType.MOVED_ROOK	);
+			mBlackFigureCollection[ 3 ].figureItem = new FigureItem( Colors.BLACK, FigureType.BISHOP		);
+			mBlackFigureCollection[ 4 ].figureItem = new FigureItem( Colors.BLACK, FigureType.KNIGHT		);
+			mBlackFigureCollection[ 5 ].figureItem = new FigureItem( Colors.BLACK, FigureType.PAWN			);
 
-			mWhiteFigureCollection[ 0 ].figureItem = new FigureItem( Colors.WHITE, FigureType.KING   );
-			mWhiteFigureCollection[ 1 ].figureItem = new FigureItem( Colors.WHITE, FigureType.QUEEN  );
-			mWhiteFigureCollection[ 2 ].figureItem = new FigureItem( Colors.WHITE, FigureType.ROOK   );
-			mWhiteFigureCollection[ 3 ].figureItem = new FigureItem( Colors.WHITE, FigureType.BISHOP );
-			mWhiteFigureCollection[ 4 ].figureItem = new FigureItem( Colors.WHITE, FigureType.KNIGHT );
-			mWhiteFigureCollection[ 5 ].figureItem = new FigureItem( Colors.WHITE, FigureType.PAWN   );
+			mWhiteFigureCollection[ 0 ].figureItem = new FigureItem( Colors.WHITE, FigureType.MOVED_KING	);
+			mWhiteFigureCollection[ 1 ].figureItem = new FigureItem( Colors.WHITE, FigureType.QUEEN			);
+			mWhiteFigureCollection[ 2 ].figureItem = new FigureItem( Colors.WHITE, FigureType.MOVED_ROOK	);
+			mWhiteFigureCollection[ 3 ].figureItem = new FigureItem( Colors.WHITE, FigureType.BISHOP		);
+			mWhiteFigureCollection[ 4 ].figureItem = new FigureItem( Colors.WHITE, FigureType.KNIGHT		);
+			mWhiteFigureCollection[ 5 ].figureItem = new FigureItem( Colors.WHITE, FigureType.PAWN			);
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------

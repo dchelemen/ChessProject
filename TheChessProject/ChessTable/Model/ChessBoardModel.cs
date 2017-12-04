@@ -38,9 +38,8 @@ namespace ChessTable.Model
 									x			= -1,
 									y			= -1
 								};
-			mCastlingRule		= new CastlingRule();
+
 			mEnPassantRule		= new EnPassantRule();
-			//mChessRule			= new ChessRule();
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -90,8 +89,8 @@ namespace ChessTable.Model
 				} );
 			}
 
-			mPlayer1Algorithm.setTree( chessBoard, whiteFigures, blackFigures, mCastlingRule );
-			mPlayer2Algorithm.setTree( chessBoard, whiteFigures, blackFigures, mCastlingRule );
+			mPlayer1Algorithm.setTree( chessBoard, whiteFigures, blackFigures );
+			mPlayer2Algorithm.setTree( chessBoard, whiteFigures, blackFigures );
 
 			mLastMove = null;
 			mTimer.Start();
@@ -116,8 +115,8 @@ namespace ChessTable.Model
 			}
 			else // Algorithm
 			{
-				currentAlgorithm.refreshTree( chessBoard, whiteFigures, blackFigures, mCastlingRule, aLastMove );
-				currentAlgorithm.move( chessBoard, whiteFigures, blackFigures, mCastlingRule );
+				currentAlgorithm.refreshTree( chessBoard, whiteFigures, blackFigures, aLastMove );
+				currentAlgorithm.move( chessBoard, whiteFigures, blackFigures );
 				refreshBoard();
 
 				mTimer.Start();
@@ -193,7 +192,7 @@ namespace ChessTable.Model
 
 		private void moveFigureTo( ModelItem aPlaceHere )
 		{
-			if ( mCastlingRule.isCastling( mFigureToMove, aPlaceHere ) )
+			if ( isCastling( mFigureToMove, aPlaceHere ) )
 			{
 				castling( aPlaceHere );
 				removeHighLights();
@@ -201,8 +200,8 @@ namespace ChessTable.Model
 				mTimer.Start();
 				return;
 			}
+			updateCastling();
 
-			mCastlingRule.updateCastlingState( mFigureToMove );
 			if ( mEnPassantRule.isEnPassantActive && aPlaceHere.index == mEnPassantRule.temporaryPawn.index && mFigureToMove.figureItem.figureType == FigureType.PAWN )
 			{
 				removeFigureFromWhiteOrBlack( mEnPassantRule.originalPawn );
@@ -270,9 +269,10 @@ namespace ChessTable.Model
 			List< Int32 > pMoves = new List< Int32 >();
 			switch ( aFigureToMove.figureItem.figureType )
 			{
+			case FigureType.MOVED_KING:
 			case FigureType.KING:
 				{
-					KingRule kingRule		= new KingRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess, mCastlingRule );
+					KingRule kingRule		= new KingRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
 					pMoves			= kingRule.possibleMoves();
 				} break;
 			case FigureType.QUEEN:
@@ -280,6 +280,7 @@ namespace ChessTable.Model
 					QueenRule queenRule		= new QueenRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
 					pMoves			= queenRule.possibleMoves();
 				} break;
+			case FigureType.MOVED_ROOK:
 			case FigureType.ROOK:
 				{
 					RookRule rookRule		= new RookRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
@@ -370,17 +371,9 @@ namespace ChessTable.Model
 
 			newRookPlace.index = aPlaceHere.index + moveYCoordForRookBy;
 			newRookPlace.y = aPlaceHere.y + moveYCoordForRookBy;
-
-			mCastlingRule.updateCastlingState( mFigureToMove );
+			
 
 			removeHighLights();
-		}
-
-		//----------------------------------------------------------------------------------------------------------------------------------------
-
-		public void disableCastling()
-		{
-			mCastlingRule.disable();
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -435,6 +428,42 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
+		public Boolean isCastling( ModelItem aFigureToMove, ModelItem aPlaceHere )
+		{
+			if ( aFigureToMove.figureItem.figureType != FigureType.KING )
+			{
+				return false;
+			}
+
+			if ( Math.Abs( aFigureToMove.y - aPlaceHere.y ) == 2 ) // do we steps 2 squares?
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		void updateCastling()
+		{
+			if ( mFigureToMove.figureItem.figureType == FigureType.KING )
+			{
+				mFigureToMove.figureItem.figureType = FigureType.MOVED_KING;
+				chessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.figureType = FigureType.MOVED_KING;
+				List< ModelItem > myFigures = ( mFigureToMove.figureItem.color == Colors.WHITE ? whiteFigures : blackFigures );
+				myFigures.Where( X => X.index == mFigureToMove.index ).FirstOrDefault().figureItem.figureType = FigureType.MOVED_KING;
+			}
+
+			if ( mFigureToMove.figureItem.figureType == FigureType.ROOK )
+			{
+				mFigureToMove.figureItem.figureType = FigureType.MOVED_ROOK;
+				chessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.figureType = FigureType.MOVED_ROOK;
+				List< ModelItem > myFigures = ( mFigureToMove.figureItem.color == Colors.WHITE ? whiteFigures : blackFigures );
+				myFigures.Where( X => X.index == mFigureToMove.index ).FirstOrDefault().figureItem.figureType = FigureType.MOVED_ROOK;
+			}
+		}
+
 		public event EventHandler< PutFigureOnTheTableEventArg >	fieldClicked;
 
 		public event EventHandler< SetHighlightEventArg >			setHighlight;
@@ -451,8 +480,7 @@ namespace ChessTable.Model
 		private List< List< ModelItem > >							chessBoard { get; set; }
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
-
-		//private ChessRule											mChessRule;
+		
 		private Move												mLastMove;
 		private Colors												mPlayer1Color;
 		private BaseAlgorithm										mPlayer1Algorithm;
@@ -463,7 +491,6 @@ namespace ChessTable.Model
 		private Boolean												mIsBoardEnabled;
 
 		private ModelItem											mFigureToMove;
-		private CastlingRule										mCastlingRule;
 		private EnPassantRule										mEnPassantRule;
 		private Timer												mTimer;
 	}

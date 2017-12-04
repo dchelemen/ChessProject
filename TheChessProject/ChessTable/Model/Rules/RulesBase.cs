@@ -118,7 +118,7 @@ namespace ChessTable.Model
 			myFigure.y = aY;
 			myFigure.index = ( aX * 8 ) + aY;
 			
-			Int32 MyKingPosition = myFigures.Where( X => X.figureItem.figureType == FigureType.KING ).FirstOrDefault().index;
+			Int32 MyKingPosition = myFigures.Where( X => X.figureItem.figureType == FigureType.KING || X.figureItem.figureType == FigureType.MOVED_KING ).FirstOrDefault().index;
 			foreach ( ModelItem figure in enemyFigures )
 			{
 				if ( figure.x == aX && figure.y == aY )
@@ -157,6 +157,7 @@ namespace ChessTable.Model
 					QueenRule queenRule		= new QueenRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
 					pMoves			= queenRule.possibleMoves();
 				} break;
+			case FigureType.MOVED_ROOK:
 			case FigureType.ROOK:
 				{
 					RookRule rookRule		= new RookRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );

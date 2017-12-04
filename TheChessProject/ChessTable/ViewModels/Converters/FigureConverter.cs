@@ -19,8 +19,10 @@ namespace ChessTable.ViewModels.Converters
 			{
 				switch ( figure.figureType )
 				{
+					case FigureType.MOVED_KING:
 					case FigureType.KING:	return "/Images/Black_King.png";
 					case FigureType.QUEEN:	return "/Images/Black_Queen.png";
+					case FigureType.MOVED_ROOK:
 					case FigureType.ROOK:	return "/Images/Black_Rook.png";
 					case FigureType.BISHOP:	return "/Images/Black_Bishop.png";
 					case FigureType.KNIGHT:	return "/Images/Black_Knight.png";
@@ -31,8 +33,10 @@ namespace ChessTable.ViewModels.Converters
 			{
 				switch ( figure.figureType )
 				{
+					case FigureType.MOVED_KING:
 					case FigureType.KING:	return "/Images/White_King.png";
 					case FigureType.QUEEN:	return "/Images/White_Queen.png";
+					case FigureType.MOVED_ROOK:
 					case FigureType.ROOK:	return "/Images/White_Rook.png";
 					case FigureType.BISHOP:	return "/Images/White_Bishop.png";
 					case FigureType.KNIGHT:	return "/Images/White_Knight.png";

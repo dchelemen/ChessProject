@@ -18,7 +18,7 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule )
+		public override Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
 		{
 			Random random			= new Random();
 			Int32 randInd			= random.Next( mTree.Count );
@@ -50,14 +50,14 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove )
+		public override void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, Move aLastMove )
 		{
-			setTree( aChessBoard, aWhiteFigures, aBlackFigures, aCastlingRule);
+			setTree( aChessBoard, aWhiteFigures, aBlackFigures );
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule )
+		public override void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
 		{
 			mTree = new List< TreeNode >();
 
@@ -66,7 +66,7 @@ namespace ChessTable.Model.Algorithms
 
 			foreach ( ModelItem item in myFigures )
 			{
-				possibleMovesOfTheItem = possibleMoves( aChessBoard, aBlackFigures, aWhiteFigures, aCastlingRule, item );
+				possibleMovesOfTheItem = possibleMoves( aChessBoard, aBlackFigures, aWhiteFigures, item );
 				addNewTreeNode( item, possibleMovesOfTheItem, aChessBoard );
 			}
 		}

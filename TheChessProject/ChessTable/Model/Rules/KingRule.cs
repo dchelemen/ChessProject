@@ -10,12 +10,11 @@ namespace ChessTable.Model.Rules
 		
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public KingRule( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, Colors aPlayer1Color, ModelItem aFigureToMove, Boolean aIsCheckChess, CastlingRule aCastlingRule = null )
+		public KingRule( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, Colors aPlayer1Color, ModelItem aFigureToMove, Boolean aIsCheckChess )
 			: base( aChessBoard, aWhiteFigures, aBlackFigures, aPlayer1Color, aFigureToMove, false )
 		{
 			mBlackFigures = aBlackFigures;
 			mWhiteFigures = aWhiteFigures;
-			mCastlingRule = aCastlingRule;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -33,16 +32,16 @@ namespace ChessTable.Model.Rules
 			setOnePossibleMove( -1, -1 ); // Lets move Up and Left;
 			setOnePossibleMove( +0, -1 ); // Lets move Left;
 
-			Boolean canCastling		= mCastlingRule.canCastling( mFigureToMove, mChessBoard, +0, -2 );
+			Boolean canCast			= canCastling( mFigureToMove, mChessBoard, +0, -2 );
 			Boolean isTheWayClear	= mPossibleMoves.Contains( mFigureToMove.index - 1 );
-			if ( canCastling && isTheWayClear )
+			if ( canCast && isTheWayClear )
 			{
 				setOnePossibleMove( +0, -2 );
 			}
 
-			canCastling		= mCastlingRule.canCastling( mFigureToMove, mChessBoard, +0, +2 );
+			canCast			= canCastling( mFigureToMove, mChessBoard, +0, +2 );
 			isTheWayClear	= mPossibleMoves.Contains( mFigureToMove.index + 1 );
-			if ( canCastling && isTheWayClear )
+			if ( canCast && isTheWayClear )
 			{
 				setOnePossibleMove( +0, +2 );
 			}
@@ -130,6 +129,7 @@ namespace ChessTable.Model.Rules
 			List< Int32 > possibleMoves		= new List< Int32 >();
 			switch ( aEnemy.figureItem.figureType )
 			{
+			case FigureType.MOVED_KING:
 			case FigureType.KING:
 				{
 					KingRule kingRule		= new KingRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
@@ -140,6 +140,7 @@ namespace ChessTable.Model.Rules
 					QueenRule queenRule		= new QueenRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
 					possibleMoves			= queenRule.possibleMoves();
 				} break;
+			case FigureType.MOVED_ROOK:
 			case FigureType.ROOK:
 				{
 					RookRule rookRule		= new RookRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
@@ -167,6 +168,29 @@ namespace ChessTable.Model.Rules
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		CastlingRule mCastlingRule;
+		private Boolean canCastling( ModelItem aFigureToMove, List< List< ModelItem > > aChessBoard, Int32 aX, Int32 aY )
+		{
+			if ( aFigureToMove.figureItem.figureType == FigureType.MOVED_KING )
+			{
+				return false;
+			}
+
+			Int32 stepMore						= ( aY > 0 ? aY + 1 : aY - 1 );
+			FigureType theFigureWeCheck			= aChessBoard[ aFigureToMove.x ][ aFigureToMove.y + stepMore ].figureItem.figureType;
+			FigureType theFurtherFigureWeCheck	= theFigureWeCheck;
+
+			stepMore							= ( aY > 0 ? stepMore + 1 : stepMore - 1 );
+			int y								= aFigureToMove.y + stepMore;
+			if ( y == 0 || y == 7 )
+			{
+				theFurtherFigureWeCheck			= aChessBoard[ aFigureToMove.x ][ y ].figureItem.figureType;
+			}
+			Boolean isTheWayEmpty				= theFigureWeCheck == FigureType.ROOK || ( theFigureWeCheck == FigureType.NO_FIGURE && theFurtherFigureWeCheck == FigureType.ROOK );
+			
+
+			return isTheWayEmpty;
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
 	}
 }
