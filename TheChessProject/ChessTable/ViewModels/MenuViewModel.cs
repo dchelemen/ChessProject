@@ -494,6 +494,9 @@ namespace ChessTable.ViewModels
 		private ChessBoardView								mChessBoardView;
 		private ChessBoardViewModel							mChessBoardViewModel;
 
+		private ChooseFigureView							mChooseFigureView;
+		private ChooseFigureViewModel						mChooseFigureViewModel;
+
 		private ChessBoardModel								mChessBoardModel;
 	}
 }

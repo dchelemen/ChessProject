@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using ChessTable.Model.Rules;
 using ChessTable.Model.Algorithms;
 using System.Timers;
+using ChessTable.View;
+using ChessTable.ViewModels;
 
 namespace ChessTable.Model
 {
@@ -142,6 +144,13 @@ namespace ChessTable.Model
 				if ( ! possibleMoves.Contains( aIndex.index ) )
 				{
 					return;
+				}
+
+				if ( mFigureToMove.figureItem.figureType == FigureType.PAWN && ( aIndex.x == 0 || aIndex.x == 7 ) )
+				{
+					ChooseFigureView chooseFigureView = new ChooseFigureView();
+					chooseFigureView.ShowDialog();
+					changeFigureToMoveType( chooseFigureView.selectedFigureType );
 				}
 
 				mIsFirstClick = true;
@@ -444,6 +453,23 @@ namespace ChessTable.Model
 		{
 			mTimer.Stop();
 			nextPlayer( this, mLastMove );
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		private void changeFigureToMoveType( FigureType newFigureType )
+		{
+			ModelItem figureToMove = chessBoard[ mFigureToMove.x ][ mFigureToMove.y ];
+			figureToMove.figureItem.figureType = newFigureType;
+			mFigureToMove.figureItem.figureType = newFigureType;
+			
+			List< ModelItem > myFigures = ( mFigureToMove.figureItem.color == Colors.WHITE ? whiteFigures : blackFigures );
+			IEnumerable< ModelItem > myFigures2 = myFigures.Where( X => X.index == mFigureToMove.index );
+
+			if ( myFigures2.Any() )
+			{
+				myFigures2.First().figureItem.figureType = newFigureType;
+			}
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------

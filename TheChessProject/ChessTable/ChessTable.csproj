@@ -60,6 +60,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ChooseFigureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\CustomBoardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -96,6 +100,7 @@
     <Compile Include="ViewModels\BoardItem.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="ViewModels\ChessBoardViewModel.cs" />
+    <Compile Include="ViewModels\ChooseFigureViewModel.cs" />
     <Compile Include="ViewModels\Converters\AlgorithmConverter.cs" />
     <Compile Include="ViewModels\Converters\ColorConverter.cs" />
     <Compile Include="ViewModels\Converters\FigureConverter.cs" />
@@ -108,6 +113,9 @@
     <Compile Include="ViewModels\ImplementedInterfaces\ViewModelBase.cs" />
     <Compile Include="View\ChessBoardView.xaml.cs">
       <DependentUpon>ChessBoardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChooseFigureView.xaml.cs">
+      <DependentUpon>ChooseFigureView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CustomBoardView.xaml.cs">
       <DependentUpon>CustomBoardView.xaml</DependentUpon>
