@@ -14,7 +14,7 @@ namespace ChessTable.Model.Algorithms
 
 		public TreeNode( Move aMoveItem, Int32 aMoveValue = 0 )
 		{
-			moveItem		= aMoveItem;
+			tablePosition	= new Int16[ 65 ];
 			moveValue		= aMoveValue;
 			childNodes		= null;
 		}
@@ -33,8 +33,9 @@ namespace ChessTable.Model.Algorithms
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public Move								moveItem { get; set; }
+		public Int16[]							tablePosition { get; set; }
 		public Int32							moveValue { get; set; }
+		public Move								move { get; set; }
 
 		public List< TreeNode >					childNodes { get; set; }
 	}

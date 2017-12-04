@@ -2,13 +2,16 @@
 {
 	public enum FigureType
 	{
+		NO_FIGURE = 0,
 		KING,
 		QUEEN,
 		ROOK,
 		BISHOP,
 		KNIGHT,
 		PAWN,
-		NO_FIGURE
+		EN_PASSANT_PAWN,
+		MOVED_ROOK,
+		MOVED_KING,
 	}
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------

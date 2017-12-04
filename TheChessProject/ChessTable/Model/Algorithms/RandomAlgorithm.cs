@@ -18,26 +18,46 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override Move nextMove( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule )
+		public override Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule )
 		{
-			Random random = new Random();
-			Int32 randInd = random.Next( mTree.Count );
-			Move temporary = mTree[ randInd ].moveItem;
-			Move returnMoveItem = new Move( temporary.itemFrom, temporary.itemTo );
+			Random random			= new Random();
+			Int32 randInd			= random.Next( mTree.Count );
+			Int16[] tablePosition	= mTree[ randInd ].tablePosition;
+			Move lastMove			= mTree[ randInd ].move;
+			aWhiteFigures.Clear();
 
-			return new Move( temporary.itemFrom, temporary.itemTo );;
+			Int32 index = 0;
+			foreach ( var row in aChessBoard )
+			{
+				foreach ( var modelItem in row )
+				{
+					modelItem.figureItem = getFigureItemFromPosition( tablePosition[ index ] );
+					if ( modelItem.figureItem.color == Colors.WHITE )
+					{
+						aWhiteFigures.Add( new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
+					}
+					else
+					{
+						aBlackFigures.Add( new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
+					}
+
+					index++;
+				}
+			}
+
+			return lastMove;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove, ChessRule aChess )
+		public override void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove )
 		{
-			setTree( aChessBoard, aWhiteFigures, aBlackFigures, aCastlingRule, aChess );
+			setTree( aChessBoard, aWhiteFigures, aBlackFigures, aCastlingRule);
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, ChessRule aChess )
+		public override void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule )
 		{
 			mTree = new List< TreeNode >();
 
@@ -46,7 +66,7 @@ namespace ChessTable.Model.Algorithms
 
 			foreach ( ModelItem item in myFigures )
 			{
-				possibleMovesOfTheItem = possibleMoves( aChessBoard, aBlackFigures, aWhiteFigures, aCastlingRule, item, aChess );
+				possibleMovesOfTheItem = possibleMoves( aChessBoard, aBlackFigures, aWhiteFigures, aCastlingRule, item );
 				addNewTreeNode( item, possibleMovesOfTheItem, aChessBoard );
 			}
 		}
@@ -63,20 +83,5 @@ namespace ChessTable.Model.Algorithms
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
-
-		private Int32 removeAllFrom( TreeNode aNode )
-		{
-			Int32 numberOfDeleted = 0;
-			for ( Int32 index = mTree.Count - 1; index >= 0; index -- )
-			{
-				TreeNode node = mTree[ index ];
-				if ( node.moveItem.itemFrom == aNode.moveItem.itemFrom )
-				{
-					mTree.Remove( node );
-					numberOfDeleted++;
-				}
-			}
-			return numberOfDeleted;
-		}
 	}
 }

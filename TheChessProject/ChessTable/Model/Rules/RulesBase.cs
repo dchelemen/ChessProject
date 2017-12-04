@@ -22,7 +22,7 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract List< Int32 > possibleMoves( ChessRule aChess );
+		public abstract List< Int32 > possibleMoves();
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -94,12 +94,6 @@ namespace ChessTable.Model
 		{
 			Boolean noChess									= false;
 
-			FigureItem targetItem							= new FigureItem( mChessBoard[ aX ][ aY ].figureItem.color, mChessBoard[ aX ][ aY ].figureItem.figureType );
-			mChessBoard[ aX ][ aY ].figureItem.color		= mFigureToMove.figureItem.color;
-			mChessBoard[ aX ][ aY ].figureItem.figureType	= mFigureToMove.figureItem.figureType;
-			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.color					= Colors.NO_COLOR;
-			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.figureType				= FigureType.NO_FIGURE;
-
 			List< ModelItem > enemyFigures;
 			List< ModelItem > myFigures;
 
@@ -113,6 +107,17 @@ namespace ChessTable.Model
 				myFigures		= mBlackFigures;
 				enemyFigures	= mWhiteFigures;
 			}
+
+			FigureItem targetItem							= new FigureItem( mChessBoard[ aX ][ aY ].figureItem.color, mChessBoard[ aX ][ aY ].figureItem.figureType );
+			mChessBoard[ aX ][ aY ].figureItem.color		= mFigureToMove.figureItem.color;
+			mChessBoard[ aX ][ aY ].figureItem.figureType	= mFigureToMove.figureItem.figureType;
+			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.color					= Colors.NO_COLOR;
+			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.figureType				= FigureType.NO_FIGURE;
+			ModelItem myFigure = myFigures.Where( X => X.index == mFigureToMove.index ).FirstOrDefault();
+			myFigure.x = aX;
+			myFigure.y = aY;
+			myFigure.index = ( aX * 8 ) + aY;
+			
 			Int32 MyKingPosition = myFigures.Where( X => X.figureItem.figureType == FigureType.KING ).FirstOrDefault().index;
 			foreach ( ModelItem figure in enemyFigures )
 			{
@@ -133,6 +138,9 @@ namespace ChessTable.Model
 			mChessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem.figureType				= mChessBoard[ aX ][ aY ].figureItem.figureType;
 			mChessBoard[ aX ][ aY ].figureItem.color		= targetItem.color;
 			mChessBoard[ aX ][ aY ].figureItem.figureType	= targetItem.figureType;
+			myFigure.x = mFigureToMove.x;
+			myFigure.y = mFigureToMove.y;
+			myFigure.index = mFigureToMove.index;
 
 			return noChess;
 		}
@@ -147,27 +155,27 @@ namespace ChessTable.Model
 			case FigureType.QUEEN:
 				{
 					QueenRule queenRule		= new QueenRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
-					pMoves			= queenRule.possibleMoves( new ChessRule() );
+					pMoves			= queenRule.possibleMoves();
 				} break;
 			case FigureType.ROOK:
 				{
 					RookRule rookRule		= new RookRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
-					pMoves			= rookRule.possibleMoves( new ChessRule() );
+					pMoves			= rookRule.possibleMoves();
 				} break;
 			case FigureType.BISHOP:
 				{
 					BishopRule bishopRule	= new BishopRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
-					pMoves			= bishopRule.possibleMoves( new ChessRule() );
+					pMoves			= bishopRule.possibleMoves();
 				} break;
 			case FigureType.KNIGHT:
 				{
 					KnightRule knightRule	= new KnightRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
-					pMoves			= knightRule.possibleMoves( new ChessRule() );
+					pMoves			= knightRule.possibleMoves();
 				} break;
 			case FigureType.PAWN:
 				{
 					PawnRule pawnRule		= new PawnRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aFigureToMove, false );
-					pMoves			= pawnRule.possibleMoves( new ChessRule() );
+					pMoves			= pawnRule.possibleMoves();
 				} break;
 			case FigureType.NO_FIGURE:		break;
 			}

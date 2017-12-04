@@ -19,18 +19,18 @@ namespace ChessTable.Model.Algorithms
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, ChessRule aChess );
+		public abstract void setTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule );
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove, ChessRule aChess );
+		public abstract void refreshTree( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule, Move aLastMove );
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract Move nextMove( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule );
+		public abstract Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures, CastlingRule aCastlingRule );
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
-		protected List< Int32 > possibleMoves( List< List< ModelItem > > aChessBoard, List< ModelItem > aBlackFigures, List< ModelItem > aWhiteFigures, CastlingRule aCastlingRule, ModelItem currentFigure, ChessRule aChess )
+		protected List< Int32 > possibleMoves( List< List< ModelItem > > aChessBoard, List< ModelItem > aBlackFigures, List< ModelItem > aWhiteFigures, CastlingRule aCastlingRule, ModelItem currentFigure)
 		{
 			List< Int32 > possibleMoves = new List< Int32 >();
 			switch ( currentFigure.figureItem.figureType )
@@ -38,37 +38,63 @@ namespace ChessTable.Model.Algorithms
 			case FigureType.KING:
 				{
 					KingRule kingRule		= new KingRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true, aCastlingRule );
-					possibleMoves			= kingRule.possibleMoves( aChess );
+					possibleMoves			= kingRule.possibleMoves();
 				} break;
 			case FigureType.QUEEN:
 				{
 					QueenRule queenRule		= new QueenRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
-					possibleMoves			= queenRule.possibleMoves( aChess );
+					possibleMoves			= queenRule.possibleMoves();
 				} break;
 			case FigureType.ROOK:
 				{
 					RookRule rookRule		= new RookRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
-					possibleMoves			= rookRule.possibleMoves( aChess );
+					possibleMoves			= rookRule.possibleMoves();
 				} break;
 			case FigureType.BISHOP:
 				{
 					BishopRule bishopRule	= new BishopRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
-					possibleMoves			= bishopRule.possibleMoves( aChess );
+					possibleMoves			= bishopRule.possibleMoves();
 				} break;
 			case FigureType.KNIGHT:
 				{
 					KnightRule knightRule	= new KnightRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
-					possibleMoves			= knightRule.possibleMoves( aChess );
+					possibleMoves			= knightRule.possibleMoves();
 				} break;
 			case FigureType.PAWN:
 				{
 					PawnRule pawnRule		= new PawnRule( aChessBoard, aWhiteFigures, aBlackFigures, player1Color, currentFigure, true );
-					possibleMoves			= pawnRule.possibleMoves( aChess );
+					possibleMoves			= pawnRule.possibleMoves();
 				} break;
 			case FigureType.NO_FIGURE:		break;
 			}
 
 			return possibleMoves;
+		}
+		
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		protected FigureItem getFigureItemFromPosition( Int16 aFigureItem )
+		{
+			switch ( aFigureItem )
+			{
+			case 1:		return new FigureItem( Colors.WHITE,	FigureType.PAWN			);
+			case 2:		return new FigureItem( Colors.WHITE,	FigureType.PAWN			);
+			case 3:		return new FigureItem( Colors.WHITE,	FigureType.KNIGHT		);
+			case 4:		return new FigureItem( Colors.WHITE,	FigureType.BISHOP		);
+			case 5:		return new FigureItem( Colors.WHITE,	FigureType.ROOK			);
+			case 9:		return new FigureItem( Colors.WHITE,	FigureType.QUEEN		);
+			case 10:	return new FigureItem( Colors.WHITE,	FigureType.KING			);
+
+			case -1:	return new FigureItem( Colors.BLACK,	FigureType.PAWN			);
+			case -2:	return new FigureItem( Colors.BLACK,	FigureType.PAWN			);
+			case -3:	return new FigureItem( Colors.BLACK,	FigureType.KNIGHT		);
+			case -4:	return new FigureItem( Colors.BLACK,	FigureType.BISHOP		);
+			case -5:	return new FigureItem( Colors.BLACK,	FigureType.ROOK			);
+			case -9:	return new FigureItem( Colors.BLACK,	FigureType.QUEEN		);
+			case -10:	return new FigureItem( Colors.BLACK,	FigureType.KING			);
+
+			default:	return new FigureItem( Colors.NO_COLOR,	FigureType.NO_FIGURE	);
+			}
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------

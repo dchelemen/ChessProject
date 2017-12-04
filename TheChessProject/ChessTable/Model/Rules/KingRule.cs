@@ -20,7 +20,7 @@ namespace ChessTable.Model.Rules
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override List< Int32 > possibleMoves( ChessRule aChessRule )
+		public override List< Int32 > possibleMoves()
 		{
 			mPossibleMoves = new List< Int32 >();
 
@@ -138,27 +138,27 @@ namespace ChessTable.Model.Rules
 			case FigureType.QUEEN:
 				{
 					QueenRule queenRule		= new QueenRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
-					possibleMoves			= queenRule.possibleMoves( chess );
+					possibleMoves			= queenRule.possibleMoves();
 				} break;
 			case FigureType.ROOK:
 				{
 					RookRule rookRule		= new RookRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
-					possibleMoves			= rookRule.possibleMoves( chess );
+					possibleMoves			= rookRule.possibleMoves();
 				} break;
 			case FigureType.BISHOP:
 				{
 					BishopRule bishopRule	= new BishopRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
-					possibleMoves			= bishopRule.possibleMoves( chess );
+					possibleMoves			= bishopRule.possibleMoves();
 				} break;
 			case FigureType.KNIGHT:
 				{
 					KnightRule knightRule	= new KnightRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
-					possibleMoves			= knightRule.possibleMoves( chess );
+					possibleMoves			= knightRule.possibleMoves();
 				} break;
 			case FigureType.PAWN:
 				{
 					PawnRule pawnRule		= new PawnRule( mChessBoard, mWhiteFigures, mBlackFigures, mPlayer1Color, aEnemy, false );
-					possibleMoves			= pawnRule.possibleMoves( chess );
+					possibleMoves			= pawnRule.possibleMoves();
 				} break;
 			case FigureType.NO_FIGURE:		break;
 			}

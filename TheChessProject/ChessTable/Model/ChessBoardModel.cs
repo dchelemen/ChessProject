@@ -40,7 +40,7 @@ namespace ChessTable.Model
 								};
 			mCastlingRule		= new CastlingRule();
 			mEnPassantRule		= new EnPassantRule();
-			mChessRule			= new ChessRule();
+			//mChessRule			= new ChessRule();
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -90,8 +90,8 @@ namespace ChessTable.Model
 				} );
 			}
 
-			mPlayer1Algorithm.setTree( chessBoard, whiteFigures, blackFigures, mCastlingRule, mChessRule );
-			mPlayer2Algorithm.setTree( chessBoard, whiteFigures, blackFigures, mCastlingRule, mChessRule );
+			mPlayer1Algorithm.setTree( chessBoard, whiteFigures, blackFigures, mCastlingRule );
+			mPlayer2Algorithm.setTree( chessBoard, whiteFigures, blackFigures, mCastlingRule );
 
 			mLastMove = null;
 			mTimer.Start();
@@ -116,11 +116,11 @@ namespace ChessTable.Model
 			}
 			else // Algorithm
 			{
-				currentAlgorithm.refreshTree( chessBoard, whiteFigures, blackFigures, mCastlingRule, aLastMove, mChessRule );
-				Move nextMove = currentAlgorithm.nextMove( chessBoard, whiteFigures, blackFigures, mCastlingRule );
-				mFigureToMove = nextMove.itemFrom;
+				currentAlgorithm.refreshTree( chessBoard, whiteFigures, blackFigures, mCastlingRule, aLastMove );
+				currentAlgorithm.move( chessBoard, whiteFigures, blackFigures, mCastlingRule );
+				refreshBoard();
 
-				moveFigureTo( nextMove.itemTo );
+				mTimer.Start();
 			}
 		}
 
@@ -193,11 +193,6 @@ namespace ChessTable.Model
 
 		private void moveFigureTo( ModelItem aPlaceHere )
 		{
-			if ( mChessRule.isChess )
-			{
-				mChessRule.resetChess(); 
-			}
-
 			if ( mCastlingRule.isCastling( mFigureToMove, aPlaceHere ) )
 			{
 				castling( aPlaceHere );
@@ -245,29 +240,6 @@ namespace ChessTable.Model
 
 			mLastMove = new Move( mFigureToMove, chessBoard[ aPlaceHere.x ][ aPlaceHere.y ] );
 
-			List< ModelItem > enemyFigures;
-			List< ModelItem > myFigures;
-			if ( mFigureToMove.figureItem.color == Colors.WHITE )
-			{
-				myFigures		= whiteFigures;
-				enemyFigures	= blackFigures;
-			}
-			else
-			{
-				myFigures		= blackFigures;
-				enemyFigures	= whiteFigures;
-			}
-
-			Int32 enemyKingPosition = enemyFigures.Where( X => X.figureItem.figureType == FigureType.KING ).FirstOrDefault().index;
-			foreach ( ModelItem myFigure in myFigures )
-			{
-				List< Int32 > posMoves = getPossibleMoves( myFigure, false );
-				if ( posMoves.Contains( enemyKingPosition ) )
-				{
-					mChessRule.setChess( enemyKingPosition, new ModelItem( myFigure.x, myFigure.y, myFigure.figureItem.color, myFigure.figureItem.figureType ), posMoves );
-					break;
-				}
-			}
 			mTimer.Start();
 		}
 
@@ -301,32 +273,32 @@ namespace ChessTable.Model
 			case FigureType.KING:
 				{
 					KingRule kingRule		= new KingRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess, mCastlingRule );
-					pMoves			= kingRule.possibleMoves( mChessRule );
+					pMoves			= kingRule.possibleMoves();
 				} break;
 			case FigureType.QUEEN:
 				{
 					QueenRule queenRule		= new QueenRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
-					pMoves			= queenRule.possibleMoves( mChessRule );
+					pMoves			= queenRule.possibleMoves();
 				} break;
 			case FigureType.ROOK:
 				{
 					RookRule rookRule		= new RookRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
-					pMoves			= rookRule.possibleMoves( mChessRule );
+					pMoves			= rookRule.possibleMoves();
 				} break;
 			case FigureType.BISHOP:
 				{
 					BishopRule bishopRule	= new BishopRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
-					pMoves			= bishopRule.possibleMoves( mChessRule );
+					pMoves			= bishopRule.possibleMoves();
 				} break;
 			case FigureType.KNIGHT:
 				{
 					KnightRule knightRule	= new KnightRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
-					pMoves			= knightRule.possibleMoves( mChessRule );
+					pMoves			= knightRule.possibleMoves();
 				} break;
 			case FigureType.PAWN:
 				{
 					PawnRule pawnRule		= new PawnRule( chessBoard, whiteFigures, blackFigures, mPlayer1Color, aFigureToMove, shouldCheckChess );
-					pMoves			= pawnRule.possibleMoves( mChessRule );
+					pMoves			= pawnRule.possibleMoves();
 				} break;
 			case FigureType.NO_FIGURE:		break;
 			}
@@ -401,30 +373,6 @@ namespace ChessTable.Model
 
 			mCastlingRule.updateCastlingState( mFigureToMove );
 
-			List< ModelItem > enemyFigures;
-			List< ModelItem > myFigures;
-			if ( mFigureToMove.figureItem.color == Colors.WHITE )
-			{
-				myFigures		= whiteFigures;
-				enemyFigures	= blackFigures;
-			}
-			else
-			{
-				myFigures		= blackFigures;
-				enemyFigures	= whiteFigures;
-			}
-
-			Int32 enemyKingPosition = enemyFigures.Where( X => X.figureItem.figureType == FigureType.KING ).FirstOrDefault().index;
-			foreach ( ModelItem myFigure in myFigures )
-			{
-				List< Int32 > posMoves = getPossibleMoves( myFigure, false );
-				if ( posMoves.Contains( enemyKingPosition ) )
-				{
-					mChessRule.setChess( enemyKingPosition, new ModelItem( myFigure.x, myFigure.y, myFigure.figureItem.color, myFigure.figureItem.figureType ), posMoves );
-					break;
-				}
-			}
-
 			removeHighLights();
 		}
 
@@ -474,6 +422,19 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
+		private void refreshBoard()
+		{
+			foreach ( var rows in chessBoard )
+			{
+				foreach ( var modelItem in rows )
+				{
+					fieldClicked( this, new PutFigureOnTheTableEventArg( modelItem.x, modelItem.y, modelItem.index, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
+				}
+			}
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
 		public event EventHandler< PutFigureOnTheTableEventArg >	fieldClicked;
 
 		public event EventHandler< SetHighlightEventArg >			setHighlight;
@@ -491,7 +452,7 @@ namespace ChessTable.Model
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		private ChessRule											mChessRule;
+		//private ChessRule											mChessRule;
 		private Move												mLastMove;
 		private Colors												mPlayer1Color;
 		private BaseAlgorithm										mPlayer1Algorithm;

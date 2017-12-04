@@ -15,7 +15,7 @@ namespace ChessTable.Model.Rules
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override List< Int32 > possibleMoves( ChessRule aChess )
+		public override List< Int32 > possibleMoves()
 		{
 			mPossibleMoves						= new List< Int32 >();
 			Int32 xCoord						= -1;
