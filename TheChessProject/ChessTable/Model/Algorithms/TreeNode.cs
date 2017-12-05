@@ -12,9 +12,9 @@ namespace ChessTable.Model.Algorithms
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public TreeNode( Move aMoveItem, Int32 aMoveValue = 0 )
+		public TreeNode( Int16[] aTablePosition, Int32 aMoveValue = 0 )
 		{
-			tablePosition	= new Int16[ 65 ];
+			tablePosition	= aTablePosition;
 			moveValue		= aMoveValue;
 			childNodes		= null;
 		}

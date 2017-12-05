@@ -29,7 +29,7 @@ namespace ChessTable.Model.Rules
 				isPlayer1Moves2		= 6; // we checks that is the pawn on line 6. If he is, he will able to step 2
 			}
 			
-			Boolean canWeMoveForward = false;
+			 Boolean canWeMoveForward = false;
 			xCoord = ( mFigureToMove.x + isPlayer1Turn ); // Depends on the current player, X + 1 or X - 1
 			yCoord = mFigureToMove.y;
 			isValid = isValidField( xCoord, yCoord );

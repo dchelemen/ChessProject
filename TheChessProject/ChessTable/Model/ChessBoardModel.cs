@@ -87,8 +87,8 @@ namespace ChessTable.Model
 				} );
 			}
 
-			mPlayer1Algorithm.setTree( chessBoard, whiteFigures, blackFigures );
-			mPlayer2Algorithm.setTree( chessBoard, whiteFigures, blackFigures );
+			//mPlayer1Algorithm.setTree( chessBoard, whiteFigures, blackFigures );
+			//mPlayer2Algorithm.setTree( chessBoard, whiteFigures, blackFigures );
 
 			mLastMove = null;
 			mTimer.Start();
@@ -116,7 +116,7 @@ namespace ChessTable.Model
 				currentAlgorithm.refreshTree( chessBoard, whiteFigures, blackFigures, aLastMove );
 				currentAlgorithm.move( chessBoard, whiteFigures, blackFigures );
 				refreshBoard();
-
+				mCurrentColor = ( mCurrentColor == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
 				mTimer.Start();
 			}
 		}
