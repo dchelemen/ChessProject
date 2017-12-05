@@ -14,7 +14,7 @@ namespace ChessTable.Model.Algorithms
 		{
 			player1Color	= aPlayer1Color;
 			myColor			= aMyColor;
-			mTree = null;
+			mTreeRoot		= new TreeNode( null );
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
@@ -27,10 +27,11 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public abstract Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures );
+		public abstract void move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures );
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
-		protected List< Int32 > possibleMoves( List< List< ModelItem > > aChessBoard, List< ModelItem > aBlackFigures, List< ModelItem > aWhiteFigures, ModelItem currentFigure)
+
+		protected List< Int32 > possibleMoves( List< List< ModelItem > > aChessBoard, List< ModelItem > aBlackFigures, List< ModelItem > aWhiteFigures, ModelItem currentFigure )
 		{
 			List< Int32 > possibleMoves = new List< Int32 >();
 			switch ( currentFigure.figureItem.figureType )
@@ -126,7 +127,7 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		protected List< TreeNode > mTree { get; set; }
+		protected TreeNode mTreeRoot { get; set; }
 		public Boolean isActive { get; set; }
 		protected Colors player1Color { get; set; }
 		protected Colors myColor { get; set; }

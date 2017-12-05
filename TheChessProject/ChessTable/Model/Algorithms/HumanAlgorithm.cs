@@ -32,9 +32,8 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
+		public override void move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
 		{
-			return new Move();
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------

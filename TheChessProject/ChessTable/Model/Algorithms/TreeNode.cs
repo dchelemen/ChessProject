@@ -8,15 +8,39 @@ namespace ChessTable.Model.Algorithms
 {
 	public class TreeNode
 	{
-		public TreeNode(){}
+		public enum Player
+		{
+			ALPHA,
+			BETA
+		};
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public TreeNode( Int16[] aTablePosition, Int32 aMoveValue = 0 )
+		public TreeNode( TreeNode aParent = null )
 		{
+			if ( aParent == null )
+			{
+				player = Player.ALPHA;
+			}
+			else
+			{
+				player = ( aParent.player == Player.ALPHA ? Player.BETA : Player.ALPHA );
+			}
+
+			parent			= aParent;
+			moveValue		= -100;
+			childNodes		= new List< TreeNode >();
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		public TreeNode( TreeNode aParent, Int16[] aTablePosition, Int32 aMoveValue = -100 )
+		{
+			player			= ( aParent.player == Player.ALPHA ? Player.BETA : Player.ALPHA );
+			parent			= aParent;
 			tablePosition	= aTablePosition;
 			moveValue		= aMoveValue;
-			childNodes		= null;
+			childNodes		= new List< TreeNode >();
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
@@ -35,7 +59,10 @@ namespace ChessTable.Model.Algorithms
 
 		public Int16[]							tablePosition { get; set; }
 		public Int32							moveValue { get; set; }
-		public Move								move { get; set; }
+
+		public TreeNode							parent { get; set; }
+
+		public Player							player { get; set; }
 
 		public List< TreeNode >					childNodes { get; set; }
 	}

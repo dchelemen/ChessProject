@@ -360,6 +360,7 @@ namespace ChessTable.Model
 
 			// move the King
 
+			newKingPlace.figureItem.figureType = FigureType.MOVED_KING;
 			newKingPlace.index	= aPlaceHere.index;
 			newKingPlace.x		= aPlaceHere.x;
 			newKingPlace.y		= aPlaceHere.y;
@@ -367,8 +368,8 @@ namespace ChessTable.Model
 			fieldClicked( this, new PutFigureOnTheTableEventArg( mFigureToMove.x, mFigureToMove.y, mFigureToMove.index, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
 			chessBoard[ mFigureToMove.x ][ mFigureToMove.y ].figureItem = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 
-			fieldClicked( this, new PutFigureOnTheTableEventArg( aPlaceHere.x, aPlaceHere.y, aPlaceHere.index, mFigureToMove.figureItem.color, mFigureToMove.figureItem.figureType ) );
-			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = new FigureItem( mFigureToMove.figureItem.color, mFigureToMove.figureItem.figureType );
+			fieldClicked( this, new PutFigureOnTheTableEventArg( aPlaceHere.x, aPlaceHere.y, aPlaceHere.index, mFigureToMove.figureItem.color, FigureType.MOVED_KING ) );
+			chessBoard[ aPlaceHere.x ][ aPlaceHere.y ].figureItem = new FigureItem( mFigureToMove.figureItem.color, FigureType.MOVED_KING);
 
 			// move the Rook
 
@@ -376,9 +377,10 @@ namespace ChessTable.Model
 			chessBoard[ newRookPlace.x ][ newRookPlace.y ].figureItem = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 
 			fieldClicked( this, new PutFigureOnTheTableEventArg( newRookPlace.x, aPlaceHere.y + moveYCoordForRookBy, aPlaceHere.index + moveYCoordForRookBy,
-																							newRookPlace.figureItem.color, newRookPlace.figureItem.figureType ) );
-			chessBoard[ newRookPlace.x ][ aPlaceHere.y + moveYCoordForRookBy ].figureItem = new FigureItem( newRookPlace.figureItem.color, newRookPlace.figureItem.figureType );
+																							newRookPlace.figureItem.color, FigureType.MOVED_ROOK ) );
+			chessBoard[ newRookPlace.x ][ aPlaceHere.y + moveYCoordForRookBy ].figureItem = new FigureItem( newRookPlace.figureItem.color, FigureType.MOVED_ROOK );
 
+			newRookPlace.figureItem.figureType = FigureType.MOVED_ROOK;
 			newRookPlace.index = aPlaceHere.index + moveYCoordForRookBy;
 			newRookPlace.y = aPlaceHere.y + moveYCoordForRookBy;
 			
@@ -392,8 +394,9 @@ namespace ChessTable.Model
 		{
 			switch ( aAlgorithm )
 			{
-			case Algorithm.HUMAN: return new HumanAlgorithm( mPlayer1Color, aAlgorithmsColor );
-			case Algorithm.RANDOM: return new RandomAlgorithm( mPlayer1Color, aAlgorithmsColor );
+			case Algorithm.HUMAN:		return new HumanAlgorithm( mPlayer1Color, aAlgorithmsColor );
+			case Algorithm.RANDOM:		return new RandomAlgorithm( mPlayer1Color, aAlgorithmsColor );
+			case Algorithm.ALPHA_BETA:	return new AlphaBetaAlgorithm( mPlayer1Color, aAlgorithmsColor );
 			default: return new HumanAlgorithm( mPlayer1Color, aAlgorithmsColor );
 			}
 		}
