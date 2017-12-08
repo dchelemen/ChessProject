@@ -159,20 +159,43 @@ namespace ChessTable.Model.Algorithms
 				{
 					for ( int i = 0; i < 4 && cut == false; i++ )
 					{
+						Int32 moveValue = 0;
 						switch ( i )
 						{
-						case 0: targetItem.figureItem.figureType = FigureType.KNIGHT; break;
-						case 1: targetItem.figureItem.figureType = FigureType.BISHOP; break;
-						case 2: targetItem.figureItem.figureType = FigureType.MOVED_ROOK; break;
-						case 3: targetItem.figureItem.figureType = FigureType.QUEEN; break;
+						case 0:
+							{
+								targetItem.figureItem.figureType = FigureType.KNIGHT;
+								moveValue = 3;
+							} break;
+						case 1:
+							{
+								targetItem.figureItem.figureType = FigureType.BISHOP;
+								moveValue = 3;
+							} break;
+						case 2:
+							{
+								targetItem.figureItem.figureType = FigureType.MOVED_ROOK;
+								moveValue = 5;
+							} break;
+						case 3:
+							{
+								targetItem.figureItem.figureType = FigureType.QUEEN;
+								moveValue = 9;
+							} break;
 						}
+
+						if ( myColor == tempItem.figureItem.color )
+						{
+							moveValue *= ( -1 );
+						}
+
 						TreeNode lastChild;
 						Int16[] tablePositions	= getTablePosition( aChessBoard );
 						if ( aCurrentDepth == mMaxDepth - 1 )
 						{
 							currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions ) );
 							lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
-							lastChild.moveValue = getMoveValue( aItem, tempItem );
+							lastChild.moveValue = moveValue;
 						}
 						else
 						{
@@ -182,7 +205,7 @@ namespace ChessTable.Model.Algorithms
 							nextDepth( lastChild, aChessBoard, aCurrentDepth + 1, nextColor );
 
 							lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
-							lastChild.getMoveValue = getMoveValue( aItem, tempItem );
+							lastChild.getMoveValue = moveValue;
 							lastChild.depthValue = ( lastChild.getMoveValue != 0 ? ( mMaxDepth - aCurrentDepth ) : 0 );
 							if ( myColor == tempItem.figureItem.color )
 							{
