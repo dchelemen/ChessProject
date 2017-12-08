@@ -167,13 +167,12 @@ namespace ChessTable.Model.Algorithms
 						case 3: targetItem.figureItem.figureType = FigureType.QUEEN; break;
 						}
 						TreeNode lastChild;
-						Int32 moveValue;
 						Int16[] tablePositions	= getTablePosition( aChessBoard );
 						if ( aCurrentDepth == mMaxDepth - 1 )
 						{
-							moveValue	= getMoveValue( aItem, tempItem );
-							currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions, moveValue ) );
+							currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions ) );
 							lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
+							lastChild.moveValue = getMoveValue( aItem, tempItem );
 						}
 						else
 						{
@@ -181,8 +180,16 @@ namespace ChessTable.Model.Algorithms
 							lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
 							Colors nextColor = ( aItem.figureItem.color == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
 							nextDepth( lastChild, aChessBoard, aCurrentDepth + 1, nextColor );
-							moveValue = countAlphaBetaValue( lastChild ) + getMoveValue( aItem, tempItem );
-							lastChild.moveValue = moveValue;
+
+							lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
+							lastChild.getMoveValue = getMoveValue( aItem, tempItem );
+							lastChild.depthValue = ( lastChild.getMoveValue != 0 ? ( mMaxDepth - aCurrentDepth ) : 0 );
+							if ( myColor == tempItem.figureItem.color )
+							{
+								lastChild.depthValue *= ( -1 );
+							}
+							lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue + lastChild.depthValue;
+						
 						}
 						cut = shouldCut( lastChild );
 					}
@@ -190,13 +197,12 @@ namespace ChessTable.Model.Algorithms
 				else
 				{
 					TreeNode lastChild;
-					Int32 moveValue;
 					Int16[] tablePositions	= getTablePosition( aChessBoard );
 					if ( aCurrentDepth == mMaxDepth - 1 )
 					{
-						moveValue	= getMoveValue( aItem, tempItem );
-						currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions, moveValue ) );
+						currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions ) );
 						lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
+						lastChild.moveValue = getMoveValue( aItem, tempItem );
 					}
 					else
 					{
@@ -204,8 +210,16 @@ namespace ChessTable.Model.Algorithms
 						lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
 						Colors nextColor = ( aItem.figureItem.color == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
 						nextDepth( lastChild, aChessBoard, aCurrentDepth + 1, nextColor );
-						moveValue = countAlphaBetaValue( lastChild ) + getMoveValue( aItem, tempItem );
-						lastChild.moveValue = moveValue;
+
+						lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
+						lastChild.getMoveValue = getMoveValue( aItem, tempItem );
+						lastChild.depthValue = ( lastChild.getMoveValue != 0 ? ( mMaxDepth - aCurrentDepth ) : 0 );
+						if ( myColor == tempItem.figureItem.color )
+						{
+							lastChild.depthValue *= ( -1 );
+						}
+						lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue + lastChild.depthValue;
+						
 					}
 					cut = shouldCut( lastChild );
 				}
@@ -335,6 +349,10 @@ namespace ChessTable.Model.Algorithms
 				returnValue = 1;
 			}
 
+			if ( myColor == aTarget.figureItem.color )
+			{
+				returnValue *= ( -1 );
+			}
 			return returnValue;
 		}
 
@@ -381,6 +399,7 @@ namespace ChessTable.Model.Algorithms
 				if ( i.moveValue < min )
 					min = i.moveValue;
 			}
+			min = ( min != -50 ? min : 0 );
 			return min;
 		}
 
@@ -394,6 +413,7 @@ namespace ChessTable.Model.Algorithms
 				if ( i.moveValue > max )
 					max = i.moveValue;
 			}
+			max = ( max != -50 ? max : 0 );
 			return max;
 		}
 

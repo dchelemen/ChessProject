@@ -60,6 +60,10 @@ namespace ChessTable.Model.Algorithms
 		public Int16[]							tablePosition { get; set; }
 		public Int32							moveValue { get; set; }
 
+		public Int32 countAlphaBetaValue;
+		public Int32 getMoveValue;
+		public Int32 depthValue;
+
 		public TreeNode							parent { get; set; }
 
 		public Player							player { get; set; }
