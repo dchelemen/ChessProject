@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace ChessTable.Model.Algorithms
 {
-	class AlphaBetaAlgorithm : BaseAlgorithm
+	class AlphaBetaAlgorithmWithWeight : BaseAlgorithm
 	{
-		public AlphaBetaAlgorithm( Colors aPlayer1Color, Colors aMyColor ) : base( aPlayer1Color, aMyColor )
+		public AlphaBetaAlgorithmWithWeight( Colors aPlayer1Color, Colors aMyColor ) : base( aPlayer1Color, aMyColor )
 		{
 			isActive = true;
 			mMaxDepth = 3;
@@ -18,16 +18,25 @@ namespace ChessTable.Model.Algorithms
 		public override Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
 		{
 			TreeNode bestNode = new TreeNode();
+			List< Move > moves = new List< Move >();
 			bestNode.moveValue = -100;
 			foreach ( var node in mTreeRoot.childNodes )
 			{
 				if ( node.moveValue > bestNode.moveValue )
 				{
+					moves.Clear();
 					bestNode = node;
+					moves.Add( node.move );
+				}
+				else if ( node.moveValue == bestNode.moveValue )
+				{
+					moves.Add( node.move );
 				}
 			}
 
-			return bestNode.move;
+			Random rnd = new Random();
+			Int32 randomMove = rnd.Next( moves.Count );
+			return moves[ randomMove ];
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -195,7 +204,12 @@ namespace ChessTable.Model.Algorithms
 
 							lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
 							lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem, moveValue );
-							lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue;
+							lastChild.depthValue = ( lastChild.getMoveValue != 0 ? ( mMaxDepth - aCurrentDepth ) : 0 );
+							if ( myColor == tempItem.figureItem.color )
+							{
+								lastChild.depthValue *= ( -1 );
+							}
+							lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue + lastChild.depthValue;
 						
 						}
 						cut = shouldCut( lastChild );
@@ -219,7 +233,12 @@ namespace ChessTable.Model.Algorithms
 
 						lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
 						lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem );
-						lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue;
+						lastChild.depthValue = ( lastChild.getMoveValue != 0 ? ( mMaxDepth - aCurrentDepth ) : 0 );
+						if ( myColor == tempItem.figureItem.color )
+						{
+							lastChild.depthValue *= ( -1 );
+						}
+						lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue + lastChild.depthValue;
 						
 					}
 					cut = shouldCut( lastChild );

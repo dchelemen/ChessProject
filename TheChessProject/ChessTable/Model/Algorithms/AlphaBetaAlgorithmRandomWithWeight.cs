@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace ChessTable.Model.Algorithms
 {
-	class AlphaBetaAlgorithm : BaseAlgorithm
+	class AlphaBetaAlgorithmRandomWithWeight : BaseAlgorithm
 	{
-		public AlphaBetaAlgorithm( Colors aPlayer1Color, Colors aMyColor ) : base( aPlayer1Color, aMyColor )
+		public AlphaBetaAlgorithmRandomWithWeight( Colors aPlayer1Color, Colors aMyColor ) : base( aPlayer1Color, aMyColor )
 		{
 			isActive = true;
 			mMaxDepth = 3;
@@ -195,7 +195,12 @@ namespace ChessTable.Model.Algorithms
 
 							lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
 							lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem, moveValue );
-							lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue;
+							lastChild.depthValue = ( lastChild.getMoveValue != 0 ? ( mMaxDepth - aCurrentDepth ) : 0 );
+							if ( myColor == tempItem.figureItem.color )
+							{
+								lastChild.depthValue *= ( -1 );
+							}
+							lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue + lastChild.depthValue;
 						
 						}
 						cut = shouldCut( lastChild );
@@ -219,7 +224,12 @@ namespace ChessTable.Model.Algorithms
 
 						lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
 						lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem );
-						lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue;
+						lastChild.depthValue = ( lastChild.getMoveValue != 0 ? ( mMaxDepth - aCurrentDepth ) : 0 );
+						if ( myColor == tempItem.figureItem.color )
+						{
+							lastChild.depthValue *= ( -1 );
+						}
+						lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue + lastChild.depthValue;
 						
 					}
 					cut = shouldCut( lastChild );

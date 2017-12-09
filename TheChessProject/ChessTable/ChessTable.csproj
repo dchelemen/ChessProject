@@ -81,6 +81,9 @@
     <Compile Include="Common\PaintBorderEventArg.cs" />
     <Compile Include="Common\PutFigureOnTheTableEventArg.cs" />
     <Compile Include="Model\Algorithms\AlphaBetaAlgorithm.cs" />
+    <Compile Include="Model\Algorithms\AlphaBetaAlgorithmRandom.cs" />
+    <Compile Include="Model\Algorithms\AlphaBetaAlgorithmRandomWithWeight.cs" />
+    <Compile Include="Model\Algorithms\AlphaBetaAlgorithmWithWeight.cs" />
     <Compile Include="Model\Algorithms\BaseAlgorithm.cs" />
     <Compile Include="Model\Algorithms\HumanAlgorithm.cs" />
     <Compile Include="Model\Algorithms\RandomAlgorithm.cs" />

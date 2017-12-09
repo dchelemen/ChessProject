@@ -50,7 +50,10 @@
 	{
 		HUMAN,
 		RANDOM,
-		ALPHA_BETA
+		ALPHA_BETA,
+		ALPHA_BETA_RANDOM,
+		ALPHA_BETA_WITH_WEIGHT,
+		ALPHA_BETA_RANDOM_WITH_WEIGHT
 	}
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------

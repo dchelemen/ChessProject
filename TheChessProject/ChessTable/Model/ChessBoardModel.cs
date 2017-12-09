@@ -419,9 +419,12 @@ namespace ChessTable.Model
 		{
 			switch ( aAlgorithm )
 			{
-			case Algorithm.HUMAN:		return new HumanAlgorithm( mPlayer1Color, aAlgorithmsColor );
-			case Algorithm.RANDOM:		return new RandomAlgorithm( mPlayer1Color, aAlgorithmsColor );
-			case Algorithm.ALPHA_BETA:	return new AlphaBetaAlgorithm( mPlayer1Color, aAlgorithmsColor );
+			case Algorithm.HUMAN:							return new HumanAlgorithm( mPlayer1Color, aAlgorithmsColor );
+			case Algorithm.RANDOM:							return new RandomAlgorithm( mPlayer1Color, aAlgorithmsColor );
+			case Algorithm.ALPHA_BETA:						return new AlphaBetaAlgorithm( mPlayer1Color, aAlgorithmsColor );
+			case Algorithm.ALPHA_BETA_RANDOM:				return new AlphaBetaAlgorithmRandom( mPlayer1Color, aAlgorithmsColor );
+			case Algorithm.ALPHA_BETA_WITH_WEIGHT:			return new AlphaBetaAlgorithmWithWeight( mPlayer1Color, aAlgorithmsColor );
+			case Algorithm.ALPHA_BETA_RANDOM_WITH_WEIGHT:	return new AlphaBetaAlgorithmRandomWithWeight( mPlayer1Color, aAlgorithmsColor );
 			default: return new HumanAlgorithm( mPlayer1Color, aAlgorithmsColor );
 			}
 		}

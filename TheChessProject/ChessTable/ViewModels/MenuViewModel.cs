@@ -374,9 +374,12 @@ namespace ChessTable.ViewModels
 			selectedStartingColor = Colors.WHITE;
 
 			mPlayerAlgorithms.Clear();
-			mPlayerAlgorithms.Add( "Human"		);
-			mPlayerAlgorithms.Add( "Random"		);
-			mPlayerAlgorithms.Add( "Alpha-Beta"	);
+			mPlayerAlgorithms.Add( "Human"							);
+			mPlayerAlgorithms.Add( "Random"							);
+			mPlayerAlgorithms.Add( "Alpha-Beta"						);
+			mPlayerAlgorithms.Add( "Alpha-Beta Random"				);
+			mPlayerAlgorithms.Add( "Alpha-Beta with weight"			);
+			mPlayerAlgorithms.Add( "Alpha-Beta Random with weight"	);
 
 			playerOneAlgorithm = Algorithm.HUMAN;
 			playerTwoAlgorithm = Algorithm.HUMAN;

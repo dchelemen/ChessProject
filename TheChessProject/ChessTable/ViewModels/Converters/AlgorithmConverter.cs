@@ -18,9 +18,12 @@ namespace ChessTable.ViewModels.Converters
 
 			switch ( algorithm )
 			{
-				case Algorithm.HUMAN:		return "Human";
-				case Algorithm.RANDOM:		return "Random";
-				case Algorithm.ALPHA_BETA:	return "Alpha-Beta";
+				case Algorithm.HUMAN:							return "Human";
+				case Algorithm.RANDOM:							return "Random";
+				case Algorithm.ALPHA_BETA:						return "Alpha-Beta";
+				case Algorithm.ALPHA_BETA_RANDOM:				return "Alpha-Beta Random";
+				case Algorithm.ALPHA_BETA_WITH_WEIGHT:			return "Alpha-Beta with weight";
+				case Algorithm.ALPHA_BETA_RANDOM_WITH_WEIGHT:	return "Alpha-Beta Random with weight";
 			}
 			return Binding.DoNothing;
 		}
@@ -46,9 +49,21 @@ namespace ChessTable.ViewModels.Converters
 				{
 					return Algorithm.RANDOM;
 				}
-				else
+				else if ( algorithm == "Alpha-Beta" )
 				{
 					return Algorithm.ALPHA_BETA;
+				}
+				else if ( algorithm == "Alpha-Beta Random" )
+				{
+					return Algorithm.ALPHA_BETA_RANDOM;
+				}
+				else if ( algorithm == "Alpha-Beta with weight" )
+				{
+					return Algorithm.ALPHA_BETA_WITH_WEIGHT;
+				}
+				else
+				{
+					return Algorithm.ALPHA_BETA_RANDOM_WITH_WEIGHT;
 				}
 			}
 			catch
