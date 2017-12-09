@@ -37,10 +37,6 @@ namespace ChessTable.ViewModels
 					mChessBoardModel				= customBoardViewModel.chessBoardModel;
 					isGameReady						= customBoardViewModel.isStartBtnClicked;
 				} break;
-			case GameType.END_GAME:
-				{
-					isGameReady = true;
-				} break;
 			case GameType.STANDARD_GAME:
 				{
 					isGameReady = standardGameSetup();
@@ -356,7 +352,6 @@ namespace ChessTable.ViewModels
 		{
 			mGameTypes.Clear();
 			mGameTypes.Add( "Standard Game"	);
-			mGameTypes.Add( "End Game"		);
 			mGameTypes.Add( "Custom Game"	);
 
 			selectedGameType = GameType.STANDARD_GAME;

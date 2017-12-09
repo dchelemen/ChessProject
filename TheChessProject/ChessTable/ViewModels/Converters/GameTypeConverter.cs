@@ -19,7 +19,6 @@ namespace ChessTable.ViewModels.Converters
 			switch ( gameType )
 			{
 				case GameType.STANDARD_GAME:	return "Standard Game";
-				case GameType.END_GAME:			return "End Game";
 				case GameType.CUSTOM_GAME:		return "Custom Game";
 			}
 			return Binding.DoNothing;
@@ -41,10 +40,6 @@ namespace ChessTable.ViewModels.Converters
 				if ( color == "Standard Game" )
 				{
 					return GameType.STANDARD_GAME;
-				}
-				else if ( color == "End Game" )
-				{
-					return GameType.END_GAME;
 				}
 				else if ( color == "Custom Game" )
 				{

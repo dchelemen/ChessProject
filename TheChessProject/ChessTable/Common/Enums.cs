@@ -61,7 +61,6 @@
 	public enum GameType
 	{
 		STANDARD_GAME,
-		END_GAME,
 		CUSTOM_GAME
 	}
 }

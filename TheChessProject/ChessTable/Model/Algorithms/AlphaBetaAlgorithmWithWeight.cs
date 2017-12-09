@@ -18,25 +18,16 @@ namespace ChessTable.Model.Algorithms
 		public override Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
 		{
 			TreeNode bestNode = new TreeNode();
-			List< Move > moves = new List< Move >();
 			bestNode.moveValue = -100;
 			foreach ( var node in mTreeRoot.childNodes )
 			{
 				if ( node.moveValue > bestNode.moveValue )
 				{
-					moves.Clear();
 					bestNode = node;
-					moves.Add( node.move );
-				}
-				else if ( node.moveValue == bestNode.moveValue )
-				{
-					moves.Add( node.move );
 				}
 			}
 
-			Random rnd = new Random();
-			Int32 randomMove = rnd.Next( moves.Count );
-			return moves[ randomMove ];
+			return bestNode.move;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
