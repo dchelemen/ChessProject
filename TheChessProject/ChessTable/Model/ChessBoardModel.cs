@@ -221,6 +221,7 @@ namespace ChessTable.Model
 				Int32 originalPawnX = ( aPlaceHere.x == 2 ? 3 : 4 );
 				ModelItem originalPawn = chessBoard[ originalPawnX ][ aPlaceHere.y ];
 				removeFigureFromWhiteOrBlack( originalPawn );
+				originalPawn.figureItem = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 				fieldClicked( this, new PutFigureOnTheTableEventArg( originalPawn.x, originalPawn.y, originalPawn.index, Colors.NO_COLOR, FigureType.NO_FIGURE ) );
 			}
 			else

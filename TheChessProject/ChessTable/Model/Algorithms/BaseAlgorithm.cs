@@ -12,6 +12,7 @@ namespace ChessTable.Model.Algorithms
 	{
 		public BaseAlgorithm( Colors aPlayer1Color, Colors aMyColor )
 		{
+			figureValues	= new FigureValues( aMyColor, "FigureValues.xml" );
 			player1Color	= aPlayer1Color;
 			myColor			= aMyColor;
 			mTreeRoot		= new TreeNode( null );
@@ -131,5 +132,7 @@ namespace ChessTable.Model.Algorithms
 		public Boolean isActive { get; set; }
 		protected Colors player1Color { get; set; }
 		protected Colors myColor { get; set; }
+
+		protected FigureValues figureValues{ get; set; }
 	}
 }

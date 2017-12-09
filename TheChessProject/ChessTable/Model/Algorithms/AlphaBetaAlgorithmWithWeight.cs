@@ -10,7 +10,7 @@ namespace ChessTable.Model.Algorithms
 		public AlphaBetaAlgorithmWithWeight( Colors aPlayer1Color, Colors aMyColor ) : base( aPlayer1Color, aMyColor )
 		{
 			isActive = true;
-			mMaxDepth = 3;
+			mMaxDepth = ( aMyColor == Colors.WHITE ? figureValues.whiteDepth : figureValues.blackDepth );
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -155,22 +155,22 @@ namespace ChessTable.Model.Algorithms
 						case 0:
 							{
 								targetItem.figureItem.figureType = FigureType.KNIGHT;
-								moveValue = 3;
+								moveValue = figureValues.knightValue;
 							} break;
 						case 1:
 							{
 								targetItem.figureItem.figureType = FigureType.BISHOP;
-								moveValue = 3;
+								moveValue = figureValues.bishopValue;
 							} break;
 						case 2:
 							{
 								targetItem.figureItem.figureType = FigureType.MOVED_ROOK;
-								moveValue = 5;
+								moveValue = figureValues.rookValue;
 							} break;
 						case 3:
 							{
 								targetItem.figureItem.figureType = FigureType.QUEEN;
-								moveValue = 9;
+								moveValue = figureValues.queenValue;
 							} break;
 						}
 
@@ -331,19 +331,19 @@ namespace ChessTable.Model.Algorithms
 			{
 				switch ( aTarget.figureItem.figureType )
 				{
-				case FigureType.PAWN:			returnValue = 1; break;
-				case FigureType.KNIGHT:			returnValue = 3; break;
-				case FigureType.BISHOP:			returnValue = 3; break;
-				case FigureType.ROOK:			returnValue = 5; break;
-				case FigureType.MOVED_ROOK:		returnValue = 5; break;
-				case FigureType.QUEEN:			returnValue = 9; break;
-				case FigureType.KING:			returnValue = 10; break;
-				case FigureType.MOVED_KING:		returnValue = 10; break;
+				case FigureType.PAWN:			returnValue = figureValues.pawnValue;	break;
+				case FigureType.KNIGHT:			returnValue = figureValues.knightValue; break;
+				case FigureType.BISHOP:			returnValue = figureValues.bishopValue; break;
+				case FigureType.ROOK:			returnValue = figureValues.rookValue;	break;
+				case FigureType.MOVED_ROOK:		returnValue = figureValues.rookValue;	break;
+				case FigureType.QUEEN:			returnValue = figureValues.queenValue;	break;
+				case FigureType.KING:			returnValue = figureValues.kingValue;	break;
+				case FigureType.MOVED_KING:		returnValue = figureValues.kingValue;	break;
 				}
 
 				if ( aTarget.figureItem.figureType == FigureType.EN_PASSANT_PAWN && aMover.figureItem.figureType == FigureType.PAWN )
 				{
-					returnValue = 1;
+					returnValue = figureValues.pawnValue;
 				}
 			}
 			else
@@ -433,11 +433,11 @@ namespace ChessTable.Model.Algorithms
 
 			if ( isEnemyCanNotMove && isCheck )
 			{
-				return 30;
+				return figureValues.checkmatValue;
 			}
 			else if ( isEnemyCanNotMove && ! isCheck )
 			{
-				return -30;
+				return figureValues.drawValue;
 			}
 			else
 			{
