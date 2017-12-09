@@ -1,6 +1,7 @@
 ﻿using ChessTable.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ChessTable.Model.Algorithms
 {
@@ -17,15 +18,25 @@ namespace ChessTable.Model.Algorithms
 		public override Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
 		{
 			TreeNode bestNode = new TreeNode();
+			List< Move > moves = new List< Move >();
 			bestNode.moveValue = -100;
 			foreach ( var node in mTreeRoot.childNodes )
 			{
 				if ( node.moveValue > bestNode.moveValue )
 				{
+					moves.Clear();
 					bestNode = node;
+					moves.Add( node.move );
+				}
+				else if ( node.moveValue == bestNode.moveValue )
+				{
+					moves.Add( node.move );
 				}
 			}
-			return bestNode.move;
+
+			Random rnd = new Random();
+			Int32 randomMove = rnd.Next( moves.Count );
+			return moves[ randomMove ];
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -182,7 +193,7 @@ namespace ChessTable.Model.Algorithms
 						{
 							currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
 							lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
-							lastChild.moveValue = moveValue;
+							lastChild.moveValue = getMoveValue( aChessBoard, aItem, tempItem, moveValue );
 						}
 						else
 						{
@@ -192,7 +203,7 @@ namespace ChessTable.Model.Algorithms
 							nextDepth( lastChild, aChessBoard, aCurrentDepth + 1, nextColor );
 
 							lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
-							lastChild.getMoveValue = moveValue;
+							lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem, moveValue );
 							lastChild.depthValue = ( lastChild.getMoveValue != 0 ? ( mMaxDepth - aCurrentDepth ) : 0 );
 							if ( myColor == tempItem.figureItem.color )
 							{
@@ -211,7 +222,7 @@ namespace ChessTable.Model.Algorithms
 					{
 						currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
 						lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
-						lastChild.moveValue = getMoveValue( aItem, tempItem );
+						lastChild.moveValue = getMoveValue( aChessBoard, aItem, tempItem );
 					}
 					else
 					{
@@ -221,7 +232,7 @@ namespace ChessTable.Model.Algorithms
 						nextDepth( lastChild, aChessBoard, aCurrentDepth + 1, nextColor );
 
 						lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
-						lastChild.getMoveValue = getMoveValue( aItem, tempItem );
+						lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem );
 						lastChild.depthValue = ( lastChild.getMoveValue != 0 ? ( mMaxDepth - aCurrentDepth ) : 0 );
 						if ( myColor == tempItem.figureItem.color )
 						{
@@ -321,24 +332,39 @@ namespace ChessTable.Model.Algorithms
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		Int32 getMoveValue( ModelItem aMover, ModelItem aTarget )
+		Int32 getMoveValue( List< List< ModelItem > > aChessBoard, ModelItem aMover, ModelItem aTarget, Int32 fixValue = 0 )
 		{
 			Int32 returnValue = 0;
-			switch ( aTarget.figureItem.figureType )
+
+			if ( fixValue == 0 )
 			{
-			case FigureType.PAWN:			returnValue = 1; break;
-			case FigureType.KNIGHT:			returnValue = 3; break;
-			case FigureType.BISHOP:			returnValue = 3; break;
-			case FigureType.ROOK:			returnValue = 5; break;
-			case FigureType.MOVED_ROOK:		returnValue = 5; break;
-			case FigureType.QUEEN:			returnValue = 9; break;
-			case FigureType.KING:			returnValue = 10; break;
-			case FigureType.MOVED_KING:		returnValue = 10; break;
+				switch ( aTarget.figureItem.figureType )
+				{
+				case FigureType.PAWN:			returnValue = 1; break;
+				case FigureType.KNIGHT:			returnValue = 3; break;
+				case FigureType.BISHOP:			returnValue = 3; break;
+				case FigureType.ROOK:			returnValue = 5; break;
+				case FigureType.MOVED_ROOK:		returnValue = 5; break;
+				case FigureType.QUEEN:			returnValue = 9; break;
+				case FigureType.KING:			returnValue = 10; break;
+				case FigureType.MOVED_KING:		returnValue = 10; break;
+				}
+
+				if ( aTarget.figureItem.figureType == FigureType.EN_PASSANT_PAWN && aMover.figureItem.figureType == FigureType.PAWN )
+				{
+					returnValue = 1;
+				}
+			}
+			else
+			{
+				returnValue = fixValue;
 			}
 
-			if ( aTarget.figureItem.figureType == FigureType.EN_PASSANT_PAWN && aMover.figureItem.figureType == FigureType.PAWN )
+			Int32 isCheckMatOrCanNotMove = isCheckMat( aChessBoard, aMover );
+
+			if ( isCheckMatOrCanNotMove != 0 )
 			{
-				returnValue = 1;
+				returnValue = isCheckMatOrCanNotMove;
 			}
 
 			if ( myColor == aTarget.figureItem.color )
@@ -346,6 +372,86 @@ namespace ChessTable.Model.Algorithms
 				returnValue *= ( -1 );
 			}
 			return returnValue;
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		Int32 isCheckMat( List< List< ModelItem > > aChessBoard, ModelItem aMover )
+		{
+			Colors enemyColor = ( aMover.figureItem.color == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
+
+			List< ModelItem > blackFigures	= new List< ModelItem >();
+			List< ModelItem > whiteFigures	= new List< ModelItem >();
+			List< ModelItem > enemyFigures;
+			List< ModelItem > myFigures;
+
+			foreach ( var row in aChessBoard )
+			{
+				foreach ( var modelItem in row )
+				{
+					if ( modelItem.figureItem.color == Colors.WHITE )
+					{
+						whiteFigures.Add( new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
+					}
+					else if( modelItem.figureItem.color == Colors.BLACK  )
+					{
+						blackFigures.Add( new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
+					}
+				}
+			}
+
+			if ( enemyColor == Colors.WHITE )
+			{
+				enemyFigures	= whiteFigures;
+				myFigures		= blackFigures;
+			}
+			else
+			{
+				enemyFigures	= blackFigures;
+				myFigures		= whiteFigures;
+			}
+
+			List< Int32 > possibleMovesOfTheItem;
+			Boolean isEnemyCanNotMove = true;
+			foreach ( ModelItem item in enemyFigures )
+			{
+				ModelItem modelItem = new ModelItem( item.x, item.y, item.figureItem.color, item.figureItem.figureType );
+				possibleMovesOfTheItem = possibleMoves( aChessBoard, blackFigures, whiteFigures, modelItem );
+				if ( possibleMovesOfTheItem.Count != 0 )
+				{
+					isEnemyCanNotMove = false;
+					break;
+				}
+			}
+
+			Boolean isCheck = false;
+			if ( isEnemyCanNotMove )
+			{
+				Int32 enemyKingPosition = enemyFigures.Where( X => ( X.figureItem.figureType == FigureType.KING || X.figureItem.figureType == FigureType.MOVED_KING ) ).FirstOrDefault().index;
+				foreach ( ModelItem item in myFigures )
+				{
+					ModelItem modelItem = new ModelItem( item.x, item.y, item.figureItem.color, item.figureItem.figureType );
+					possibleMovesOfTheItem = possibleMoves( aChessBoard, blackFigures, whiteFigures, modelItem );
+					if ( possibleMovesOfTheItem.Contains( enemyKingPosition ) )
+					{
+						isCheck = true;
+						break;
+					}
+				}
+			}
+
+			if ( isEnemyCanNotMove && isCheck )
+			{
+				return 30;
+			}
+			else if ( isEnemyCanNotMove && ! isCheck )
+			{
+				return -30;
+			}
+			else
+			{
+				return 0;
+			}
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
