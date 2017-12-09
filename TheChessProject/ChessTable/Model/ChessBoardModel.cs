@@ -95,6 +95,14 @@ namespace ChessTable.Model
 
 		private void onNextPlayer( Object aSender, Move aLastMove = null )
 		{
+			Colors winner = Colors.NO_COLOR;
+			Boolean isCheckmateOrDraw = isGameOver( ref winner );
+			if ( isCheckmateOrDraw )
+			{
+				gameOver( this, winner );
+				return;
+			}
+			
 			if ( mIsBoardEnabled )
 			{
 				mIsBoardEnabled = false;
@@ -511,9 +519,90 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
+		Boolean isGameOver( ref Colors winner )
+		{
+			List< ModelItem > whiteF	= new List< ModelItem >();;
+			List< ModelItem > blackF	= new List< ModelItem >();;
+			List< ModelItem > enemyFigures;
+			List< ModelItem > myFigures;
+
+			foreach ( var row in chessBoard )
+			{
+				foreach ( var modelItem in row )
+				{
+					if ( modelItem.figureItem.color == Colors.WHITE )
+					{
+						whiteF.Add( new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
+					}
+					else if( modelItem.figureItem.color == Colors.BLACK  )
+					{
+						blackF.Add( new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
+					}
+				}
+			}
+
+			if ( mCurrentColor == Colors.WHITE )
+			{
+				enemyFigures	= blackF;
+				myFigures		= whiteF;
+			}
+			else
+			{
+				enemyFigures	= whiteF;
+				myFigures		= blackF;
+			}
+
+			List< Int32 > possibleMovesOfTheItem;
+			Boolean amICanNotMove = true;
+			foreach ( ModelItem item in myFigures )
+			{
+				ModelItem modelItem = new ModelItem( item.x, item.y, item.figureItem.color, item.figureItem.figureType );
+				possibleMovesOfTheItem = getPossibleMoves( item, true );
+				if ( possibleMovesOfTheItem.Count != 0 )
+				{
+					amICanNotMove = false;
+					break;
+				}
+			}
+
+			Boolean isCheck = false;
+			if ( amICanNotMove )
+			{
+				Int32 myKingPosition = myFigures.Where( X => ( X.figureItem.figureType == FigureType.KING || X.figureItem.figureType == FigureType.MOVED_KING ) ).FirstOrDefault().index;
+				foreach ( ModelItem item in enemyFigures )
+				{
+					ModelItem modelItem = new ModelItem( item.x, item.y, item.figureItem.color, item.figureItem.figureType );
+					possibleMovesOfTheItem = getPossibleMoves( item, false );
+					if ( possibleMovesOfTheItem.Contains( myKingPosition ) )
+					{
+						isCheck = true;
+						break;
+					}
+				}
+			}
+
+			if ( amICanNotMove && isCheck )
+			{
+				winner = ( mCurrentColor == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
+				return true;
+			}
+
+			if ( amICanNotMove && ! isCheck )
+			{
+				winner = Colors.NO_COLOR;
+				return true;
+			}
+
+			return false;
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
 		public event EventHandler< PutFigureOnTheTableEventArg >	fieldClicked;
 
 		public event EventHandler< SetHighlightEventArg >			setHighlight;
+
+		public event EventHandler< Colors >							gameOver;
 
 		public event EventHandler< Move >							nextPlayer;
 

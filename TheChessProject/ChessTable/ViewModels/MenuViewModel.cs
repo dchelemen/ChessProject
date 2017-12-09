@@ -4,6 +4,7 @@ using ChessTable.ViewModels.ImplementedInterfaces;
 using System.Collections.ObjectModel;
 using ChessTable.Model;
 using ChessTable.Common;
+using System.Windows;
 
 namespace ChessTable.ViewModels
 {
@@ -49,6 +50,7 @@ namespace ChessTable.ViewModels
 				return;
 			}
 
+			mChessBoardModel.gameOver		+= new EventHandler< Colors >( onGameOver );
 			mChessBoardView					= new ChessBoardView();
 			mChessBoardViewModel			= new ChessBoardViewModel( mChessBoardModel );
 			mChessBoardView.DataContext		= mChessBoardViewModel;
@@ -344,6 +346,23 @@ namespace ChessTable.ViewModels
 		private void onCloseCustomBoardView( Object sender, EventArgs aEventArgs )
 		{
 			mCustomBoardView.Close();
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		private void onGameOver( Object sender, Colors aWinnerColor )
+		{
+			if ( aWinnerColor != Colors.NO_COLOR )
+			{
+				String color = ( aWinnerColor == Colors.WHITE ? "White" : "Black" );
+				MessageBox.Show( "Checkmate! The winner is: " + color );
+			}
+			else
+			{
+				MessageBox.Show( "Draw! The game is over." );
+			}
+
+			mChessBoardView.Close();
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
