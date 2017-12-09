@@ -361,8 +361,10 @@ namespace ChessTable.ViewModels
 			{
 				MessageBox.Show( "Draw! The game is over." );
 			}
-
-			mChessBoardView.Close();
+			Application.Current.Dispatcher.Invoke( () =>
+			{
+				mChessBoardView.Close();
+			} );
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
