@@ -34,11 +34,11 @@ namespace ChessTable.Model.Algorithms
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		public TreeNode( TreeNode aParent, Int16[] aTablePosition, Int32 aMoveValue = -100 )
+		public TreeNode( TreeNode aParent, Move aMove, Int32 aMoveValue = -100 )
 		{
 			player			= ( aParent.player == Player.ALPHA ? Player.BETA : Player.ALPHA );
 			parent			= aParent;
-			tablePosition	= aTablePosition;
+			move			= aMove;
 			moveValue		= aMoveValue;
 			childNodes		= new List< TreeNode >();
 		}
@@ -56,9 +56,9 @@ namespace ChessTable.Model.Algorithms
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
-
-		public Int16[]							tablePosition { get; set; }
+		
 		public Int32							moveValue { get; set; }
+		public Move								move { get; set; }
 
 		public Int32 countAlphaBetaValue;
 		public Int32 getMoveValue;

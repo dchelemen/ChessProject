@@ -87,9 +87,6 @@ namespace ChessTable.Model
 				} );
 			}
 
-			//mPlayer1Algorithm.setTree( chessBoard, whiteFigures, blackFigures );
-			//mPlayer2Algorithm.setTree( chessBoard, whiteFigures, blackFigures );
-
 			mLastMove = null;
 			mTimer.Start();
 		}
@@ -114,10 +111,10 @@ namespace ChessTable.Model
 			else // Algorithm
 			{
 				currentAlgorithm.refreshTree( chessBoard, whiteFigures, blackFigures, aLastMove );
-				currentAlgorithm.move( chessBoard, whiteFigures, blackFigures );
-				refreshBoard();
-				mCurrentColor = ( mCurrentColor == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
-				mTimer.Start();
+				Move lastMove = currentAlgorithm.move( chessBoard, whiteFigures, blackFigures );
+
+				mFigureToMove = lastMove.itemFrom;
+				moveFigureTo( lastMove.itemTo );
 			}
 		}
 
@@ -194,7 +191,9 @@ namespace ChessTable.Model
 			{
 				castling( aPlaceHere );
 				removeHighLights();
+				setLastMoveHighLights( mLastMove, false );
 				mLastMove = new Move( mFigureToMove, chessBoard[ aPlaceHere.x ][ aPlaceHere.y ] );
+				setLastMoveHighLights( mLastMove, true );
 				mTimer.Start();
 				return;
 			}
@@ -247,7 +246,9 @@ namespace ChessTable.Model
 
 			removeHighLights();
 
+			setLastMoveHighLights( mLastMove, false );
 			mLastMove = new Move( mFigureToMove, chessBoard[ aPlaceHere.x ][ aPlaceHere.y ] );
+			setLastMoveHighLights( mLastMove, true );
 
 			mTimer.Start();
 		}
@@ -270,6 +271,30 @@ namespace ChessTable.Model
 					color = Colors.NO_COLOR
 				} );
 			}
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		private void setLastMoveHighLights( Move aLastMove, Boolean aSet )
+		{
+			if ( aLastMove == null )
+			{
+				return;
+			}
+
+			Colors color = ( aSet ? Colors.RED : Colors.NO_COLOR );
+
+			setHighlight( this, new SetHighlightEventArg
+			{
+				index = aLastMove.itemFrom.index,
+				color = color
+			} );
+
+			setHighlight( this, new SetHighlightEventArg
+			{
+				index = aLastMove.itemTo.index,
+				color = color
+			} );
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -423,19 +448,6 @@ namespace ChessTable.Model
 			if ( myFigures2.Any() )
 			{
 				myFigures2.First().figureItem.figureType = newFigureType;
-			}
-		}
-
-		//----------------------------------------------------------------------------------------------------------------------------------------
-
-		private void refreshBoard()
-		{
-			foreach ( var rows in chessBoard )
-			{
-				foreach ( var modelItem in rows )
-				{
-					fieldClicked( this, new PutFigureOnTheTableEventArg( modelItem.x, modelItem.y, modelItem.index, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
-				}
 			}
 		}
 

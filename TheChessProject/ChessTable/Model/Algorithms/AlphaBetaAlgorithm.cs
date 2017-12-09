@@ -14,30 +14,18 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override void move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
+		public override Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
 		{
-			Int16[] tablePosition	= bestMove();
-
-			aWhiteFigures.Clear();
-			aBlackFigures.Clear();
-			Int32 index = 0;
-			foreach ( var row in aChessBoard )
+			TreeNode bestNode = new TreeNode();
+			bestNode.moveValue = -100;
+			foreach ( var node in mTreeRoot.childNodes )
 			{
-				foreach ( var modelItem in row )
+				if ( node.moveValue > bestNode.moveValue )
 				{
-					modelItem.figureItem = getFigureItemFromPosition( tablePosition[ index ] );
-					if ( modelItem.figureItem.color == Colors.WHITE )
-					{
-						aWhiteFigures.Add( new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
-					}
-					else if( modelItem.figureItem.color == Colors.BLACK )
-					{
-						aBlackFigures.Add( new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
-					}
-
-					index++;
+					bestNode = node;
 				}
 			}
+			return bestNode.move;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -190,16 +178,15 @@ namespace ChessTable.Model.Algorithms
 						}
 
 						TreeNode lastChild;
-						Int16[] tablePositions	= getTablePosition( aChessBoard );
 						if ( aCurrentDepth == mMaxDepth - 1 )
 						{
-							currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions ) );
+							currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
 							lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
 							lastChild.moveValue = moveValue;
 						}
 						else
 						{
-							currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions ) );
+							currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
 							lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
 							Colors nextColor = ( aItem.figureItem.color == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
 							nextDepth( lastChild, aChessBoard, aCurrentDepth + 1, nextColor );
@@ -220,16 +207,15 @@ namespace ChessTable.Model.Algorithms
 				else
 				{
 					TreeNode lastChild;
-					Int16[] tablePositions	= getTablePosition( aChessBoard );
 					if ( aCurrentDepth == mMaxDepth - 1 )
 					{
-						currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions ) );
+						currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
 						lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
 						lastChild.moveValue = getMoveValue( aItem, tempItem );
 					}
 					else
 					{
-						currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions ) );
+						currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
 						lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
 						Colors nextColor = ( aItem.figureItem.color == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
 						nextDepth( lastChild, aChessBoard, aCurrentDepth + 1, nextColor );
@@ -302,23 +288,6 @@ namespace ChessTable.Model.Algorithms
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		Int16[] getTablePosition( List< List< ModelItem > > aChessBoard )
-		{
-			Int16[] tablePositions = new Int16[ 64 ];
-			Int32 index = 0;
-			foreach ( var row in aChessBoard )
-			{
-				foreach ( var modelItem in row )
-				{
-					tablePositions[ index ] = getFigureID( modelItem );
-					index++;
-				}
-			}
-			return tablePositions;
-		}
-
-		//-----------------------------------------------------------------------------------------------------------------------------------------
-
 		void nextDepth( TreeNode aParent, List< List< ModelItem > > aChessBoard, Int32 aCurrentDepth, Colors currentColor )
 		{
 			List< ModelItem > blackFigures	= new List< ModelItem >();
@@ -381,7 +350,7 @@ namespace ChessTable.Model.Algorithms
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		Int16[] bestMove()
+		Move bestMove()
 		{
 			TreeNode bestNode = new TreeNode();
 			bestNode.moveValue = -100;
@@ -392,7 +361,7 @@ namespace ChessTable.Model.Algorithms
 					bestNode = node;
 				}
 			}
-			return bestNode.tablePosition;
+			return bestNode.move;
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------

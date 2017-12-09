@@ -13,32 +13,13 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public override void move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
+		public override Move move( List< List< ModelItem > > aChessBoard, List< ModelItem > aWhiteFigures, List< ModelItem > aBlackFigures )
 		{
 			Random random			= new Random();
 			Int32 randInd			= random.Next( mTreeRoot.childNodes.Count );
-			Int16[] tablePosition	= mTreeRoot.childNodes[ randInd ].tablePosition;
+			Move randomMove			= mTreeRoot.childNodes[ randInd ].move;
 
-			aWhiteFigures.Clear();
-			aBlackFigures.Clear();
-			Int32 index = 0;
-			foreach ( var row in aChessBoard )
-			{
-				foreach ( var modelItem in row )
-				{
-					modelItem.figureItem = getFigureItemFromPosition( tablePosition[ index ] );
-					if ( modelItem.figureItem.color == Colors.WHITE )
-					{
-						aWhiteFigures.Add( new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
-					}
-					else if( modelItem.figureItem.color == Colors.BLACK )
-					{
-						aBlackFigures.Add( new ModelItem( modelItem.x, modelItem.y, modelItem.figureItem.color, modelItem.figureItem.figureType ) );
-					}
-
-					index++;
-				}
-			}
+			return randomMove;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -155,14 +136,12 @@ namespace ChessTable.Model.Algorithms
 						case 2: targetItem.figureItem.figureType = FigureType.MOVED_ROOK; break;
 						case 3: targetItem.figureItem.figureType = FigureType.QUEEN; break;
 						}
-						Int16[] tablePositions = getTablePosition( aChessBoard );
-						currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions ) );
+						currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
 					}
 				}
 				else
 				{
-					Int16[] tablePositions = getTablePosition( aChessBoard );
-					currentNode.childNodes.Add( new TreeNode( currentNode, tablePositions ) );
+					currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
 				}
 
 				//------------------------------------------------
@@ -219,20 +198,5 @@ namespace ChessTable.Model.Algorithms
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
-
-		Int16[] getTablePosition( List< List< ModelItem > > aChessBoard )
-		{
-			Int16[] tablePositions = new Int16[ 64 ];
-			Int32 index = 0;
-			foreach ( var row in aChessBoard )
-			{
-				foreach ( var modelItem in row )
-				{
-					tablePositions[ index ] = getFigureID( modelItem );
-					index++;
-				}
-			}
-			return tablePositions;
-		}
 	}
 }
