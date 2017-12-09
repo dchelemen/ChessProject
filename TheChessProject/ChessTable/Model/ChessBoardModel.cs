@@ -120,8 +120,10 @@ namespace ChessTable.Model
 			{
 				currentAlgorithm.refreshTree( chessBoard, whiteFigures, blackFigures, aLastMove );
 				Move lastMove = currentAlgorithm.move( chessBoard, whiteFigures, blackFigures );
+				refreshBlackWhiteFigures( lastMove );
 
 				mFigureToMove = lastMove.itemFrom;
+
 				moveFigureTo( lastMove.itemTo );
 			}
 		}
@@ -595,6 +597,24 @@ namespace ChessTable.Model
 			}
 
 			return false;
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		void refreshBlackWhiteFigures( Move aLastMove )
+		{
+			if ( aLastMove.itemTo.x != 0 && aLastMove.itemTo.x != 7 )
+			{
+				return;
+			}
+
+			List< ModelItem > itemsToCheck = ( aLastMove.itemFrom.figureItem.color == Colors.WHITE ? whiteFigures : blackFigures );
+
+			ModelItem item = itemsToCheck.Where( X => X.index == aLastMove.itemFrom.index ).FirstOrDefault();
+			if ( item.figureItem.figureType == FigureType.PAWN )
+			{
+				item.figureItem.figureType = aLastMove.itemFrom.figureItem.figureType;
+			}
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------

@@ -129,14 +129,15 @@ namespace ChessTable.Model.Algorithms
 				{
 					for ( int i = 0; i < 4; i++ )
 					{
+						ModelItem changedItem = new ModelItem( aItem.x, aItem.y, aItem.figureItem.color, aItem.figureItem.figureType );
 						switch ( i )
 						{
-						case 0: targetItem.figureItem.figureType = FigureType.KNIGHT; break;
-						case 1: targetItem.figureItem.figureType = FigureType.BISHOP; break;
-						case 2: targetItem.figureItem.figureType = FigureType.MOVED_ROOK; break;
-						case 3: targetItem.figureItem.figureType = FigureType.QUEEN; break;
+						case 0: changedItem.figureItem.figureType = FigureType.KNIGHT; break;
+						case 1: changedItem.figureItem.figureType = FigureType.BISHOP; break;
+						case 2: changedItem.figureItem.figureType = FigureType.MOVED_ROOK; break;
+						case 3: changedItem.figureItem.figureType = FigureType.QUEEN; break;
 						}
-						currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
+						currentNode.childNodes.Add( new TreeNode( currentNode, new Move( changedItem, tempItem ) ) );
 					}
 				}
 				else

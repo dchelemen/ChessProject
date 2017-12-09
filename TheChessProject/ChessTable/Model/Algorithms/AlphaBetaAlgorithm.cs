@@ -82,7 +82,7 @@ namespace ChessTable.Model.Algorithms
 				{
 					break;
 				}
-
+				Int32 enPassantValue	= 0;
 				ModelItem RookItem = new ModelItem();
 				ModelItem newEnPassantItem = new ModelItem();
 				
@@ -139,6 +139,10 @@ namespace ChessTable.Model.Algorithms
 							newEnPassantItem.figureItem.color = aItem.figureItem.color;
 							newEnPassantItem.figureItem.figureType = FigureType.EN_PASSANT_PAWN;
 						}
+						else if ( targetItem.index == EnPassant.index && isFindEnPassant )
+						{
+							enPassantValue = figureValues.pawnValue;
+						}
 					} break;
 				}
 
@@ -146,6 +150,7 @@ namespace ChessTable.Model.Algorithms
 
 				if ( aItem.figureItem.figureType == FigureType.PAWN && ( tempItem.x == 0 || tempItem.x == 7 ) )
 				{
+					ModelItem changedItem = new ModelItem( aItem.x, aItem.y, aItem.figureItem.color, aItem.figureItem.figureType );
 					for ( int i = 0; i < 4 && cut == false; i++ )
 					{
 						Int32 moveValue = 0;
@@ -153,22 +158,22 @@ namespace ChessTable.Model.Algorithms
 						{
 						case 0:
 							{
-								targetItem.figureItem.figureType = FigureType.KNIGHT;
+								changedItem.figureItem.figureType	= FigureType.KNIGHT;
 								moveValue = figureValues.knightValue;
 							} break;
 						case 1:
 							{
-								targetItem.figureItem.figureType = FigureType.BISHOP;
+								changedItem.figureItem.figureType	= FigureType.BISHOP;
 								moveValue = figureValues.bishopValue;
 							} break;
 						case 2:
 							{
-								targetItem.figureItem.figureType = FigureType.MOVED_ROOK;
+								changedItem.figureItem.figureType	= FigureType.MOVED_ROOK;
 								moveValue = figureValues.rookValue;
 							} break;
 						case 3:
 							{
-								targetItem.figureItem.figureType = FigureType.QUEEN;
+								changedItem.figureItem.figureType	= FigureType.QUEEN;
 								moveValue = figureValues.queenValue;
 							} break;
 						}
@@ -181,19 +186,19 @@ namespace ChessTable.Model.Algorithms
 						TreeNode lastChild;
 						if ( aCurrentDepth == mMaxDepth - 1 )
 						{
-							currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
+							currentNode.childNodes.Add( new TreeNode( currentNode, new Move( changedItem, tempItem ) ) );
 							lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
-							lastChild.moveValue = getMoveValue( aChessBoard, aItem, tempItem, moveValue );
+							lastChild.moveValue = getMoveValue( aChessBoard, changedItem, tempItem, enPassantValue, moveValue );
 						}
 						else
 						{
-							currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
+							currentNode.childNodes.Add( new TreeNode( currentNode, new Move( changedItem, tempItem ) ) );
 							lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
 							Colors nextColor = ( aItem.figureItem.color == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
 							nextDepth( lastChild, aChessBoard, aCurrentDepth + 1, nextColor );
 
 							lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
-							lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem, moveValue );
+							lastChild.getMoveValue = getMoveValue( aChessBoard, changedItem, tempItem, enPassantValue, moveValue );
 							lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue;
 						
 						}
@@ -207,7 +212,7 @@ namespace ChessTable.Model.Algorithms
 					{
 						currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
 						lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
-						lastChild.moveValue = getMoveValue( aChessBoard, aItem, tempItem );
+						lastChild.moveValue = getMoveValue( aChessBoard, aItem, tempItem, enPassantValue );
 					}
 					else
 					{
@@ -217,7 +222,7 @@ namespace ChessTable.Model.Algorithms
 						nextDepth( lastChild, aChessBoard, aCurrentDepth + 1, nextColor );
 
 						lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
-						lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem );
+						lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem, enPassantValue );
 						lastChild.moveValue = lastChild.countAlphaBetaValue + lastChild.getMoveValue;
 						
 					}
@@ -312,7 +317,7 @@ namespace ChessTable.Model.Algorithms
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		Int32 getMoveValue( List< List< ModelItem > > aChessBoard, ModelItem aMover, ModelItem aTarget, Int32 fixValue = 0 )
+		Int32 getMoveValue( List< List< ModelItem > > aChessBoard, ModelItem aMover, ModelItem aTarget, Int32 enPassantValue, Int32 fixValue = 0 )
 		{
 			Int32 returnValue = 0;
 
@@ -330,7 +335,7 @@ namespace ChessTable.Model.Algorithms
 				case FigureType.MOVED_KING:		returnValue = figureValues.kingValue;	break;
 				}
 
-				if ( aTarget.figureItem.figureType == FigureType.EN_PASSANT_PAWN && aMover.figureItem.figureType == FigureType.PAWN )
+				if ( enPassantValue != 0 && aMover.figureItem.figureType == FigureType.PAWN )
 				{
 					returnValue = figureValues.pawnValue;
 				}

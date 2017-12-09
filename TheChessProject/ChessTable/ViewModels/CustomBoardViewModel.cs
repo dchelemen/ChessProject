@@ -168,7 +168,7 @@ namespace ChessTable.ViewModels
 					mLastClickedField = -1;
 					return;
 				}
-				if ( aArguments.figureItem == selectedPanelItem ) //Same Figure?
+				if ( aArguments.figureItem.color == selectedPanelItem.color && aArguments.figureItem.figureType == selectedPanelItem.figureType ) //Same Figure?
 				{
 					mChessBoardCollection[ mLastClickedField ].highlightColor = Colors.NO_COLOR;
 					mLastClickedField = -1;
@@ -179,13 +179,13 @@ namespace ChessTable.ViewModels
 					{
 						if ( selectedPanelItem.color == Colors.WHITE ) // Is that White?
 						{
-							mChessBoardModel.whiteFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().figureItem = selectedPanelItem;
-							mChessBoardCollection[ aArguments.index ].figureItem = selectedPanelItem;
+							mChessBoardModel.whiteFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().figureItem = new FigureItem( selectedPanelItem );
+							mChessBoardCollection[ aArguments.index ].figureItem = new FigureItem( selectedPanelItem );
 						}
 						else // Is That Black?
 						{
-							mChessBoardModel.blackFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().figureItem = selectedPanelItem;
-							mChessBoardCollection[ aArguments.index ].figureItem = selectedPanelItem;
+							mChessBoardModel.blackFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().figureItem = new FigureItem( selectedPanelItem );
+							mChessBoardCollection[ aArguments.index ].figureItem = new FigureItem( selectedPanelItem );
 						}
 					}
 					else
@@ -197,12 +197,12 @@ namespace ChessTable.ViewModels
 
 							mChessBoardModel.whiteFigures.Add( new ModelItem
 							{
-								figureItem	= selectedPanelItem,
+								figureItem	= new FigureItem( selectedPanelItem ),
 								x			= aArguments.x,
 								y			= aArguments.y,
 								index		= aArguments.index
 							} );
-							mChessBoardCollection[ aArguments.index ].figureItem = selectedPanelItem;
+							mChessBoardCollection[ aArguments.index ].figureItem = new FigureItem( selectedPanelItem );
 						}
 						else // is that Black?
 						{
@@ -211,12 +211,12 @@ namespace ChessTable.ViewModels
 
 							mChessBoardModel.blackFigures.Add( new ModelItem
 							{
-								figureItem	= selectedPanelItem,
+								figureItem	= new FigureItem( selectedPanelItem ),
 								x			= aArguments.x,
 								y			= aArguments.y,
 								index		= aArguments.index
 							} );
-							mChessBoardCollection[ aArguments.index ].figureItem = selectedPanelItem;
+							mChessBoardCollection[ aArguments.index ].figureItem = new FigureItem( selectedPanelItem );
 						}
 					}
 				}
@@ -244,7 +244,7 @@ namespace ChessTable.ViewModels
 			}
 			mLastClickedField = aArguments.index;
 
-			if ( selectedPanelItem == aArguments.figureItem )
+			if ( aArguments.figureItem.color == selectedPanelItem.color && aArguments.figureItem.figureType == selectedPanelItem.figureType )
 			{
 				mChessBoardCollection[ aArguments.index ].highlightColor = Colors.RED;
 				mLastClickedField = aArguments.index;
@@ -257,7 +257,7 @@ namespace ChessTable.ViewModels
 				{
 					mChessBoardModel.whiteFigures.Add( new ModelItem
 					{
-						figureItem	= selectedPanelItem,
+						figureItem	= new FigureItem( selectedPanelItem ),
 						x			= aArguments.x,
 						y			= aArguments.y,
 						index		= aArguments.index
@@ -267,14 +267,14 @@ namespace ChessTable.ViewModels
 				{
 					mChessBoardModel.blackFigures.Add( new ModelItem
 					{
-						figureItem	= selectedPanelItem,
+						figureItem	= new FigureItem( selectedPanelItem ),
 						x			= aArguments.x,
 						y			= aArguments.y,
 						index		= aArguments.index
 					} );
 				}
 				mChessBoardCollection[ aArguments.index ].highlightColor	= Colors.RED;
-				mChessBoardCollection[ aArguments.index ].figureItem		= selectedPanelItem;
+				mChessBoardCollection[ aArguments.index ].figureItem		= new FigureItem( selectedPanelItem );
 				return;
 			}
 
@@ -287,7 +287,7 @@ namespace ChessTable.ViewModels
 
 					mChessBoardModel.blackFigures.Add( new ModelItem
 					{
-						figureItem	=  selectedPanelItem,
+						figureItem	= new FigureItem( selectedPanelItem ),
 						x			= aArguments.x,
 						y			= aArguments.y,
 						index		= aArguments.index
@@ -300,47 +300,47 @@ namespace ChessTable.ViewModels
 
 					mChessBoardModel.whiteFigures.Add( new ModelItem
 					{
-						figureItem	= selectedPanelItem,
+						figureItem	= new FigureItem( selectedPanelItem ),
 						x			= aArguments.x,
 						y			= aArguments.y,
 						index		= aArguments.index
 					} );
 				}
 				mChessBoardCollection[ aArguments.index ].highlightColor	= Colors.RED;
-				mChessBoardCollection[ aArguments.index ].figureItem		= selectedPanelItem;
+				mChessBoardCollection[ aArguments.index ].figureItem		= new FigureItem( selectedPanelItem );
 				return;
 			}
 
 			if ( aArguments.figureItem.color == Colors.WHITE )
 			{
-				mChessBoardModel.whiteFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().figureItem = selectedPanelItem;
+				mChessBoardModel.whiteFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().figureItem = new FigureItem( selectedPanelItem );
 			}
 			else
 			{
-				mChessBoardModel.blackFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().figureItem = selectedPanelItem;
+				mChessBoardModel.blackFigures.Where( X => X.index == mLastClickedField ).FirstOrDefault().figureItem = new FigureItem( selectedPanelItem );
 			}
 			mChessBoardCollection[ aArguments.index ].highlightColor	= Colors.RED;
-			mChessBoardCollection[ aArguments.index ].figureItem		= selectedPanelItem;
+			mChessBoardCollection[ aArguments.index ].figureItem		= new FigureItem( selectedPanelItem );
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
 		private void onPanelClicked( Object aSender, FieldClickedEventArg aArguments )
 		{
-			if ( selectedPanelItem == aArguments.figureItem )
+			if ( selectedPanelItem.color == aArguments.figureItem.color && selectedPanelItem.figureType == aArguments.figureItem.figureType  )
 			{
-				mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureItem == selectedPanelItem ).FirstOrDefault().highlightColor = Colors.NO_COLOR;
+				mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureItem.color == selectedPanelItem.color && X.figureItem.figureType == selectedPanelItem.figureType ).FirstOrDefault().highlightColor = Colors.NO_COLOR;
 				selectedPanelItem = new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 				return;
 			}
 			if ( selectedPanelItem.figureType != FigureType.NO_FIGURE )
 			{
-				mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureItem == selectedPanelItem ).FirstOrDefault().highlightColor = Colors.NO_COLOR;
+				mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureItem.color == selectedPanelItem.color && X.figureItem.figureType == selectedPanelItem.figureType ).FirstOrDefault().highlightColor = Colors.NO_COLOR;
 			}
 
-			selectedPanelItem = aArguments.figureItem;
+			selectedPanelItem = new FigureItem( aArguments.figureItem );
 
-			mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureItem == selectedPanelItem ).FirstOrDefault().highlightColor = Colors.RED;
+			mBlackFigureCollection.Concat( mWhiteFigureCollection ).Where( X => X.figureItem.color == selectedPanelItem.color && X.figureItem.figureType == selectedPanelItem.figureType ).FirstOrDefault().highlightColor = Colors.RED;
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
