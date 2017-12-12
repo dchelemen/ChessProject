@@ -14,6 +14,7 @@ namespace ChessTable.Model
 	{
 		public ChessBoardModel( Colors aPlayer1Color, Colors aStartingColor, Algorithm aPlayer1Algorithm, Algorithm aPlayer2Algorithm )
 		{
+			mFigureValues		= new FigureValues( aPlayer1Color, "FigureValues.xml" );
 			mPlayer1Color		= aPlayer1Color;
 			Colors player2Color	= ( aPlayer1Color == Colors.WHITE ? Colors.BLACK : Colors.WHITE );
 			mPlayer1Algorithm	= setAlgorithm( aPlayer1Algorithm, mPlayer1Color );
@@ -22,7 +23,7 @@ namespace ChessTable.Model
 			nextPlayer			= new EventHandler< Move >( onNextPlayer );
 			mTimer				= new Timer();
 			mTimer.Elapsed		+= new ElapsedEventHandler( onTimerFinished );
-			mTimer.Interval		= 1000;
+			mTimer.Interval		= mFigureValues.secondsBetweenMove;
 
 			whiteFigures		= new List< ModelItem >();
 			blackFigures		= new List< ModelItem >();
@@ -649,5 +650,7 @@ namespace ChessTable.Model
 
 		private ModelItem											mFigureToMove;
 		private Timer												mTimer;
+
+		private FigureValues										mFigureValues;
 	}
 }

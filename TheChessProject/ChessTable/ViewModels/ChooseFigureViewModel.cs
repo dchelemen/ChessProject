@@ -18,8 +18,8 @@ namespace ChessTable.ViewModels
 		public ChooseFigureViewModel()
 		{
 			windowState				= "Normal";
-			windowWidth				= 640;
-			windowHeight			= 480;
+			windowWidth				= 200;
+			windowHeight			= 60;
 			fieldSize				= 48;
 
 			selectedFigureType		= FigureType.NO_FIGURE;

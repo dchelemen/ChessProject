@@ -43,6 +43,36 @@ namespace ChessTable.ViewModels
 
 		private void onStartBtnClicked()
 		{
+			Boolean isKingOn = false;
+			foreach( var item in mChessBoardModel.whiteFigures )
+			{
+				if ( item.figureItem.figureType == FigureType.MOVED_KING )
+				{
+					isKingOn = true;
+					break;
+				}
+			}
+			if ( ! isKingOn )
+			{
+				MessageBox.Show( "White King is missing!" );
+				return;
+			}
+
+			isKingOn = false;
+			foreach( var item in mChessBoardModel.blackFigures )
+			{
+				if ( item.figureItem.figureType == FigureType.MOVED_KING )
+				{
+					isKingOn = true;
+					break;
+				}
+			}
+			if ( ! isKingOn )
+			{
+				MessageBox.Show( "Black King is missing!" );
+				return;
+			}
+
 			isStartBtnClicked = true;
 			closeCustomBoardView( this, null );
 		}

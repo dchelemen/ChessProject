@@ -33,6 +33,8 @@ namespace ChessTable.Model
 
 			whiteDepth		= 3;
 			blackDepth		= 3;
+
+			secondsBetweenMove = 1000;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -81,6 +83,9 @@ namespace ChessTable.Model
 
 				node			= doc.DocumentElement.SelectSingleNode("/FigureValue/BlackDepth");
 				blackDepth		= Int32.Parse( node.InnerText );
+
+				node			= doc.DocumentElement.SelectSingleNode("/FigureValue/SecondsBetweenMove");
+				secondsBetweenMove		= ( Int32.Parse( node.InnerText ) * 1000 );
 			} 
 			catch( Exception ex )
 			{
@@ -101,6 +106,8 @@ namespace ChessTable.Model
 
 		public Int32 whiteDepth { get; private set; }
 		public Int32 blackDepth { get; private set; }
+
+		public Int32 secondsBetweenMove { get; private set; }
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
