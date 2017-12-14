@@ -470,6 +470,11 @@ namespace ChessTable.Model.Algorithms
 
 		Int32 countAlphaBetaValue( TreeNode currentNode )
 		{
+			if ( currentNode.childNodes.Count == 0 )
+			{
+				return 0;
+			}
+
 			Int32 returnValue;
 			if ( currentNode.player == TreeNode.Player.ALPHA )
 			{
