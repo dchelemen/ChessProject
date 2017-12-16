@@ -16,7 +16,7 @@ namespace ChessTable.Model
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		public void addNewPosition( String name, String Value )
+		public void addNewPosition( String aName, String aValue )
 		{
 			XmlDocument doc = new XmlDocument();
 			if ( ! File.Exists( mFilePath ) )
@@ -31,9 +31,12 @@ namespace ChessTable.Model
 			
 			XmlNode el = doc.FirstChild;
 			XmlNode position = el.AppendChild( doc.CreateElement( "Position" ) );
-			position.AppendChild( doc.CreateElement( "Name" ) ).InnerText = name;
-			position.AppendChild( doc.CreateElement( "Value" ) ).InnerText = Value;
+			position.AppendChild( doc.CreateElement( "Name" ) ).InnerText = aName;
+			position.AppendChild( doc.CreateElement( "Value" ) ).InnerText = aValue;
 			doc.Save( mFilePath );
+
+			tablePositions.Add( new Positions { name = aName, value = aValue } );
+			saveNames.Add( aName );
 		}
 
 		private void readValues()

@@ -134,6 +134,7 @@ namespace ChessTable.ViewModels
 			if ( isFiguresOnTable )
 			{
 				mTablePositions.addNewPosition( saveName, saveValue );
+				savedPositions.Add( saveName );
 			}
 		}
 
