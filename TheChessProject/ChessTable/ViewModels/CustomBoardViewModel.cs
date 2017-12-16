@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using ChessTable.ViewModels.ImplementedInterfaces;
 using ChessTable.Common;
 using ChessTable.Model;
+using System.Collections.Generic;
 
 namespace ChessTable.ViewModels
 {
@@ -30,12 +31,18 @@ namespace ChessTable.ViewModels
 			startBtnClicked			= new DelegateCommand( X => onStartBtnClicked() );
 			cancelBtnClicked		= new DelegateCommand( X => onCancelBtnClicked() );
 			deleteSelectedClicked	= new DelegateCommand( X => onDeleteSelectedClicked() );
+			saveClicked				= new DelegateCommand( X => onSaveClicked() );
+			loadClicked				= new DelegateCommand( X => onLoadClicked() );
 
 			mChessBoardCollection	= new ObservableCollection< BoardItem >();
 			mBlackFigureCollection	= new ObservableCollection< BoardItem >();
 			mWhiteFigureCollection	= new ObservableCollection< BoardItem >();
+			savedPositions			= new ObservableCollection< String >();
 			mChessBoardModel		= new ChessBoardModel( aPlayer1Color, aStartingColor, aPlayer1Algorithm, aPlayer2Algorithm );
 
+			mTablePositions			= new TablePositions();
+
+			setSavedPositions();
 			setupCustomBoard();
 		}
 
@@ -109,6 +116,40 @@ namespace ChessTable.ViewModels
 			mChessBoardCollection[ mLastClickedField ].figureItem		= new FigureItem( Colors.NO_COLOR, FigureType.NO_FIGURE );
 			mChessBoardCollection[ mLastClickedField ].highlightColor	= Colors.NO_COLOR;
 			mLastClickedField = -1;
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		void onSaveClicked()
+		{
+			View.Save save = new View.Save();
+			if ( save.ShowDialog() == false )
+			{
+				return;
+			}
+
+			String saveName = save.SaveName;
+			Boolean isFiguresOnTable = false;
+			String saveValue = getTablePosition( ref isFiguresOnTable );
+			if ( isFiguresOnTable )
+			{
+				mTablePositions.addNewPosition( saveName, saveValue );
+			}
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		void onLoadClicked()
+		{
+			String selectedName = selectedPosition;
+			foreach ( Positions pos in mTablePositions.tablePositions )
+			{
+				if ( pos.name == selectedName )
+				{
+					refreshTable( pos.value );
+					return;
+				}
+			}
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
@@ -532,14 +573,185 @@ namespace ChessTable.ViewModels
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
+		public String selectedPosition
+		{
+			get
+			{
+				return mSelectedPosition;
+			}
+			set
+			{
+				if ( value != mSelectedPosition )
+				{
+					mSelectedPosition = value;
+					OnPropertyChanged( "selectedPosition" );
+				}
+			}
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		public String getTablePosition( ref Boolean isFigureOnTable )
+		{
+			String returnString = "";
+			isFigureOnTable = false;
+			foreach( BoardItem item in mChessBoardCollection )
+			{
+				String tempString = getFigureId( item.figureItem );
+				if ( tempString != "0" )
+				{
+					isFigureOnTable = true;
+				}
+				returnString = returnString + tempString + ",";
+			}
+
+			return returnString;
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		public String getFigureId( FigureItem aItem )
+		{
+			String returnString;
+
+			switch ( aItem.figureType )
+			{
+			case FigureType.PAWN:
+				{
+					returnString = "1";
+				} break;
+			case FigureType.EN_PASSANT_PAWN:
+				{
+					returnString = "2";
+				} break;
+			case FigureType.KNIGHT:
+				{
+					returnString = "3";
+				} break;
+			case FigureType.BISHOP:
+				{
+					returnString = "4";
+				} break;
+			case FigureType.ROOK:
+				{
+					returnString = "5";
+				} break;
+			case FigureType.MOVED_ROOK:
+				{
+					returnString = "6";
+				} break;
+			case FigureType.QUEEN:
+				{
+					returnString = "9";
+				} break;
+			case FigureType.KING:
+				{
+					returnString = "10";
+				} break;
+			case FigureType.MOVED_KING:
+				{
+					returnString = "11";
+				} break;
+			default:
+				{
+					returnString = "0";
+				} break;
+			}
+
+			if ( aItem.color == Colors.BLACK )
+			{
+				returnString = "-" + returnString;
+			}
+			return returnString;
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+		void setSavedPositions()
+		{
+			savedPositions.Clear();
+			List< String > saveNames = mTablePositions.saveNames;
+
+			foreach ( String saveName in saveNames )
+			{
+				savedPositions.Add( saveName );
+			}
+
+			if ( savedPositions.Count != 0 )
+			{
+				selectedPosition = savedPositions.First();
+			}
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		void refreshTable( String aValue )
+		{
+			List< String > list = aValue.Split( ',' ).ToList();
+			mChessBoardModel.whiteFigures.Clear();
+			mChessBoardModel.blackFigures.Clear();
+
+			Int32 index = 0;
+			foreach ( BoardItem item in mChessBoardCollection )
+			{
+				item.figureItem = getFigureItemFromPosition( list[ index ] );
+
+				if ( item.figureItem.color == Colors.BLACK )
+				{
+					mChessBoardModel.blackFigures.Add( new ModelItem( item.X, item.Y, Colors.BLACK, item.figureItem.figureType ) );
+				}
+				if ( item.figureItem.color == Colors.WHITE )
+				{
+					mChessBoardModel.whiteFigures.Add( new ModelItem( item.X, item.Y, Colors.WHITE, item.figureItem.figureType ) );
+				}
+
+				index++;
+			}
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		protected FigureItem getFigureItemFromPosition( String aFigureItem )
+		{
+			Int32 figureValue = Int32.Parse( aFigureItem );
+			switch ( figureValue )
+			{
+			case 1:		return new FigureItem( Colors.WHITE,	FigureType.PAWN				);
+			case 2:		return new FigureItem( Colors.WHITE,	FigureType.EN_PASSANT_PAWN	);
+			case 3:		return new FigureItem( Colors.WHITE,	FigureType.KNIGHT			);
+			case 4:		return new FigureItem( Colors.WHITE,	FigureType.BISHOP			);
+			case 5:		return new FigureItem( Colors.WHITE,	FigureType.ROOK				);
+			case 6:		return new FigureItem( Colors.WHITE,	FigureType.MOVED_ROOK		);
+			case 9:		return new FigureItem( Colors.WHITE,	FigureType.QUEEN			);
+			case 10:	return new FigureItem( Colors.WHITE,	FigureType.KING				);
+			case 11:	return new FigureItem( Colors.WHITE,	FigureType.MOVED_KING		);
+
+			case -1:	return new FigureItem( Colors.BLACK,	FigureType.PAWN				);
+			case -2:	return new FigureItem( Colors.BLACK,	FigureType.EN_PASSANT_PAWN	);
+			case -3:	return new FigureItem( Colors.BLACK,	FigureType.KNIGHT			);
+			case -4:	return new FigureItem( Colors.BLACK,	FigureType.BISHOP			);
+			case -5:	return new FigureItem( Colors.BLACK,	FigureType.ROOK				);
+			case -6:	return new FigureItem( Colors.BLACK,	FigureType.MOVED_ROOK		);
+			case -9:	return new FigureItem( Colors.BLACK,	FigureType.QUEEN			);
+			case -10:	return new FigureItem( Colors.BLACK,	FigureType.KING				);
+			case -11:	return new FigureItem( Colors.BLACK,	FigureType.MOVED_KING		);
+
+			default:	return new FigureItem( Colors.NO_COLOR,	FigureType.NO_FIGURE		);
+			}
+		}
+
+		//-----------------------------------------------------------------------------------------------------------------------------------------
+
 		public Boolean									isStartBtnClicked { get; set; }
 		public ObservableCollection< BoardItem >		mChessBoardCollection { get; set; }
 		public ObservableCollection< BoardItem >		mWhiteFigureCollection { get; set; }
 		public ObservableCollection< BoardItem >		mBlackFigureCollection { get; set; }
+		public ObservableCollection< String >			savedPositions { get; set; }
 
 		public DelegateCommand							startBtnClicked { get; set; }
 		public DelegateCommand							cancelBtnClicked { get; set; }
 		public DelegateCommand							deleteSelectedClicked { get; set; }
+		public DelegateCommand							saveClicked { get; set; }
+		public DelegateCommand							loadClicked { get; set; }
 
 		private FigureItem								selectedPanelItem { get; set; }
 
@@ -558,5 +770,7 @@ namespace ChessTable.ViewModels
 		private Int32									mFieldSize;
 		private Int32									mBoardSize;
 		private Int32									mPanelSize;
+		private String									mSelectedPosition;
+		private TablePositions							mTablePositions;
 	}
 }

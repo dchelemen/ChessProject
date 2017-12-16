@@ -56,6 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="View\Save.xaml.cs">
+      <DependentUpon>Save.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\ChessBoardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -79,6 +82,7 @@
     <Compile Include="Common\FieldClickedEventArg.cs" />
     <Compile Include="Common\FigureItem.cs" />
     <Compile Include="Common\PaintBorderEventArg.cs" />
+    <Compile Include="Common\Positions.cs" />
     <Compile Include="Common\PutFigureOnTheTableEventArg.cs" />
     <Compile Include="Model\Algorithms\AlphaBetaAlgorithm.cs" />
     <Compile Include="Model\Algorithms\AlphaBetaAlgorithmRandom.cs" />
@@ -100,6 +104,7 @@
     <Compile Include="Model\ModelItem.cs" />
     <Compile Include="Model\ChessBoardModel.cs" />
     <Compile Include="Model\Rules\PawnRule.cs" />
+    <Compile Include="Model\TablePositions.cs" />
     <Compile Include="ViewModels\BoardItem.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="ViewModels\ChessBoardViewModel.cs" />
@@ -127,6 +132,10 @@
       <DependentUpon>MenuView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Save.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
