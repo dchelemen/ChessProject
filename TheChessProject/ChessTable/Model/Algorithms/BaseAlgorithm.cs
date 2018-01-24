@@ -107,7 +107,7 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		protected Int16 getFigureID( ModelItem aModelItem )
+		protected static Int16 getFigureID( ModelItem aModelItem )
 		{
 			Int16 whiteOrBlack = ( Int16 )( aModelItem.figureItem.color == Colors.WHITE ? 1 : -1 );
 
@@ -124,6 +124,52 @@ namespace ChessTable.Model.Algorithms
 			case FigureType.MOVED_KING:			return ( Int16 )( 11 * whiteOrBlack );
 			default: return 0;
 			}
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		public static List< Int16 > getTablePosition( List< List< ModelItem > > aChessBoard )
+		{
+			List< Int16 > returnList = new List< Int16 >();
+
+			foreach( var rows in aChessBoard )
+			{
+				foreach( var modelItem in rows )
+				{
+					returnList.Add( getFigureID( modelItem ) );
+				}
+			}
+
+			return returnList;
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		public static Boolean isEqual( List< Int16 > aFirstList, List< Int16 > aSecondList )
+		{
+			for ( int i = 0; i < 64; i++ )
+			{
+				if ( aFirstList[i] != aSecondList[i] )
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		public static String toString( List< Int16 > aFirstList )
+		{
+			List< String > list = new List< String >();
+
+			foreach ( var i in aFirstList )
+			{
+				list.Add( i.ToString() );
+			}
+
+			return string.Join( ",", list.ToArray() );
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------

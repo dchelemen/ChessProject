@@ -6,7 +6,6 @@ using ChessTable.Model.Rules;
 using ChessTable.Model.Algorithms;
 using System.Timers;
 using ChessTable.View;
-using ChessTable.ViewModels;
 
 namespace ChessTable.Model
 {
@@ -22,7 +21,7 @@ namespace ChessTable.Model
 			mCurrentColor		= aStartingColor;
 			nextPlayer			= new EventHandler< Move >( onNextPlayer );
 			mTimer				= new Timer();
-			mTimer.Elapsed		+= new ElapsedEventHandler( onTimerFinished );
+			mTimer.Elapsed		+= onTimerFinished;
 			mTimer.Interval		= mFigureValues.secondsBetweenMove;
 
 			whiteFigures		= new List< ModelItem >();
@@ -90,6 +89,17 @@ namespace ChessTable.Model
 
 			mLastMove = null;
 			mTimer.Start();
+		}
+
+		//----------------------------------------------------------------------------------------------------------------------------------------
+
+		public void stopModel()
+		{
+			mTimer.Stop();
+			mTimer.Elapsed -= onTimerFinished;
+			mTimer.Close();
+
+			mTimer = null;
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -262,7 +272,10 @@ namespace ChessTable.Model
 			mLastMove = new Move( mFigureToMove, chessBoard[ aPlaceHere.x ][ aPlaceHere.y ] );
 			setLastMoveHighLights( mLastMove, true );
 
-			mTimer.Start();
+			if ( mTimer != null )
+			{
+				mTimer.Start();
+			}
 		}
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
@@ -649,7 +662,7 @@ namespace ChessTable.Model
 		private Boolean												mIsBoardEnabled;
 
 		private ModelItem											mFigureToMove;
-		private Timer												mTimer;
+		static private Timer										mTimer;
 
 		private FigureValues										mFigureValues;
 	}

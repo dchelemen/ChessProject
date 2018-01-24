@@ -40,14 +40,14 @@ namespace ChessTable.Model.Algorithms
 
 		//----------------------------------------------------------------------------------------------------------------------------------------
 
-		protected override void createTreeNode( List< List< ModelItem > > aChessBoard, ModelItem tempItem, ModelItem aItem, Int32 enPassantValue, TreeNode currentNode, Int32 aCurrentDepth, ref Boolean cut )
+		protected override void createTreeNode( List< List< ModelItem > > aChessBoard, ModelItem tempItem, ModelItem aItem, Int32 enPassantValue, TreeNode currentNode, Int32 aCurrentDepth, ref Boolean cut, Int32 aFixMoveValue = 0 )
 		{
 			TreeNode lastChild;
 			if ( aCurrentDepth == mMaxDepth - 1 )
 			{
 				currentNode.childNodes.Add( new TreeNode( currentNode, new Move( aItem, tempItem ) ) );
 				lastChild = currentNode.childNodes[ currentNode.childNodes.Count - 1 ];
-				lastChild.moveValue = getMoveValue( aChessBoard, aItem, tempItem, enPassantValue );
+				lastChild.moveValue = getMoveValue( aChessBoard, aItem, tempItem, enPassantValue, aFixMoveValue );
 			}
 			else
 			{
@@ -57,7 +57,7 @@ namespace ChessTable.Model.Algorithms
 				nextDepth( lastChild, aChessBoard, aCurrentDepth + 1, nextColor );
 
 				lastChild.countAlphaBetaValue = countAlphaBetaValue( lastChild );
-				lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem, enPassantValue );
+				lastChild.getMoveValue = getMoveValue( aChessBoard, aItem, tempItem, enPassantValue, aFixMoveValue );
 				lastChild.depthValue = ( lastChild.getMoveValue != 0 ? ( mMaxDepth - aCurrentDepth ) : 0 );
 				if ( myColor == tempItem.figureItem.color )
 				{

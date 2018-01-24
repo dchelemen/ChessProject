@@ -52,6 +52,7 @@ namespace ChessTable.ViewModels
 
 			mChessBoardModel.gameOver		+= new EventHandler< Colors >( onGameOver );
 			mChessBoardView					= new ChessBoardView();
+			mChessBoardView.Closed			+= onChessBoardViewClosed;
 			mChessBoardViewModel			= new ChessBoardViewModel( mChessBoardModel );
 			mChessBoardView.DataContext		= mChessBoardViewModel;
 			mChessBoardView.ShowDialog();
@@ -492,6 +493,16 @@ namespace ChessTable.ViewModels
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
+
+		public void onChessBoardViewClosed( object sender, EventArgs e )
+		{
+			mChessBoardView.Closed -= onChessBoardViewClosed;
+			mChessBoardModel.stopModel();
+
+			mChessBoardModel = null;
+			mCustomBoardView = null;
+			mChessBoardViewModel = null;
+		}
 
 		public DelegateCommand								onMenuStartBtnClickedCommand { get; private set; }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace ChessTable.Model.Algorithms
 {
@@ -40,6 +41,8 @@ namespace ChessTable.Model.Algorithms
 
 		private void addNewTreeNode( TreeNode currentNode, ModelItem aItem, List< Int32 > aPossibleMoves, List< List< ModelItem > > aChessBoard, Int32 aCurrentDepth )
 		{
+			List< Int16 > beforeMove = getTablePosition( aChessBoard );
+
 			ModelItem EnPassant = new ModelItem();
 			Boolean isFindEnPassant = findEnPassantPawn( aChessBoard, ref EnPassant );
 			Colors EnPassantColor = Colors.NO_COLOR;
@@ -85,6 +88,14 @@ namespace ChessTable.Model.Algorithms
 			{
 				EnPassant.figureItem.figureType = FigureType.EN_PASSANT_PAWN;
 				EnPassant.figureItem.color		= EnPassantColor;
+			}
+
+			List< Int16 > afterMove = getTablePosition( aChessBoard );
+
+			if ( ! isEqual( beforeMove, afterMove ) )
+			{
+				String b = toString( beforeMove );
+				String a = toString( afterMove );
 			}
 		}
 
@@ -240,13 +251,13 @@ namespace ChessTable.Model.Algorithms
 					moveValue *= ( -1 );
 				}
 
-				createTreeNode( aChessBoard, tempItem, changedItem, enPassantValue, currentNode, aCurrentDepth, ref cut );
+				createTreeNode( aChessBoard, tempItem, changedItem, enPassantValue, currentNode, aCurrentDepth, ref cut, moveValue );
 			}
 		}
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
-		protected abstract void createTreeNode( List< List< ModelItem > > aChessBoard, ModelItem tempItem, ModelItem aItem, Int32 enPassantValue, TreeNode currentNode, Int32 aCurrentDepth, ref Boolean cut );
+		protected abstract void createTreeNode( List< List< ModelItem > > aChessBoard, ModelItem tempItem, ModelItem aItem, Int32 enPassantValue, TreeNode currentNode, Int32 aCurrentDepth, ref Boolean cut, Int32 fixMoveValue = 0 );
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 

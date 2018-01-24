@@ -1,7 +1,9 @@
 ﻿using ChessTable.Common;
+using ChessTable.Model.Algorithms;
 using ChessTable.Model.Rules;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ChessTable.Model
@@ -80,7 +82,7 @@ namespace ChessTable.Model
 				return false;
 			}
 
-			if ( mChessBoard[ aX ][ aY ].figureItem.color == mFigureToMove.figureItem.color )
+			if ( mChessBoard[ aX ][ aY ].figureItem.color == mFigureToMove.figureItem.color && mChessBoard[ aX ][ aY ].figureItem.figureType != FigureType.EN_PASSANT_PAWN )
 			{
 				return false;
 			}
@@ -92,6 +94,7 @@ namespace ChessTable.Model
 
 		protected Boolean isChess( Int32 aX, Int32 aY )
 		{
+			List< Int16 > before = BaseAlgorithm.getTablePosition( mChessBoard );
 			Boolean noChess									= false;
 
 			List< ModelItem > enemyFigures;
@@ -142,6 +145,13 @@ namespace ChessTable.Model
 			myFigure.y = mFigureToMove.y;
 			myFigure.index = mFigureToMove.index;
 
+			List< Int16 > after = BaseAlgorithm.getTablePosition( mChessBoard );
+
+			if( ! BaseAlgorithm.isEqual( before, after ) )
+			{
+				String b = BaseAlgorithm.toString( before );
+				String a = BaseAlgorithm.toString( after );
+			}
 			return noChess;
 		}
 

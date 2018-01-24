@@ -217,6 +217,7 @@ namespace ChessTable.ViewModels
 
 		//-----------------------------------------------------------------------------------------------------------------------------------------
 
+
 		public ObservableCollection< BoardItem >	mChessBoardCollection { get; set; }
 
 		public FigureItem							selectedPanelItem { get; set; }

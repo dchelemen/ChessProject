@@ -46,7 +46,7 @@ namespace ChessTable.Model
 			{
 				doc.Load( mFilePath );
 			}
-			catch( Exception ex )
+			catch( Exception )
 			{
 				return;
 			}
@@ -87,7 +87,7 @@ namespace ChessTable.Model
 				node			= doc.DocumentElement.SelectSingleNode("/FigureValue/SecondsBetweenMove");
 				secondsBetweenMove		= ( Int32.Parse( node.InnerText ) * 1000 );
 			} 
-			catch( Exception ex )
+			catch( Exception )
 			{
 				return;
 			}
