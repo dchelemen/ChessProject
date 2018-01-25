@@ -94,7 +94,6 @@ namespace ChessTable.Model
 
 		protected Boolean isChess( Int32 aX, Int32 aY )
 		{
-			List< Int16 > before = BaseAlgorithm.getTablePosition( mChessBoard );
 			Boolean noChess									= false;
 
 			List< ModelItem > enemyFigures;
@@ -145,13 +144,6 @@ namespace ChessTable.Model
 			myFigure.y = mFigureToMove.y;
 			myFigure.index = mFigureToMove.index;
 
-			List< Int16 > after = BaseAlgorithm.getTablePosition( mChessBoard );
-
-			if( ! BaseAlgorithm.isEqual( before, after ) )
-			{
-				String b = BaseAlgorithm.toString( before );
-				String a = BaseAlgorithm.toString( after );
-			}
 			return noChess;
 		}
 

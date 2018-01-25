@@ -41,8 +41,6 @@ namespace ChessTable.Model.Algorithms
 
 		private void addNewTreeNode( TreeNode currentNode, ModelItem aItem, List< Int32 > aPossibleMoves, List< List< ModelItem > > aChessBoard, Int32 aCurrentDepth )
 		{
-			List< Int16 > beforeMove = getTablePosition( aChessBoard );
-
 			ModelItem EnPassant = new ModelItem();
 			Boolean isFindEnPassant = findEnPassantPawn( aChessBoard, ref EnPassant );
 			Colors EnPassantColor = Colors.NO_COLOR;
@@ -88,14 +86,6 @@ namespace ChessTable.Model.Algorithms
 			{
 				EnPassant.figureItem.figureType = FigureType.EN_PASSANT_PAWN;
 				EnPassant.figureItem.color		= EnPassantColor;
-			}
-
-			List< Int16 > afterMove = getTablePosition( aChessBoard );
-
-			if ( ! isEqual( beforeMove, afterMove ) )
-			{
-				String b = toString( beforeMove );
-				String a = toString( afterMove );
 			}
 		}
 
