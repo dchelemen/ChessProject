@@ -336,6 +336,7 @@ namespace ChessTable.Model.Algorithms
 				{
 					returnValue *= ( -1 );
 				}
+				return returnValue;
 			}
 
 			if ( myColor == aTarget.figureItem.color )
