@@ -498,10 +498,6 @@ namespace ChessTable.ViewModels
 		{
 			mChessBoardView.Closed -= onChessBoardViewClosed;
 			mChessBoardModel.stopModel();
-
-			mChessBoardModel = null;
-			mCustomBoardView = null;
-			mChessBoardViewModel = null;
 		}
 
 		public DelegateCommand								onMenuStartBtnClickedCommand { get; private set; }
